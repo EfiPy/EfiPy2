@@ -1,0 +1,182 @@
+# Ebc.py
+#
+# EfiPy2.MdePkg.Protocol.Ebc
+#   part of EfiPy, EfiPy2
+#
+# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+from EfiPy2 import *
+
+gEfiEbcProtocolGuid   = \
+  EFI_GUID (0x13AC6DD1, 0x73D0, 0x11D4, (0xB0, 0x6B, 0x00, 0xAA, 0x00, 0xBD, 0x6D, 0xE7 ))
+
+OPCODE_BREAK    = 0x00
+OPCODE_JMP      = 0x01
+OPCODE_JMP8     = 0x02
+OPCODE_CALL     = 0x03
+OPCODE_RET      = 0x04
+OPCODE_CMPEQ    = 0x05
+OPCODE_CMPLTE   = 0x06
+OPCODE_CMPGTE   = 0x07
+OPCODE_CMPULTE  = 0x08
+OPCODE_CMPUGTE  = 0x09
+OPCODE_NOT      = 0x0A
+OPCODE_NEG      = 0x0B
+OPCODE_ADD      = 0x0C
+OPCODE_SUB      = 0x0D
+OPCODE_MUL      = 0x0E
+OPCODE_MULU     = 0x0F
+OPCODE_DIV      = 0x10
+OPCODE_DIVU     = 0x11
+OPCODE_MOD      = 0x12
+OPCODE_MODU     = 0x13
+OPCODE_AND      = 0x14
+OPCODE_OR       = 0x15
+OPCODE_XOR      = 0x16
+OPCODE_SHL      = 0x17
+OPCODE_SHR      = 0x18
+OPCODE_ASHR     = 0x19
+OPCODE_EXTNDB   = 0x1A
+OPCODE_EXTNDW   = 0x1B
+OPCODE_EXTNDD   = 0x1C
+OPCODE_MOVBW    = 0x1D
+OPCODE_MOVWW    = 0x1E
+OPCODE_MOVDW    = 0x1F
+OPCODE_MOVQW    = 0x20
+OPCODE_MOVBD    = 0x21
+OPCODE_MOVWD    = 0x22
+OPCODE_MOVDD    = 0x23
+OPCODE_MOVQD    = 0x24
+OPCODE_MOVSNW   = 0x25
+OPCODE_MOVSND   = 0x26
+#
+# OPCODE_27         = 0x27
+#
+OPCODE_MOVQQ     = 0x28
+OPCODE_LOADSP    = 0x29
+OPCODE_STORESP   = 0x2A
+OPCODE_PUSH      = 0x2B
+OPCODE_POP       = 0x2C
+OPCODE_CMPIEQ    = 0x2D
+OPCODE_CMPILTE   = 0x2E
+OPCODE_CMPIGTE   = 0x2F
+OPCODE_CMPIULTE  = 0x30
+OPCODE_CMPIUGTE  = 0x31
+OPCODE_MOVNW     = 0x32
+OPCODE_MOVND     = 0x33
+# 
+# OPCODE_34         = 0x34
+# 
+OPCODE_PUSHN   = 0x35
+OPCODE_POPN    = 0x36
+OPCODE_MOVI    = 0x37
+OPCODE_MOVIN   = 0x38
+OPCODE_MOVREL  = 0x39
+
+OPCODE_M_OPCODE       = 0x3F  # bits of interest for first level decode
+OPCODE_M_IMMDATA      = 0x80
+OPCODE_M_IMMDATA64    = 0x40
+OPCODE_M_64BIT        = 0x40  # for CMP
+OPCODE_M_RELADDR      = 0x10  # for CALL instruction
+OPCODE_M_CMPI32_DATA  = 0x80  # for CMPI
+OPCODE_M_CMPI64       = 0x40  # for CMPI 32 or 64 bit comparison
+OPERAND_M_MOVIN_N     = 0x80
+OPERAND_M_CMPI_INDEX  = 0x10
+
+OPCODE_M_IMMED_OP1  = 0x80
+OPCODE_M_IMMED_OP2  = 0x40
+
+OPERAND_M_INDIRECT1  = 0x08
+OPERAND_M_INDIRECT2  = 0x80
+OPERAND_M_OP1        = 0x07
+OPERAND_M_OP2        = 0x70
+
+DATAMANIP_M_64       = 0x40 # 64-bit width operation
+DATAMANIP_M_IMMDATA  = 0x80
+
+OPCODE_M_IMMED_OP2  = 0x40
+
+MOVI_M_IMMDATA    = 0x40
+MOVI_M_DATAWIDTH  = 0xC0
+MOVI_DATAWIDTH16  = 0x40
+MOVI_DATAWIDTH32  = 0x80
+MOVI_DATAWIDTH64  = 0xC0
+MOVI_M_MOVEWIDTH  = 0x30
+MOVI_MOVEWIDTH8   = 0x00
+MOVI_MOVEWIDTH16  = 0x10
+MOVI_MOVEWIDTH32  = 0x20
+MOVI_MOVEWIDTH64  = 0x30
+
+OPERAND_M_RELATIVE_ADDR  = 0x10
+OPERAND_M_NATIVE_CALL    = 0x20
+
+PUSHPOP_M_IMMDATA  = 0x80 # opcode bit indicating immediate data
+PUSHPOP_M_64       = 0x40 # opcode bit indicating 64-bit operation
+
+JMP_M_RELATIVE     = 0x10
+JMP_M_CONDITIONAL  = 0x80
+JMP_M_CS           = 0x40
+
+def OPERAND1_INDIRECT(op):
+  return ((op) & OPERAND_M_INDIRECT1)
+
+def OPERAND2_INDIRECT(op):
+  return ((op) & OPERAND_M_INDIRECT2)
+
+def OPERAND1_REGNUM(op):
+  return ((op) & OPERAND_M_OP1)
+  
+def OPERAND2_REGNUM(op):
+  return (((op) & OPERAND_M_OP2) >> 4)
+
+def OPERAND1_CHAR(op):
+  return chr (ord ('0') + OPERAND1_REGNUM (op))
+
+def OPERAND2_CHAR(op):
+  return chr (ord ('0') + OPERAND2_REGNUM (op))
+
+EFI_EBC_PROTOCOL_GUID = gEfiEbcProtocolGuid
+
+class EFI_EBC_PROTOCOL (Structure):
+  pass
+
+EFI_EBC_CREATE_THUNK = CFUNCTYPE (
+  EFI_STATUS,
+  POINTER(EFI_EBC_PROTOCOL),  # IN  *This
+  EFI_HANDLE,                 # IN  ImageHandle,
+  PVOID,                      # IN  *EbcEntryPoint,
+  POINTER(PVOID)              # OUT **Thunk
+  )
+
+EFI_EBC_UNLOAD_IMAGE = CFUNCTYPE (
+  EFI_STATUS,
+  POINTER(EFI_EBC_PROTOCOL),  # IN  *This
+  EFI_HANDLE                  # IN  ImageHandle
+  )
+
+EBC_ICACHE_FLUSH = CFUNCTYPE (
+  EFI_STATUS,
+  EFI_PHYSICAL_ADDRESS, # IN  Start
+  UINT64                # IN  Length
+  )
+
+EFI_EBC_REGISTER_ICACHE_FLUSH = CFUNCTYPE (
+  EFI_STATUS,
+  POINTER(EFI_EBC_PROTOCOL),  # IN  *This
+  EBC_ICACHE_FLUSH            # IN  Flush
+  )
+
+EFI_EBC_GET_VERSION = CFUNCTYPE (
+  EFI_STATUS,
+  POINTER(EFI_EBC_PROTOCOL),  # IN  *This
+  POINTER(UINT64)             # IN  *Version
+  )
+
+EFI_EBC_PROTOCOL._fields_ = [
+    ("CreateThunk",         EFI_EBC_CREATE_THUNK),
+    ("UnloadImage",         EFI_EBC_UNLOAD_IMAGE),
+    ("RegisterICacheFlush", EFI_EBC_REGISTER_ICACHE_FLUSH),
+    ("GetVersion",          EFI_EBC_GET_VERSION)
+  ]
+

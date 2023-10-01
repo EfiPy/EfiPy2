@@ -1,0 +1,67 @@
+# IpmiSsif.py
+#
+# EfiPy2.MdePkg.IndustryStandard.IpmiSsif
+#   part of EfiPy2
+#
+# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+from EfiPy2 import *
+from EfiPy2.MdePkg.IndustryStandard import *
+
+IPMI_SSIF_SMBUS_CMD_SINGLE_PART_WRITE        = 0x02
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_START   = 0x06
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_MIDDLE  = 0x07
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_WRITE_END     = 0x08
+
+IPMI_SSIF_SMBUS_CMD_SINGLE_PART_READ        = 0x03
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_START   = 0x03
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_MIDDLE  = 0x09
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_END     = 0x09
+IPMI_SSIF_SMBUS_CMD_MULTI_PART_READ_RETRY   = 0x0A
+
+IPMI_SSIF_MULTI_PART_READ_START_SIZE      = 0x1E
+IPMI_SSIF_MULTI_PART_READ_START_PATTERN1  = 0x00
+IPMI_SSIF_MULTI_PART_READ_START_PATTERN2  = 0x01
+IPMI_SSIF_MULTI_PART_READ_END_PATTERN     = 0xFF
+
+IPMI_SSIF_INPUT_MESSAGE_SIZE_MAX   = 0xFF
+IPMI_SSIF_OUTPUT_MESSAGE_SIZE_MAX  = 0xFF
+
+IPMI_SSIF_MAXIMUM_PACKET_SIZE_IN_BYTES  = 0x20
+
+IpmiSsifPacketStart     = 0
+IpmiSsifPacketMiddle    = 1
+IpmiSsifPacketEnd       = 2
+IpmiSsifPacketSingle    = 3
+IpmiSsifPacketMax       = 4
+IPMI_SSIF_PACKET_ATTRIBUTE  = ENUM
+
+class IPMI_SSIF_REQUEST_HEADER (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("NetFunc", UINT8),
+    ("Command", UINT8)
+    ]
+
+class IPMI_SSIF_RESPONSE_PACKET_START (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("StartPattern",    UINT8 * 2),
+    ("NetFunc",         UINT8),
+    ("Command",         UINT8),
+    ]
+
+class IPMI_SSIF_RESPONSE_PACKET_MIDDLE (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("BlockNumber", UINT8)
+    ]
+
+class IPMI_SSIF_RESPONSE_PACKET_END (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("EndPattern",  UINT8)
+    ]
+
+class IPMI_SSIF_RESPONSE_SINGLE_PACKET (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("NetFunc", UINT8),
+    ("Command", UINT8)
+    ]

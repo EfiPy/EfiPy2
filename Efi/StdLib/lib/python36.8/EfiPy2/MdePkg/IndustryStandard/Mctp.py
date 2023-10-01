@@ -1,0 +1,116 @@
+# Mctp.py
+#
+# EfiPy2.MdePkg.IndustryStandard.Mctp
+#   part of EfiPy2
+#
+# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+from EfiPy2.MdePkg.IndustryStandard import *
+
+MCTP_NULL_DESTINATION_ENDPOINT_ID  = 0
+MCTP_NULL_SOURCE_ENDPOINT_ID       = 0
+MCTP_RESERVED_ENDPOINT_START_ID    = 1
+MCTP_RESERVED_ENDPOINT_END_ID      = 7
+MCTP_BROADCAST_ENDPOINT_ID         = 0xFF
+
+MCTP_CONTROL_RESERVED                            = 0x00
+MCTP_CONTROL_SET_ENDPOINT_ID                     = 0x01
+MCTP_CONTROL_GET_ENDPOINT_ID                     = 0x02
+MCTP_CONTROL_GET_ENDPOINT_UUID                   = 0x03
+MCTP_CONTROL_GET_MCTP_VERSION_SUPPORT            = 0x04
+MCTP_CONTROL_GET_MESSAGE_TYPE_SUPPORT            = 0x05
+MCTP_CONTROL_GET_VENDOR_DEFINED_MESSAGE_SUPPORT  = 0x06
+MCTP_CONTROL_RESOLVE_ENDPOINT_ID                 = 0x07
+MCTP_CONTROL_ALLOCATE_ENDPOINT_IDS               = 0x08
+MCTP_CONTROL_ROUTING_INFORMATION_UPDATE          = 0x09
+MCTP_CONTROL_GET_ROUTINE_TABLE_ENTRIES           = 0x0A
+MCTP_CONTROL_PREPARE_FOR_ENDPOINT_DISCOVERY      = 0x0B
+MCTP_CONTROL_ENDPOINT_DISCOVERY                  = 0x0C
+MCTP_CONTROL_DISCOVERY_NOTIFY                    = 0x0D
+MCTP_CONTROL_GET_NETWORK_ID                      = 0x0E
+MCTP_CONTROL_QUERY_HOP                           = 0x0F
+MCTP_CONTROL_RESOLVE_UUID                        = 0x10
+MCTP_CONTROL_QUERY_RATE_LIMIT                    = 0x11
+MCTP_CONTROL_REQUEST_TX_RATE_LIMIT               = 0x12
+MCTP_CONTROL_UPDATE_RATE_LIMIT                   = 0x13
+MCTP_CONTROL_QUERY_SUPPORTED_INTERFACES          = 0x14
+MCTP_CONTROL_TRANSPORT_SPECIFIC_START            = 0xF0
+MCTP_CONTROL_TRANSPORT_SPECIFIC_END              = 0xFF
+
+MCTP_CONTROL_COMPLETION_CODES_SUCCESS                 = 0x00
+MCTP_CONTROL_COMPLETION_CODES_ERROR                   = 0x01
+MCTP_CONTROL_COMPLETION_CODES_ERROR_INVALID_DATA      = 0x02
+MCTP_CONTROL_COMPLETION_CODES_ERROR_INVALID_LENGTH    = 0x03
+MCTP_CONTROL_COMPLETION_CODES_ERROR_NOT_READY         = 0x04
+MCTP_CONTROL_COMPLETION_CODES_ERROR_UNSUPPORTED_CMD   = 0x05
+MCTP_CONTROL_COMPLETION_CODES_COMMAND_SPECIFIC_START  = 0x80
+MCTP_CONTROL_COMPLETION_CODES_COMMAND_SPECIFIC_END    = 0xFF
+
+MCTP_MESSAGE_TYPE_CONTROL              = 0x00
+MCTP_MESSAGE_TYPE_PLDM                 = 0x01
+MCTP_MESSAGE_TYPE_NCSI                 = 0x02
+MCTP_MESSAGE_TYPE_ETHERNET             = 0x03
+MCTP_MESSAGE_TYPE_NVME                 = 0x04
+MCTP_MESSAGE_TYPE_SPDM                 = 0x05
+MCTP_MESSAGE_TYPE_SECURE_MESSAGE       = 0x06
+MCTP_MESSAGE_TYPE_CXL_FM_API           = 0x07
+MCTP_MESSAGE_TYPE_CXL_CCI              = 0x08
+MCTP_MESSAGE_TYPE_VENDOR_DEFINED_PCI   = 0x7E
+MCTP_MESSAGE_TYPE_VENDOR_DEFINED_IANA  = 0x7F
+
+MCTP_ENDPOINT_ID_NULL            = 0
+MCTP_ENDPOINT_ID_RESERVED_START  = 1
+MCTP_ENDPOINT_ID_RESERVED_END    = 7
+MCTP_ENDPOINT_ID_BROADCAST       = 0xff
+
+class MCTP_CONTROL_MESSAGE_Bits (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("MessageType",     UINT32, 7),
+    ("IntegrityCheck",  UINT32, 1),
+    ("InstanceId",      UINT32, 5),
+    ("Reserved",        UINT32, 1),
+    ("DatagramBit",     UINT32, 1),
+    ("RequestBit",      UINT32, 1),
+    ("CommandCode",     UINT32, 8),
+    ("CompletionCode",  UINT32, 8)
+    ]
+
+class MCTP_CONTROL_MESSAGE (EFIPY_INDUSTRY_UNION):
+  _fields_ = [
+    ("Bits",        MCTP_CONTROL_MESSAGE_Bits),
+    ("BodyHeader",  UINT32)
+    ]
+
+MCTP_BASELINE_MINIMUM_UNIT_TRANSMISSION_SIZE  = 0x40
+
+class MCTP_TRANSPORT_HEADER_Bits (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("HeaderVersion",           UINT32, 4),
+    ("Reserved",                UINT32, 4),
+    ("DestinationEndpointId",   UINT32, 8),
+    ("SourceEndpointIdId",      UINT32, 8),
+    ("MessageTag",              UINT32, 3),
+    ("TagOwner",                UINT32, 1),
+    ("PacketSequence",          UINT32, 2),
+    ("EndOfMessage",            UINT32, 1),
+    ("StartOfMessage",          UINT32, 1)
+    ]
+
+class MCTP_TRANSPORT_HEADER (EFIPY_INDUSTRY_UNION):
+  _fields_ = [
+    ("Bits",    MCTP_TRANSPORT_HEADER_Bits),
+    ("Header",  UINT32)
+    ]
+
+class MCTP_MESSAGE_HEADER_Bits (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("MessageType",     UINT8, 7),
+    ("IntegrityCheck",  UINT8, 1)
+    ]
+
+class MCTP_MESSAGE_HEADER (EFIPY_INDUSTRY_UNION):
+  _fields_ = [
+    ("Bits",    MCTP_MESSAGE_HEADER_Bits),
+    ("MessageHeader",  UINT8)
+    ]

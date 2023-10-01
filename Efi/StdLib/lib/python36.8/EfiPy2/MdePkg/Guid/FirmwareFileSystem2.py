@@ -1,0 +1,16 @@
+# FirmwareFileSystem2.py
+#
+# EfiPy2.MdePkg.Guid.FirmwareFileSystem2
+#   part of EfiPy, EfiPy2
+#
+# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+from EfiPy2 import *
+
+gEfiFirmwareFileSystem2Guid = \
+  EFI_GUID (0x8c8ce578, 0x8a3d, 0x4f1c, ( 0x99, 0x35, 0x89, 0x61, 0x85, 0xc3, 0x2d, 0xd3 ))
+
+gEfiFirmwareVolumeTopFileGuid = \
+  EFI_GUID (0x1BA0062E, 0xC779, 0x4582, ( 0x85, 0x66, 0x33, 0x6A, 0xE8, 0xF7, 0x8F, 0x9 ))
+
