@@ -41,7 +41,7 @@ Status = EfiPy.gRT.GetVariable(
 
 OutStrF (
   ConOutP,
-  "gRT.GetVariable(Name: \"%s\" (Status:0x%016X)\r\n" % (VariableName, Status)
+  'gRT.GetVariable(Name: "%s" (Status:0x%016X)\r\n' % (VariableName, Status)
   )
 
 if Status == EfiPy.EFI_BUFFER_TOO_SMALL:
@@ -60,13 +60,13 @@ if Status == EfiPy.EFI_BUFFER_TOO_SMALL:
 
     OutStrF (
       ConOutP,
-      "gRT.GetVariable(Name: \"%s\" (Status:0x%016X)\r\n" % (VariableName, Status)
+      'gRT.GetVariable(Name: "%s" (Status:0x%016X)\r\n' % (VariableName, Status)
       )
     
 
   OutStrF (
     ConOutP,
-    "gRT.GetVariable(Name: \"%s\" (Size:%d)\r\n" % (VariableName, DataSize.value)
+    'gRT.GetVariable(Name: "%s" (Size:%d)\r\n' % (VariableName, DataSize.value)
     )
 
   OutStrF (
@@ -94,7 +94,7 @@ elif Status == EfiPy.EFI_NOT_FOUND:
 
   OutStrF (
     ConOutP,
-    "gRT.SetVariable(Name: \"%s\" (Status:0x%016X)\r\n" % (VariableName, Status)
+    'gRT.SetVariable(Name: "%s" (Status:0x%016X)\r\n' % (VariableName, Status)
     )
 
-OutStrF (ConOutP, u"Done\r\n")
+OutStrF (ConOutP, "Done\r\n")
