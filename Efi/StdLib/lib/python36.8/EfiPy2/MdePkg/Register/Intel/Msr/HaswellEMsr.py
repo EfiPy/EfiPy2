@@ -1,0 +1,678 @@
+# HaswellEMsr.py
+#
+# EfiPy2.MdePkg.Register.Intel.Msr.HaswellEMsr
+#   part of EfiPy2
+#
+# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+from EfiPy2 import *
+
+def IS_HASWELL_E_PROCESSOR(DisplayFamily, DisplayModel):
+   return DisplayFamily == 0x06 and (
+           DisplayModel == 0x3F
+           )
+
+MSR_HASWELL_E_CORE_THREAD_COUNT  = 0x00000035
+
+class MSR_HASWELL_E_CORE_THREAD_COUNT_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Core_Count",      UINT32, 16),
+    ("Thread_Count",    UINT32, 16),
+    ("Reserved",        UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_CORE_THREAD_COUNT_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_CORE_THREAD_COUNT_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_THREAD_ID_INFO  = 0x00000053
+
+class MSR_HASWELL_E_THREAD_ID_INFO_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Logical_Processor_ID",    UINT32, 8),
+    ("Reserved1",               UINT32, 24),
+    ("Reserved2",               UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_THREAD_ID_INFO_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_THREAD_ID_INFO_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_PKG_CST_CONFIG_CONTROL  = 0x000000E2
+
+class MSR_HASWELL_E_PKG_CST_CONFIG_CONTROL_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Limit",               UINT32, 3),
+    ("Reserved1",           UINT32, 7),
+    ("IO_MWAIT",            UINT32, 1),
+    ("Reserved2",           UINT32, 4),
+    ("CFGLock",             UINT32, 1),
+    ("Reserved3",           UINT32, 9),
+    ("C3AutoDemotion",      UINT32, 1),
+    ("C1AutoDemotion",      UINT32, 1),
+    ("C3Undemotion",        UINT32, 1),
+    ("C1Undemotion",        UINT32, 1),
+    ("CStateDemotion",      UINT32, 1),
+    ("CStateUndemotion",    UINT32, 1),
+    ("Reserved4",           UINT32, 1),
+    ("Reserved5",           UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_PKG_CST_CONFIG_CONTROL_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_PKG_CST_CONFIG_CONTROL_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_IA32_MCG_CAP  = 0x00000179
+
+class MSR_HASWELL_E_IA32_MCG_CAP_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Count",       UINT32, 8),
+    ("MCG_CTL_P",   UINT32, 1),
+    ("MCG_EXT_P",   UINT32, 1),
+    ("MCP_CMCI_P",  UINT32, 1),
+    ("MCG_TES_P",   UINT32, 1),
+    ("Reserved1",   UINT32, 4),
+    ("MCG_EXT_CNT", UINT32, 8),
+    ("MCG_SER_P",   UINT32, 1),
+    ("MCG_EM_P",    UINT32, 1),
+    ("MCG_ELOG_P",  UINT32, 1),
+    ("Reserved2",   UINT32, 5),
+    ("Reserved3",   UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_IA32_MCG_CAP_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_IA32_MCG_CAP_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_SMM_MCA_CAP  = 0x0000017D
+
+class MSR_HASWELL_E_SMM_MCA_CAP_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Reserved1",               UINT32, 32),
+    ("Reserved2",               UINT32, 26),
+    ("SMM_Code_Access_Chk",     UINT32, 1),
+    ("Long_Flow_Indication",    UINT32, 1),
+    ("Reserved3",               UINT32, 4)
+  ]
+
+class MSR_HASWELL_E_SMM_MCA_CAP_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_SMM_MCA_CAP_REGISTER_Bits),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_ERROR_CONTROL  = 0x0000017F
+
+class MSR_HASWELL_E_ERROR_CONTROL_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Reserved1",           UINT32, 1),
+    ("MemErrorLogEnable",   UINT32, 1),
+    ("Reserved2",           UINT32, 30),
+    ("Reserved3",           UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_ERROR_CONTROL_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_ERROR_CONTROL_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_TURBO_RATIO_LIMIT  = 0x000001AD
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Maximum1C", UINT32, 8),
+    ("Maximum2C", UINT32, 8),
+    ("Maximum3C", UINT32, 8),
+    ("Maximum4C", UINT32, 8),
+    ("Maximum5C", UINT32, 8),
+    ("Maximum6C", UINT32, 8),
+    ("Maximum7C", UINT32, 8),
+    ("Maximum8C", UINT32, 8)
+  ]
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_TURBO_RATIO_LIMIT_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_TURBO_RATIO_LIMIT1  = 0x000001AE
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT1_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Maximum9C",  UINT32, 8),
+    ("Maximum10C", UINT32, 8),
+    ("Maximum11C", UINT32, 8),
+    ("Maximum12C", UINT32, 8),
+    ("Maximum13C", UINT32, 8),
+    ("Maximum14C", UINT32, 8),
+    ("Maximum15C", UINT32, 8),
+    ("Maximum16C", UINT32, 8)
+  ]
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT1_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_TURBO_RATIO_LIMIT1_REGISTER_Bits),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_TURBO_RATIO_LIMIT2  = 0x000001AF
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT2_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Maximum17C",                              UINT32, 8),
+    ("Maximum18C",                              UINT32, 8),
+    ("Reserved1",                               UINT32, 16),
+    ("Reserved2",                               UINT32, 31),
+    ("TurboRatioLimitConfigurationSemaphore",   UINT32, 1),
+  ]
+
+class MSR_HASWELL_E_TURBO_RATIO_LIMIT2_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_TURBO_RATIO_LIMIT2_REGISTER_Bits),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_RAPL_POWER_UNIT  = 0x00000606
+
+class MSR_HASWELL_E_RAPL_POWER_UNIT_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("PowerUnits",          UINT32, 4),
+    ("Reserved1",           UINT32, 4),
+    ("EnergyStatusUnits",   UINT32, 5),
+    ("Reserved2",           UINT32, 3),
+    ("TimeUnits",           UINT32, 4),
+    ("Reserved3",           UINT32, 12),
+    ("Reserved4",           UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_RAPL_POWER_UNIT_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_RAPL_POWER_UNIT_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_DRAM_POWER_LIMIT  = 0x00000618
+
+MSR_HASWELL_E_DRAM_ENERGY_STATUS  = 0x00000619
+
+class MSR_HASWELL_E_DRAM_ENERGY_STATUS_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Energy",      UINT32, 32),
+    ("Reserved",    UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_DRAM_ENERGY_STATUS_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_DRAM_ENERGY_STATUS_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_DRAM_PERF_STATUS  = 0x0000061B
+
+MSR_HASWELL_E_DRAM_POWER_INFO  = 0x0000061C
+
+MSR_HASWELL_E_PCIE_PLL_RATIO  = 0x0000061E
+
+class MSR_HASWELL_E_PCIE_PLL_RATIO_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("PCIERatio",   UINT32, 2),
+    ("LPLLSelect",  UINT32, 1),
+    ("LONGRESET",   UINT32, 1),
+    ("Reserved1",   UINT32, 28),
+    ("Reserved2",   UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_PCIE_PLL_RATIO_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_PCIE_PLL_RATIO_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_MSRUNCORE_RATIO_LIMIT  = 0x00000620
+
+class MSR_HASWELL_E_MSRUNCORE_RATIO_LIMIT_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("MAX_RATIO", UINT32, 7),
+    ("Reserved1", UINT32, 1),
+    ("MIN_RATIO", UINT32, 7),
+    ("Reserved2", UINT32, 17),
+    ("Reserved3", UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_MSRUNCORE_RATIO_LIMIT_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_MSRUNCORE_RATIO_LIMIT_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_PP0_ENERGY_STATUS  = 0x00000639
+
+MSR_HASWELL_E_CORE_PERF_LIMIT_REASONS  = 0x00000690
+
+class MSR_HASWELL_E_CORE_PERF_LIMIT_REASONS_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("PROCHOT_Status",                                      UINT32, 1),
+    ("ThermalStatus",                                       UINT32, 1),
+    ("PowerBudgetManagementStatus",                         UINT32, 1),
+    ("PlatformConfigurationServicesStatus",                 UINT32, 1),
+    ("Reserved1",                                           UINT32, 1),
+    ("AutonomousUtilizationBasedFrequencyControlStatus",    UINT32, 1),
+    ("VRThermAlertStatus",                                  UINT32, 1),
+    ("Reserved2",                                           UINT32, 1),
+    ("ElectricalDesignPointStatus",                         UINT32, 1),
+    ("Reserved3",                                           UINT32, 1),
+    ("MultiCoreTurboStatus",                                UINT32, 1),
+    ("Reserved4",                                           UINT32, 2),
+    ("FrequencyP1Status",                                   UINT32, 1),
+    ("TurboFrequencyLimitingStatus",                        UINT32, 1),
+    ("FrequencyLimitingStatus",                             UINT32, 1),
+    ("PROCHOT_Log",                                         UINT32, 1),
+    ("ThermalLog",                                          UINT32, 1),
+    ("PowerBudgetManagementLog",                            UINT32, 1),
+    ("PlatformConfigurationServicesLog",                    UINT32, 1),
+    ("Reserved5",                                           UINT32, 1),
+    ("AutonomousUtilizationBasedFrequencyControlLog",       UINT32, 1),
+    ("VRThermAlertLog",                                     UINT32, 1),
+    ("Reserved6",                                           UINT32, 1),
+    ("ElectricalDesignPointLog",                            UINT32, 1),
+    ("Reserved7",                                           UINT32, 1),
+    ("MultiCoreTurboLog",                                   UINT32, 1),
+    ("Reserved8",                                           UINT32, 2),
+    ("CoreFrequencyP1Log",                                  UINT32, 1),
+    ("TurboFrequencyLimitingLog",                           UINT32, 1),
+    ("CoreFrequencyLimitingLog",                            UINT32, 1),
+    ("Reserved9",                                           UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_CORE_PERF_LIMIT_REASONS_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_CORE_PERF_LIMIT_REASONS_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_IA32_QM_EVTSEL  = 0x00000C8D
+
+class MSR_HASWELL_E_IA32_QM_EVTSEL_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("EventID",     UINT32, 8),
+    ("Reserved1",   UINT32, 24),
+    ("RMID",        UINT32, 10),
+    ("Reserved2",   UINT32, 22)
+  ]
+
+class MSR_HASWELL_E_IA32_QM_EVTSEL_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_IA32_QM_EVTSEL_REGISTER_Bits),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_IA32_PQR_ASSOC  = 0x00000C8F
+
+class MSR_HASWELL_E_IA32_PQR_ASSOC_REGISTER_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("RMID",        UINT32, 10),
+    ("Reserved1",   UINT32, 22),
+    ("Reserved2",   UINT32, 32)
+  ]
+
+class MSR_HASWELL_E_IA32_PQR_ASSOC_REGISTER (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",    MSR_HASWELL_E_IA32_PQR_ASSOC_REGISTER_Bits),
+    ("Uint32",  UINT32),
+    ("Uint64",  UINT64)
+  ]
+
+MSR_HASWELL_E_PMON_GLOBAL_CTL           = 0x00000700
+MSR_HASWELL_E_PMON_GLOBAL_STATUS        = 0x00000701
+MSR_HASWELL_E_PMON_GLOBAL_CONFIG        = 0x00000702
+MSR_HASWELL_E_U_PMON_UCLK_FIXED_CTL     = 0x00000703
+MSR_HASWELL_E_U_PMON_UCLK_FIXED_CTR     = 0x00000704
+MSR_HASWELL_E_U_PMON_EVNTSEL0           = 0x00000705
+MSR_HASWELL_E_U_PMON_EVNTSEL1           = 0x00000706
+MSR_HASWELL_E_U_PMON_BOX_STATUS         = 0x00000708
+MSR_HASWELL_E_U_PMON_CTR0               = 0x00000709
+MSR_HASWELL_E_U_PMON_CTR1               = 0x0000070A
+
+MSR_HASWELL_E_PCU_PMON_BOX_CTL          = 0x00000710
+MSR_HASWELL_E_PCU_PMON_EVNTSEL0         = 0x00000711
+MSR_HASWELL_E_PCU_PMON_EVNTSEL1         = 0x00000712
+MSR_HASWELL_E_PCU_PMON_EVNTSEL2         = 0x00000713
+MSR_HASWELL_E_PCU_PMON_EVNTSEL3         = 0x00000714
+MSR_HASWELL_E_PCU_PMON_BOX_FILTER       = 0x00000715
+MSR_HASWELL_E_PCU_PMON_BOX_STATUS       = 0x00000716
+MSR_HASWELL_E_PCU_PMON_CTR0             = 0x00000717
+MSR_HASWELL_E_PCU_PMON_CTR1             = 0x00000718
+MSR_HASWELL_E_PCU_PMON_CTR2             = 0x00000719
+MSR_HASWELL_E_PCU_PMON_CTR3             = 0x0000071A
+
+MSR_HASWELL_E_S0_PMON_BOX_CTL           = 0x00000720
+MSR_HASWELL_E_S0_PMON_EVNTSEL0          = 0x00000721
+MSR_HASWELL_E_S0_PMON_EVNTSEL1          = 0x00000722
+MSR_HASWELL_E_S0_PMON_EVNTSEL2          = 0x00000723
+MSR_HASWELL_E_S0_PMON_EVNTSEL3          = 0x00000724
+MSR_HASWELL_E_S0_PMON_BOX_FILTER        = 0x00000725
+MSR_HASWELL_E_S0_PMON_CTR0              = 0x00000726
+MSR_HASWELL_E_S0_PMON_CTR1              = 0x00000727
+MSR_HASWELL_E_S0_PMON_CTR2              = 0x00000728
+MSR_HASWELL_E_S0_PMON_CTR3              = 0x00000729
+
+MSR_HASWELL_E_S1_PMON_BOX_CTL           = 0x0000072A
+MSR_HASWELL_E_S1_PMON_EVNTSEL0          = 0x0000072B
+MSR_HASWELL_E_S1_PMON_EVNTSEL1          = 0x0000072C
+MSR_HASWELL_E_S1_PMON_EVNTSEL2          = 0x0000072D
+MSR_HASWELL_E_S1_PMON_EVNTSEL3          = 0x0000072E
+MSR_HASWELL_E_S1_PMON_BOX_FILTER        = 0x0000072F
+MSR_HASWELL_E_S1_PMON_CTR0              = 0x00000730
+MSR_HASWELL_E_S1_PMON_CTR1              = 0x00000731
+MSR_HASWELL_E_S1_PMON_CTR2              = 0x00000732
+MSR_HASWELL_E_S1_PMON_CTR3              = 0x00000733
+
+MSR_HASWELL_E_S2_PMON_BOX_CTL           = 0x00000734
+MSR_HASWELL_E_S2_PMON_EVNTSEL0          = 0x00000735
+MSR_HASWELL_E_S2_PMON_EVNTSEL1          = 0x00000736
+MSR_HASWELL_E_S2_PMON_EVNTSEL2          = 0x00000737
+MSR_HASWELL_E_S2_PMON_EVNTSEL3          = 0x00000738
+MSR_HASWELL_E_S2_PMON_BOX_FILTER        = 0x00000739
+MSR_HASWELL_E_S2_PMON_CTR0              = 0x0000073A
+MSR_HASWELL_E_S2_PMON_CTR1              = 0x0000073B
+MSR_HASWELL_E_S2_PMON_CTR2              = 0x0000073C
+MSR_HASWELL_E_S2_PMON_CTR3              = 0x0000073D
+
+MSR_HASWELL_E_S3_PMON_BOX_CTL           = 0x0000073E
+MSR_HASWELL_E_S3_PMON_EVNTSEL0          = 0x0000073F
+MSR_HASWELL_E_S3_PMON_EVNTSEL1          = 0x00000740
+MSR_HASWELL_E_S3_PMON_EVNTSEL2          = 0x00000741
+MSR_HASWELL_E_S3_PMON_EVNTSEL3          = 0x00000742
+MSR_HASWELL_E_S3_PMON_BOX_FILTER        = 0x00000743
+MSR_HASWELL_E_S3_PMON_CTR0              = 0x00000744
+MSR_HASWELL_E_S3_PMON_CTR1              = 0x00000745
+MSR_HASWELL_E_S3_PMON_CTR2              = 0x00000746
+MSR_HASWELL_E_S3_PMON_CTR3              = 0x00000747
+
+MSR_HASWELL_E_C0_PMON_BOX_CTL           = 0x00000E00
+MSR_HASWELL_E_C0_PMON_EVNTSEL0          = 0x00000E01
+MSR_HASWELL_E_C0_PMON_EVNTSEL1          = 0x00000E02
+MSR_HASWELL_E_C0_PMON_EVNTSEL2          = 0x00000E03
+MSR_HASWELL_E_C0_PMON_EVNTSEL3          = 0x00000E04
+MSR_HASWELL_E_C0_PMON_BOX_FILTER0       = 0x00000E05
+MSR_HASWELL_E_C0_PMON_BOX_FILTER1       = 0x00000E06
+MSR_HASWELL_E_C0_PMON_BOX_STATUS        = 0x00000E07
+MSR_HASWELL_E_C0_PMON_CTR0              = 0x00000E08
+MSR_HASWELL_E_C0_PMON_CTR1              = 0x00000E09
+MSR_HASWELL_E_C0_PMON_CTR2              = 0x00000E0A
+MSR_HASWELL_E_C0_PMON_CTR3              = 0x00000E0B
+
+MSR_HASWELL_E_C1_PMON_BOX_CTL           = 0x00000E10
+MSR_HASWELL_E_C1_PMON_EVNTSEL0          = 0x00000E11
+MSR_HASWELL_E_C1_PMON_EVNTSEL1          = 0x00000E12
+MSR_HASWELL_E_C1_PMON_EVNTSEL2          = 0x00000E13
+MSR_HASWELL_E_C1_PMON_EVNTSEL3          = 0x00000E14
+MSR_HASWELL_E_C1_PMON_BOX_FILTER0       = 0x00000E15
+MSR_HASWELL_E_C1_PMON_BOX_FILTER1       = 0x00000E16
+MSR_HASWELL_E_C1_PMON_BOX_STATUS        = 0x00000E17
+MSR_HASWELL_E_C1_PMON_CTR0              = 0x00000E18
+MSR_HASWELL_E_C1_PMON_CTR1              = 0x00000E19
+MSR_HASWELL_E_C1_PMON_CTR2              = 0x00000E1A
+MSR_HASWELL_E_C1_PMON_CTR3              = 0x00000E1B
+
+MSR_HASWELL_E_C2_PMON_BOX_CTL           = 0x00000E20
+MSR_HASWELL_E_C2_PMON_EVNTSEL0          = 0x00000E21
+MSR_HASWELL_E_C2_PMON_EVNTSEL1          = 0x00000E22
+MSR_HASWELL_E_C2_PMON_EVNTSEL2          = 0x00000E23
+MSR_HASWELL_E_C2_PMON_EVNTSEL3          = 0x00000E24
+MSR_HASWELL_E_C2_PMON_BOX_FILTER0       = 0x00000E25
+MSR_HASWELL_E_C2_PMON_BOX_FILTER1       = 0x00000E26
+MSR_HASWELL_E_C2_PMON_BOX_STATUS        = 0x00000E27
+MSR_HASWELL_E_C2_PMON_CTR0              = 0x00000E28
+MSR_HASWELL_E_C2_PMON_CTR1              = 0x00000E29
+MSR_HASWELL_E_C2_PMON_CTR2              = 0x00000E2A
+MSR_HASWELL_E_C2_PMON_CTR3              = 0x00000E2B
+
+MSR_HASWELL_E_C3_PMON_BOX_CTL           = 0x00000E30
+MSR_HASWELL_E_C3_PMON_EVNTSEL0          = 0x00000E31
+MSR_HASWELL_E_C3_PMON_EVNTSEL1          = 0x00000E32
+MSR_HASWELL_E_C3_PMON_EVNTSEL2          = 0x00000E33
+MSR_HASWELL_E_C3_PMON_EVNTSEL3          = 0x00000E34
+MSR_HASWELL_E_C3_PMON_BOX_FILTER0       = 0x00000E35
+MSR_HASWELL_E_C3_PMON_BOX_FILTER1       = 0x00000E36
+MSR_HASWELL_E_C3_PMON_BOX_STATUS        = 0x00000E37
+MSR_HASWELL_E_C3_PMON_CTR0              = 0x00000E38
+MSR_HASWELL_E_C3_PMON_CTR1              = 0x00000E39
+MSR_HASWELL_E_C3_PMON_CTR2              = 0x00000E3A
+MSR_HASWELL_E_C3_PMON_CTR3              = 0x00000E3B
+
+MSR_HASWELL_E_C4_PMON_BOX_CTL           = 0x00000E40
+MSR_HASWELL_E_C4_PMON_EVNTSEL0          = 0x00000E41
+MSR_HASWELL_E_C4_PMON_EVNTSEL1          = 0x00000E42
+MSR_HASWELL_E_C4_PMON_EVNTSEL2          = 0x00000E43
+MSR_HASWELL_E_C4_PMON_EVNTSEL3          = 0x00000E44
+MSR_HASWELL_E_C4_PMON_BOX_FILTER0       = 0x00000E45
+MSR_HASWELL_E_C4_PMON_BOX_FILTER1       = 0x00000E46
+MSR_HASWELL_E_C4_PMON_BOX_STATUS        = 0x00000E47
+MSR_HASWELL_E_C4_PMON_CTR0              = 0x00000E48
+MSR_HASWELL_E_C4_PMON_CTR1              = 0x00000E49
+MSR_HASWELL_E_C4_PMON_CTR2              = 0x00000E4A
+MSR_HASWELL_E_C4_PMON_CTR3              = 0x00000E4B
+
+MSR_HASWELL_E_C5_PMON_BOX_CTL           = 0x00000E50
+MSR_HASWELL_E_C5_PMON_EVNTSEL0          = 0x00000E51
+MSR_HASWELL_E_C5_PMON_EVNTSEL1          = 0x00000E52
+MSR_HASWELL_E_C5_PMON_EVNTSEL2          = 0x00000E53
+MSR_HASWELL_E_C5_PMON_EVNTSEL3          = 0x00000E54
+MSR_HASWELL_E_C5_PMON_BOX_FILTER0       = 0x00000E55
+MSR_HASWELL_E_C5_PMON_BOX_FILTER1       = 0x00000E56
+MSR_HASWELL_E_C5_PMON_BOX_STATUS        = 0x00000E57
+MSR_HASWELL_E_C5_PMON_CTR0              = 0x00000E58
+MSR_HASWELL_E_C5_PMON_CTR1              = 0x00000E59
+MSR_HASWELL_E_C5_PMON_CTR2              = 0x00000E5A
+MSR_HASWELL_E_C5_PMON_CTR3              = 0x00000E5B
+
+MSR_HASWELL_E_C6_PMON_BOX_CTL           = 0x00000E60
+MSR_HASWELL_E_C6_PMON_EVNTSEL0          = 0x00000E61
+MSR_HASWELL_E_C6_PMON_EVNTSEL1          = 0x00000E62
+MSR_HASWELL_E_C6_PMON_EVNTSEL2          = 0x00000E63
+MSR_HASWELL_E_C6_PMON_EVNTSEL3          = 0x00000E64
+MSR_HASWELL_E_C6_PMON_BOX_FILTER0       = 0x00000E65
+MSR_HASWELL_E_C6_PMON_BOX_FILTER1       = 0x00000E66
+MSR_HASWELL_E_C6_PMON_BOX_STATUS        = 0x00000E67
+MSR_HASWELL_E_C6_PMON_CTR0              = 0x00000E68
+MSR_HASWELL_E_C6_PMON_CTR1              = 0x00000E69
+MSR_HASWELL_E_C6_PMON_CTR2              = 0x00000E6A
+MSR_HASWELL_E_C6_PMON_CTR3              = 0x00000E6B
+
+MSR_HASWELL_E_C7_PMON_BOX_CTL           = 0x00000E70
+MSR_HASWELL_E_C7_PMON_EVNTSEL0          = 0x00000E71
+MSR_HASWELL_E_C7_PMON_EVNTSEL1          = 0x00000E72
+MSR_HASWELL_E_C7_PMON_EVNTSEL2          = 0x00000E73
+MSR_HASWELL_E_C7_PMON_EVNTSEL3          = 0x00000E74
+MSR_HASWELL_E_C7_PMON_BOX_FILTER0       = 0x00000E75
+MSR_HASWELL_E_C7_PMON_BOX_FILTER1       = 0x00000E76
+MSR_HASWELL_E_C7_PMON_BOX_STATUS        = 0x00000E77
+MSR_HASWELL_E_C7_PMON_CTR0              = 0x00000E78
+MSR_HASWELL_E_C7_PMON_CTR1              = 0x00000E79
+MSR_HASWELL_E_C7_PMON_CTR2              = 0x00000E7A
+MSR_HASWELL_E_C7_PMON_CTR3              = 0x00000E7B
+
+MSR_HASWELL_E_C8_PMON_BOX_CTL           = 0x00000E80
+MSR_HASWELL_E_C8_PMON_EVNTSEL0          = 0x00000E81
+MSR_HASWELL_E_C8_PMON_EVNTSEL1          = 0x00000E82
+MSR_HASWELL_E_C8_PMON_EVNTSEL2          = 0x00000E83
+MSR_HASWELL_E_C8_PMON_EVNTSEL3          = 0x00000E84
+MSR_HASWELL_E_C8_PMON_BOX_FILTER0       = 0x00000E85
+MSR_HASWELL_E_C8_PMON_BOX_FILTER1       = 0x00000E86
+MSR_HASWELL_E_C8_PMON_BOX_STATUS        = 0x00000E87
+MSR_HASWELL_E_C8_PMON_CTR0              = 0x00000E88
+MSR_HASWELL_E_C8_PMON_CTR1              = 0x00000E89
+MSR_HASWELL_E_C8_PMON_CTR2              = 0x00000E8A
+MSR_HASWELL_E_C8_PMON_CTR3              = 0x00000E8B
+
+MSR_HASWELL_E_C9_PMON_BOX_CTL           = 0x00000E90
+MSR_HASWELL_E_C9_PMON_EVNTSEL0          = 0x00000E91
+MSR_HASWELL_E_C9_PMON_EVNTSEL1          = 0x00000E92
+MSR_HASWELL_E_C9_PMON_EVNTSEL2          = 0x00000E93
+MSR_HASWELL_E_C9_PMON_EVNTSEL3          = 0x00000E94
+MSR_HASWELL_E_C9_PMON_BOX_FILTER0       = 0x00000E95
+MSR_HASWELL_E_C9_PMON_BOX_FILTER1       = 0x00000E96
+MSR_HASWELL_E_C9_PMON_BOX_STATUS        = 0x00000E97
+MSR_HASWELL_E_C9_PMON_CTR0              = 0x00000E98
+MSR_HASWELL_E_C9_PMON_CTR1              = 0x00000E99
+MSR_HASWELL_E_C9_PMON_CTR2              = 0x00000E9A
+MSR_HASWELL_E_C9_PMON_CTR3              = 0x00000E9B
+
+MSR_HASWELL_E_C10_PMON_BOX_CTL          = 0x00000EA0
+MSR_HASWELL_E_C10_PMON_EVNTSEL0         = 0x00000EA1
+MSR_HASWELL_E_C10_PMON_EVNTSEL1         = 0x00000EA2
+MSR_HASWELL_E_C10_PMON_EVNTSEL2         = 0x00000EA3
+MSR_HASWELL_E_C10_PMON_EVNTSEL3         = 0x00000EA4
+MSR_HASWELL_E_C10_PMON_BOX_FILTER0      = 0x00000EA5
+MSR_HASWELL_E_C10_PMON_BOX_FILTER1      = 0x00000EA6
+MSR_HASWELL_E_C10_PMON_BOX_STATUS       = 0x00000EA7
+MSR_HASWELL_E_C10_PMON_CTR0             = 0x00000EA8
+MSR_HASWELL_E_C10_PMON_CTR1             = 0x00000EA9
+MSR_HASWELL_E_C10_PMON_CTR2             = 0x00000EAA
+MSR_HASWELL_E_C10_PMON_CTR3             = 0x00000EAB
+
+MSR_HASWELL_E_C11_PMON_BOX_CTL          = 0x00000EB0
+MSR_HASWELL_E_C11_PMON_EVNTSEL0         = 0x00000EB1
+MSR_HASWELL_E_C11_PMON_EVNTSEL1         = 0x00000EB2
+MSR_HASWELL_E_C11_PMON_EVNTSEL2         = 0x00000EB3
+MSR_HASWELL_E_C11_PMON_EVNTSEL3         = 0x00000EB4
+MSR_HASWELL_E_C11_PMON_BOX_FILTER0      = 0x00000EB5
+MSR_HASWELL_E_C11_PMON_BOX_FILTER1      = 0x00000EB6
+MSR_HASWELL_E_C11_PMON_BOX_STATUS       = 0x00000EB7
+MSR_HASWELL_E_C11_PMON_CTR0             = 0x00000EB8
+MSR_HASWELL_E_C11_PMON_CTR1             = 0x00000EB9
+MSR_HASWELL_E_C11_PMON_CTR2             = 0x00000EBA
+MSR_HASWELL_E_C11_PMON_CTR3             = 0x00000EBB
+
+MSR_HASWELL_E_C12_PMON_BOX_CTL          = 0x00000EC0
+MSR_HASWELL_E_C12_PMON_EVNTSEL0         = 0x00000EC1
+MSR_HASWELL_E_C12_PMON_EVNTSEL1         = 0x00000EC2
+MSR_HASWELL_E_C12_PMON_EVNTSEL2         = 0x00000EC3
+MSR_HASWELL_E_C12_PMON_EVNTSEL3         = 0x00000EC4
+MSR_HASWELL_E_C12_PMON_BOX_FILTER0      = 0x00000EC5
+MSR_HASWELL_E_C12_PMON_BOX_FILTER1      = 0x00000EC6
+MSR_HASWELL_E_C12_PMON_BOX_STATUS       = 0x00000EC7
+MSR_HASWELL_E_C12_PMON_CTR0             = 0x00000EC8
+MSR_HASWELL_E_C12_PMON_CTR1             = 0x00000EC9
+MSR_HASWELL_E_C12_PMON_CTR2             = 0x00000ECA
+MSR_HASWELL_E_C12_PMON_CTR3             = 0x00000ECB
+
+MSR_HASWELL_E_C13_PMON_BOX_CTL          = 0x00000ED0
+MSR_HASWELL_E_C13_PMON_EVNTSEL0         = 0x00000ED1
+MSR_HASWELL_E_C13_PMON_EVNTSEL1         = 0x00000ED2
+MSR_HASWELL_E_C13_PMON_EVNTSEL2         = 0x00000ED3
+MSR_HASWELL_E_C13_PMON_EVNTSEL3         = 0x00000ED4
+MSR_HASWELL_E_C13_PMON_BOX_FILTER0      = 0x00000ED5
+MSR_HASWELL_E_C13_PMON_BOX_FILTER1      = 0x00000ED6
+MSR_HASWELL_E_C13_PMON_BOX_STATUS       = 0x00000ED7
+MSR_HASWELL_E_C13_PMON_CTR0             = 0x00000ED8
+MSR_HASWELL_E_C13_PMON_CTR1             = 0x00000ED9
+MSR_HASWELL_E_C13_PMON_CTR2             = 0x00000EDA
+MSR_HASWELL_E_C13_PMON_CTR3             = 0x00000EDB
+
+MSR_HASWELL_E_C14_PMON_BOX_CTL          = 0x00000EE0
+MSR_HASWELL_E_C14_PMON_EVNTSEL0         = 0x00000EE1
+MSR_HASWELL_E_C14_PMON_EVNTSEL1         = 0x00000EE2
+MSR_HASWELL_E_C14_PMON_EVNTSEL2         = 0x00000EE3
+MSR_HASWELL_E_C14_PMON_EVNTSEL3         = 0x00000EE4
+MSR_HASWELL_E_C14_PMON_BOX_FILTER       = 0x00000EE5
+MSR_HASWELL_E_C14_PMON_BOX_FILTER1      = 0x00000EE6
+MSR_HASWELL_E_C14_PMON_BOX_STATUS       = 0x00000EE7
+MSR_HASWELL_E_C14_PMON_CTR0             = 0x00000EE8
+MSR_HASWELL_E_C14_PMON_CTR1             = 0x00000EE9
+MSR_HASWELL_E_C14_PMON_CTR2             = 0x00000EEA
+MSR_HASWELL_E_C14_PMON_CTR3             = 0x00000EEB
+
+MSR_HASWELL_E_C15_PMON_BOX_CTL          = 0x00000EF0
+MSR_HASWELL_E_C15_PMON_EVNTSEL0         = 0x00000EF1
+MSR_HASWELL_E_C15_PMON_EVNTSEL1         = 0x00000EF2
+MSR_HASWELL_E_C15_PMON_EVNTSEL2         = 0x00000EF3
+MSR_HASWELL_E_C15_PMON_EVNTSEL3         = 0x00000EF4
+MSR_HASWELL_E_C15_PMON_BOX_FILTER0      = 0x00000EF5
+MSR_HASWELL_E_C15_PMON_BOX_FILTER1      = 0x00000EF6
+MSR_HASWELL_E_C15_PMON_BOX_STATUS       = 0x00000EF7
+MSR_HASWELL_E_C15_PMON_CTR0             = 0x00000EF8
+MSR_HASWELL_E_C15_PMON_CTR1             = 0x00000EF9
+MSR_HASWELL_E_C15_PMON_CTR2             = 0x00000EFA
+MSR_HASWELL_E_C15_PMON_CTR3             = 0x00000EFB
+
+MSR_HASWELL_E_C16_PMON_BOX_CTL          = 0x00000F00
+MSR_HASWELL_E_C16_PMON_EVNTSEL0         = 0x00000F01
+MSR_HASWELL_E_C16_PMON_EVNTSEL1         = 0x00000F02
+MSR_HASWELL_E_C16_PMON_EVNTSEL2         = 0x00000F03
+MSR_HASWELL_E_C16_PMON_EVNTSEL3         = 0x00000F04
+MSR_HASWELL_E_C16_PMON_BOX_FILTER0      = 0x00000F05
+MSR_HASWELL_E_C16_PMON_BOX_FILTER1      = 0x00000F06
+MSR_HASWELL_E_C16_PMON_BOX_STATUS       = 0x00000F07
+MSR_HASWELL_E_C16_PMON_CTR0             = 0x00000F08
+MSR_HASWELL_E_C16_PMON_CTR1             = 0x00000F09
+MSR_HASWELL_E_C16_PMON_CTR2             = 0x00000F0A
+MSR_HASWELL_E_C16_PMON_CTR3             = 0x00000E0B
+
+MSR_HASWELL_E_C17_PMON_BOX_CTL          = 0x00000F10
+MSR_HASWELL_E_C17_PMON_EVNTSEL0         = 0x00000F11
+MSR_HASWELL_E_C17_PMON_EVNTSEL1         = 0x00000F12
+MSR_HASWELL_E_C17_PMON_EVNTSEL2         = 0x00000F13
+MSR_HASWELL_E_C17_PMON_EVNTSEL3         = 0x00000F14
+MSR_HASWELL_E_C17_PMON_BOX_FILTER0      = 0x00000F15
+MSR_HASWELL_E_C17_PMON_BOX_FILTER1      = 0x00000F16
+MSR_HASWELL_E_C17_PMON_BOX_STATUS       = 0x00000F17
+MSR_HASWELL_E_C17_PMON_CTR0             = 0x00000F18
+MSR_HASWELL_E_C17_PMON_CTR1             = 0x00000F19
+MSR_HASWELL_E_C17_PMON_CTR2             = 0x00000F1A
+MSR_HASWELL_E_C17_PMON_CTR3             = 0x00000F1B
