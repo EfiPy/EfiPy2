@@ -119,7 +119,7 @@ class x86_64_Asm(object):
     return
 
   def instruction(self, fd, inst):
-    ops = zip(list(inst._supplied_operands), inst.machine_inst.signature)
+    ops = list(zip(list(inst._supplied_operands), inst.machine_inst.signature))
     ops.reverse()
     op_str = ', '.join([self.str_op(*op) for op in ops])
     # TODO - what to do about keywords?
