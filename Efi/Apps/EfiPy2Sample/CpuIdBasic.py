@@ -13,16 +13,7 @@ from EfiPy2.Lib import CpuId
 
 CpuIdObj  = CpuId.CpuIdClass()
 
-class CpuIdRegisters (EfiPy.Structure):
-  _pack_   = 1
-  _fields_ = [
-    ('EAX',  EfiPy.UINT32),
-    ('EBX',  EfiPy.UINT32),
-    ('ECX',  EfiPy.UINT32),
-    ('EDX',  EfiPy.UINT32)
-  ]
-
-CpuIdReg  = CpuIdRegisters()
+CpuIdReg  = CpuId.CPUID_GENERIC_REGISTERs()
 
 rax = CpuIdObj.GetId2 (0, 0, CpuIdReg)
 

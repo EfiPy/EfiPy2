@@ -59,6 +59,15 @@ class CpuIdClass:
     self.params.p3 = CpuIdRegAddr
     return self.proc.execute(self.code, params = self.params, mode = 'int')
 
+class CPUID_GENERIC_REGISTERs (EfiPy.Structure):
+  _pack_   = 1
+  _fields_ = [
+    ('EAX',  EfiPy.UINT32),
+    ('EBX',  EfiPy.UINT32),
+    ('ECX',  EfiPy.UINT32),
+    ('EDX',  EfiPy.UINT32)
+  ]
+
 if __name__ == '__main__':
 
   import EfiPy2.MdePkg.Register.Intel.Cpuid as CpuidRegs
