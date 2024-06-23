@@ -4424,6 +4424,10 @@ class unpcklps(x86DispatchInstruction):
     (xmm_mem128, {'opcode':[0x0F, 0x14], 'modrm':None, 'prefix':[]}))
   arch_ext = 1
 
+class wrmsr(x86Instruction):
+  machine_inst = no_op
+  params = {'opcode':[0x0F, 0x30],       'modrm':None}
+  
 class xorpd(x86DispatchInstruction):
   dispatch = (
     (xmm_xmm,    {'opcode':[0x0F, 0x57], 'modrm':None, 'prefix':[0x66]}),
