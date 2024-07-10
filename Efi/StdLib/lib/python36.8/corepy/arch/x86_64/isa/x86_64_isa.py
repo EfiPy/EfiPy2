@@ -1515,6 +1515,10 @@ class rcr(x86DispatchInstruction):
     (reg8_imm8,           {'opcode':[0xC0],             'modrm':0x18}),
     (mem8_imm8,           {'opcode':[0xC0],             'modrm':0x18}))
     
+class rdmsr(x86Instruction):
+  machine_inst = no_op
+  params = {'opcode':[0x0F, 0x32],       'modrm':None}
+  
 class rdtsc(x86Instruction):
   machine_inst = no_op
   params = {'opcode':[0x0F, 0x31],       'modrm':None}
