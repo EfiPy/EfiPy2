@@ -17,7 +17,7 @@
 #
 
 
-from PanelLib import EfiPyGfx, EfiPyFont, HintPrompt
+from EfiPy2.Lib.PanelLib import EfiPyGfx, EfiPyFont, HintPrompt
 
 def GridTest (Gfx):
 

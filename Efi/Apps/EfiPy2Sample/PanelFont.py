@@ -16,7 +16,7 @@
 # along with EfiPy.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from PanelLib import EfiPyGfx, EfiPyFont, HintPrompt
+from EfiPy2.Lib.PanelLib import EfiPyGfx, EfiPyFont, HintPrompt
 
 def FontTest (Font = None):
 

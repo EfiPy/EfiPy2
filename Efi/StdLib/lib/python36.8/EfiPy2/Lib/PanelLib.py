@@ -107,7 +107,12 @@ class EfiPyGfx:
 
     self.Rect (0, 0, self.Info.HorizontalResolution - 1, self.Info.VerticalResolution - 1, color)
 
-  def Dump (self):
+  def ModeSet (self, Mode):
+    Status = self.Gop.SetMode (
+                        EfiPy.byref (self.Gop),
+                        Mode)
+
+  def ModeDump (self):
 
     print ("Current Mode: %d" %    self.Gop.Mode[0].Mode)
     print ("Max Mode: %X" %        self.Gop.Mode[0].MaxMode)
