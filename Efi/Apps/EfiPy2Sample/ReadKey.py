@@ -45,6 +45,9 @@ while True:
                                 EfiPy.byref (InputKey)
                                 )
 
+  if EfiPy.EFI_ERROR (Status):
+    print ('   ReadKeyStroke status: 0x%08X, continue !!!' % Status)
+    continue
   #
   # ScanCode is inpute
   #
