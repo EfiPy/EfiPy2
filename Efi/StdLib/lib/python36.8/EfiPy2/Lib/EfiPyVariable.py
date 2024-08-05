@@ -40,7 +40,7 @@ class Variable:
     else:
       raise SystemError (f"EfiPy GetVariable Error: 0x{Status:016X}")
 
-  def SetVariable (self, Value = None, Attribute = None):
+  def SetVariable (self):
     Status = EfiPy.gRT.SetVariable (
                          self.VarName,
                          EfiPy.byref (self.VarGuid),
