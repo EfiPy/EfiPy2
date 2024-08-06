@@ -3,7 +3,7 @@
 #
 # EfiPy2Smbios.py
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2016 - 2024 MaxWu efipy.core@gmail.com All rights reserved.
 #
 # EfiPy2Smbios.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import EfiPy2 as EfiPy
 from EfiPy2.MdePkg.Protocol import Smbios as sb
 import EfiPy2.MdePkg.IndustryStandard.SmBios as Isb
 
-SmbiosKnownType = [x[0] for x in Isb.SMBIOS_STRUCTURE_POINTER._fields_]
 SmbiosDumpDict  = {}
 
 def SmbiosDumpArray (DumpLevel, ArrayValue):
@@ -92,23 +91,8 @@ def SmbiosDumpStruct2 (DumpLevel, SmbiosStruct):
 
 def SmbiosBuildStrings (SmbiosRecord):
 
-  SmbiosRecord.Strings = [None]
+  SmbiosRecord.Strings = []
 
-  #
-  # VOID   *SmbiosVoidPtr;
-  # UINTN   SmbiosStrAddr;
-  #
-  # SmbiosVoidPtr = (VOID *)&SmbiosRecord;
-  # SmbiosStrAddr = (UINTN)SmbiosVoidPtr + SmbiosRecord.Hdr.Length;
-  #
-  # SmbiosVoidPtr = EfiPy.cast (EfiPy.pointer (SmbiosRecord), EfiPy.PVOID)
-  # SmbiosStrAddr = SmbiosVoidPtr.value + SmbiosRecord.Hdr.Length
-
-  #
-  # UINTN SmbiosStrAddr;
-  #
-  # SmbiosStrAddr = (UINTN)(VOID *)&SmbiosRecord + SmbiosRecord.Hdr.Length
-  #
   SmbiosStrAddr = EfiPy.addressof (SmbiosRecord) + SmbiosRecord.Hdr.Length
 
   SmbiosStrObj = EfiPy.PCHAR8(SmbiosStrAddr)
@@ -122,7 +106,7 @@ def SmbiosDumpString (DumpLevel, SmbiosRecord, RecordKey, KeyValue):
   print ("    " * DumpLevel +  "%s (SMBIOS_TABLE_STRING, %d): " % (RecordKey, KeyValue.value), end = '')
 
   try:
-    SmbiosString = SmbiosRecord.Strings [KeyValue.value]
+    SmbiosString = SmbiosRecord.Strings [KeyValue.value - 1]
     print (SmbiosString.value)
   except AttributeError:
     print ('[%s]' % SmbiosString)
@@ -151,9 +135,7 @@ SmbiosDumpDict [id(EfiPy.UINT32)            ] = SmbiosDumpUint32
 SmbiosDumpDict [id(EfiPy.UINT64)            ] = SmbiosDumpUint64
 SmbiosDumpDict [id(EfiPy.GUID)              ] = SmbiosDumpGuid
 
-def SmbiosDumpMain (SmbiosRecord, DumpContent = False, DumpRaw = False):
-
-  print ("==========================================================")
+def SmbiosDumpMain (SmbiosRecord, DumpContent = False, DumpRaw = False, DumpString = False):
 
   #
   #  SMBIOS_STRUCTURE           *SmbiosRecord;
@@ -164,22 +146,25 @@ def SmbiosDumpMain (SmbiosRecord, DumpContent = False, DumpRaw = False):
 
   SmbiosPointer = EfiPy.POINTER(Isb.SMBIOS_STRUCTURE_POINTER)(SmbiosRecord)[0]
   SmbiosHdr     = SmbiosPointer.Hdr[0]
+  print (f'''
+=======================================
+Handle 0x{SmbiosHdr.Handle:04X}, DMI type {SmbiosHdr.Type}, {SmbiosHdr.Length} bytes
+=======================================''')
+  SmbiosType = 'Type%d' % SmbiosHdr.Type
+  SmbiosTypeX = getattr (SmbiosPointer, SmbiosType, SmbiosPointer.Oem)[0]
+  SmbiosBuildStrings (SmbiosTypeX)
 
   if DumpContent == True:
-    SmbiosTypeX = getattr (SmbiosPointer, 'Type%d' % SmbiosHdr.Type)[0]
-    SmbiosBuildStrings (SmbiosTypeX)
     SmbiosDumpStruct2 (0, SmbiosTypeX)
-  else:
-    print ("Type%d, Length: %d, Handle: 0x%08X" % (SmbiosHdr.Type, SmbiosHdr.Length, SmbiosHdr.Handle), end = '')
-
-    if ('Type%d' % SmbiosHdr.Type) in SmbiosKnownType:
-      print (" (Know type)")
-    else:
-      print (" (Unknow type)")
-
 
   if DumpRaw == True:
-    pass
+    Raw = (EfiPy.CHAR8 * SmbiosHdr.Length).from_address (EfiPy.addressof (SmbiosHdr))
+    print ("\nRAW:\n----\n", ' '.join (f'{v:02X}' for v in bytes (Raw)))
+
+  if DumpString == True:
+    print ("Strings:\n--------")
+    for i, s in enumerate (SmbiosTypeX.Strings, 1):
+      print (" %d): %s" % (i, s.value))
 
 if __name__ == "__main__":
 
@@ -198,8 +183,7 @@ if __name__ == "__main__":
 
   print ('''SMBIOS
     MajorVersion: %d
-    MinorVersion: %d
-'''% (SmbiosProtocol[0].MajorVersion, SmbiosProtocol[0].MinorVersion))
+    MinorVersion: %d'''% (SmbiosProtocol[0].MajorVersion, SmbiosProtocol[0].MinorVersion))
 
   SmbiosHandle = sb.EFI_SMBIOS_HANDLE (Isb.SMBIOS_HANDLE_PI_RESERVED)
 
@@ -215,4 +199,4 @@ if __name__ == "__main__":
     if EfiPy.EFI_ERROR (Status):
       break
 
-    SmbiosDumpMain (SmbiosRecord, True, True)
+    SmbiosDumpMain (SmbiosRecord, True, True, True)

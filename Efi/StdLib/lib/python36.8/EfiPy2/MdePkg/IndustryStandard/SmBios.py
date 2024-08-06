@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.SmBios
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -2138,6 +2138,11 @@ class SMBIOS_TABLE_TYPE127 (EFIPY_INDUSTRY_STRUCTURE):
     ("Hdr", SMBIOS_STRUCTURE)
   ]
 
+class SMBIOS_TABLE_OEM (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("Hdr", SMBIOS_STRUCTURE)
+  ]
+
 class SMBIOS_STRUCTURE_POINTER (EFIPY_INDUSTRY_UNION):
   _fields_ = [
     ("Hdr",     POINTER (SMBIOS_STRUCTURE)),
@@ -2190,6 +2195,6 @@ class SMBIOS_STRUCTURE_POINTER (EFIPY_INDUSTRY_UNION):
     ("Type46",  POINTER (SMBIOS_TABLE_TYPE46)),
     ("Type126", POINTER (SMBIOS_TABLE_TYPE126)),
     ("Type127", POINTER (SMBIOS_TABLE_TYPE127)),
-    ("Raw",     POINTER (UINT8))
+    ("Oem",     POINTER (SMBIOS_TABLE_OEM))
   ]
 
