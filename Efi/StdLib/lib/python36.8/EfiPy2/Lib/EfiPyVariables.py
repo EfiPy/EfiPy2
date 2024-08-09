@@ -1,3 +1,12 @@
+# EfiPyVariables.py
+#
+# EfiPy2.Lib.EfiPyVariables
+#   part of EfiPy2
+#
+# Copyright (C) 2024 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+
 import EfiPy2 as EfiPy
 from EfiPy2.Lib.EfiPyVariable import Variable
 
