@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Tpm20
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard    import *
@@ -779,6 +779,36 @@ class TPMT_HA (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("hashAlg", TPMI_ALG_HASH),
     ("digest",  TPMU_HA)
+  ]
+
+class TPMT_HA_SHA1 (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("hashAlg", TPMI_ALG_HASH),
+    ("digest",  BYTE * SHA1_DIGEST_SIZE)
+  ]
+
+class TPMT_HA_SHA256 (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("hashAlg", TPMI_ALG_HASH),
+    ("digest",  BYTE * SHA256_DIGEST_SIZE)
+  ]
+
+class TPMT_HA_SM3_256 (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("hashAlg", TPMI_ALG_HASH),
+    ("digest",  BYTE * SM3_256_DIGEST_SIZE)
+  ]
+
+class TPMT_HA_SHA384 (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("hashAlg", TPMI_ALG_HASH),
+    ("digest",  BYTE * SHA384_DIGEST_SIZE)
+  ]
+
+class TPMT_HA_SHA512 (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("hashAlg", TPMI_ALG_HASH),
+    ("digest",  BYTE * SHA512_DIGEST_SIZE)
   ]
 
 class TPM2B_DIGEST (EFIPY_INDUSTRY_STRUCTURE):
