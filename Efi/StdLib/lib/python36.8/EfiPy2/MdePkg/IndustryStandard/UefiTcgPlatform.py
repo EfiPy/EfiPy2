@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.UefiTcgPlatform
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard          import *
@@ -48,35 +48,35 @@ EV_EFI_VARIABLE_AUTHORITY         = EV_EFI_EVENT_BASE + 0xE0
 EV_EFI_SPDM_FIRMWARE_BLOB         = EV_EFI_EVENT_BASE + 0xE1
 EV_EFI_SPDM_FIRMWARE_CONFIG       = EV_EFI_EVENT_BASE + 0xE2
 
-EFI_CALLING_EFI_APPLICATION         = "Calling EFI Application from Boot Option"
-EFI_RETURNING_FROM_EFI_APPLICATION  = "Returning from EFI Application from Boot Option"
-EFI_EXIT_BOOT_SERVICES_INVOCATION   = "Exit Boot Services Invocation"
+EFI_CALLING_EFI_APPLICATION         = b"Calling EFI Application from Boot Option"
+EFI_RETURNING_FROM_EFI_APPLICATION  = b"Returning from EFI Application from Boot Option"
+EFI_EXIT_BOOT_SERVICES_INVOCATION   = b"Exit Boot Services Invocation"
 EFI_EXIT_BOOT_SERVICES_FAILED       = "Exit Boot Services Returned with Failure"
-EFI_EXIT_BOOT_SERVICES_SUCCEEDED    = "Exit Boot Services Returned with Success"
+EFI_EXIT_BOOT_SERVICES_SUCCEEDED    = b"Exit Boot Services Returned with Success"
 
-EV_POSTCODE_INFO_POST_CODE    = "POST CODE"
+EV_POSTCODE_INFO_POST_CODE    = b"POST CODE"
 POST_CODE_STR_LEN             = len (EV_POSTCODE_INFO_POST_CODE)
 
-EV_POSTCODE_INFO_SMM_CODE     = "SMM CODE"
+EV_POSTCODE_INFO_SMM_CODE     = b"SMM CODE"
 SMM_CODE_STR_LEN             = len (EV_POSTCODE_INFO_SMM_CODE)
 
-EV_POSTCODE_INFO_ACPI_DATA    = "ACPI DATA"
+EV_POSTCODE_INFO_ACPI_DATA    = b"ACPI DATA"
 ACPI_DATA_LEN                 = len (EV_POSTCODE_INFO_ACPI_DATA)
 
-EV_POSTCODE_INFO_BIS_CODE     = "BIS CODE"
+EV_POSTCODE_INFO_BIS_CODE     = b"BIS CODE"
 BIS_CODE_LEN                  = len (EV_POSTCODE_INFO_BIS_CODE)
 
-EV_POSTCODE_INFO_UEFI_PI      = "UEFI PI"
+EV_POSTCODE_INFO_UEFI_PI      = b"UEFI PI"
 UEFI_PI_LEN                   = len (EV_POSTCODE_INFO_UEFI_PI)
 
-EV_POSTCODE_INFO_OPROM        = "Embedded Option ROM"
+EV_POSTCODE_INFO_OPROM        = b"Embedded Option ROM"
 OPROM_LEN                     = len (EV_POSTCODE_INFO_OPROM)
 
-EV_POSTCODE_INFO_EMBEDDED_UEFI_DRIVER  = "Embedded UEFI Driver"
-EMBEDDED_UEFI_DRIVER_LEN               = len (EV_POSTCODE_INFO_EMBEDDED_UEFI_DRIVER) - 1
+EV_POSTCODE_INFO_EMBEDDED_UEFI_DRIVER  = b"Embedded UEFI Driver"
+EMBEDDED_UEFI_DRIVER_LEN               = len (EV_POSTCODE_INFO_EMBEDDED_UEFI_DRIVER)
 
-FIRMWARE_DEBUGGER_EVENT_STRING      = "UEFI Debug Mode"
-FIRMWARE_DEBUGGER_EVENT_STRING_LEN  = len (FIRMWARE_DEBUGGER_EVENT_STRING) - 1
+FIRMWARE_DEBUGGER_EVENT_STRING      = b"UEFI Debug Mode"
+FIRMWARE_DEBUGGER_EVENT_STRING_LEN  = len (FIRMWARE_DEBUGGER_EVENT_STRING)
 
 TCG_EVENTTYPE = UINT32
 TCG_PCRINDEX  = Tpm12.TPM_PCRINDEX
@@ -115,7 +115,7 @@ class UEFI_PLATFORM_FIRMWARE_BLOB (EFIPY_INDUSTRY_STRUCTURE):
 
 class UEFI_PLATFORM_FIRMWARE_BLOB2 (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("BlobDescriptionSize", UINT8),
+    ("BlobDescriptionSize", UINT8)
     # ("BlobDescription",     UINT8 * BlobDescriptionSize),
     # ("BlobBase",            EFI_PHYSICAL_ADDRESS),
     # ("BlobLength",          UINT64)
@@ -209,13 +209,15 @@ TCG_DEVICE_SECURITY_EVENT_DATA_DEVICE_TYPE_USB   = 2
 
 class TCG_DEVICE_SECURITY_EVENT_DATA_HEADER (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("Signature",   UINT8),
+    ("Signature",   UINT8 * 16),
     ("Version",     UINT16),
     ("Length",      UINT16),
     ("SpdmHashAlgo",UINT32),
     ("DeviceType",  UINT32)
     # ("SpdmMeasurementBlock",  SPDM_MEASUREMENT_BLOCK)
   ]
+
+TCG_DEVICE_SECURITY_EVENT_DATA_PCI_CONTEXT_VERSION  = 0
 
 class TCG_DEVICE_SECURITY_EVENT_DATA_PCI_CONTEXT (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
@@ -236,8 +238,8 @@ class TCG_DEVICE_SECURITY_EVENT_DATA_USB_CONTEXT (EFIPY_INDUSTRY_STRUCTURE):
     ("Version",             UINT16),
     ("Length",              UINT16),
 
-    # ("DeviceDescriptor",        UINT16 * DescLen),
-    # ("BodDescriptor",           UINT16 * DescLen),
+    # ("DeviceDescriptor",        UINT8 * DescLen),
+    # ("BodDescriptor",           UINT8 * DescLen),
     # ("ConfigurationDescriptor",(UINT8 * NumOfConfiguration) * DescLen)
   ]
 
@@ -247,7 +249,7 @@ class TCG_PCR_EVENT2 (EFIPY_INDUSTRY_STRUCTURE):
     ("EventType", TCG_EVENTTYPE),
     ("Digest",    Tpm20.TPML_DIGEST_VALUES),
     ("EventSize", UINT32),
-    ("Event",     UINT8)
+    ("Event",     UINT8 * 1)
   ]
 
 class TCG_PCR_EVENT2_HDR (EFIPY_INDUSTRY_STRUCTURE):
@@ -326,7 +328,7 @@ LOCALITY_3_INDICATOR  = 0x03
 
 class TCG_EfiStartupLocalityEvent (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("Signature",       UINT8),
+    ("Signature",       UINT8 * 16),
     ("StartupLocality", UINT8)
   ]
 
