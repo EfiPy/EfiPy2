@@ -73,20 +73,6 @@ def GetAcpiVersion (AcpiEntries):
 
   return Major, Minor, Errata
 
-AcpiModuleDict = {
-  (2, 0): 'EfiPy2.MdePkg.IndustryStandard.Acpi20',
-  (3, 0): 'EfiPy2.MdePkg.IndustryStandard.Acpi30',
-  (4, 0): 'EfiPy2.MdePkg.IndustryStandard.Acpi40',
-  (5, 0): 'EfiPy2.MdePkg.IndustryStandard.Acpi50',
-  (5, 1): 'EfiPy2.MdePkg.IndustryStandard.Acpi51',
-  (6, 0): 'EfiPy2.MdePkg.IndustryStandard.Acpi60',
-  (6, 1): 'EfiPy2.MdePkg.IndustryStandard.Acpi61',
-  (6, 2): 'EfiPy2.MdePkg.IndustryStandard.Acpi62',
-  (6, 3): 'EfiPy2.MdePkg.IndustryStandard.Acpi63',
-  (6, 4): 'EfiPy2.MdePkg.IndustryStandard.Acpi64',
-  (6, 5): 'EfiPy2.MdePkg.IndustryStandard.Acpi65',
-}
-
 def RetrieveAcpiType (SignatureByte = None, SignatureInt = None, AcpiEntries = {}):
 
   if SignatureInt is not None and (type (SignatureInt) in [int]):

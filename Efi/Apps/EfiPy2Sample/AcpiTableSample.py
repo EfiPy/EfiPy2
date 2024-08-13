@@ -52,7 +52,7 @@ DSDT
 print (f'\n*****************************************************************************')
 for i, SsdtAddr in enumerate (SsdtAddress):
   Ssdt = EFI_ACPI_DESCRIPTION_HEADER.from_address (SsdtAddr)
-  print (f"  Signature: {Dsdt.Signature.to_bytes (4, 'little')}, OemId: {bytes (Dsdt.OemId[:])}")
+  print (f"  Signature: {Ssdt.Signature.to_bytes (4, 'little')}, OemId: {bytes (Ssdt.OemId[:])}")
 print (f'*****************************************************************************')
 
 #

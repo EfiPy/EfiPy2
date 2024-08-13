@@ -135,7 +135,7 @@ AcpiWpbt = {
 
 AcpiDb = {
   b'MCFG': AcpiMcfg,
-  b'FACP': AcpiFacp,
+  b'FACP': AcpiFacp,    # FADT
   b'FACS': AcpiFacs,
   b'TPM2': AcpiTpm2,
   b'APIC': AcpiApic,    # MADT
