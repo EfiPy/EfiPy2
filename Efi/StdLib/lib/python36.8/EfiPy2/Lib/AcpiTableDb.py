@@ -8,6 +8,7 @@
 #
 
 import EfiPy2 as EfiPy
+from EfiPy2.MdePkg.Uefi.UefiAcpiDataTable       import EFI_ACPI_DATA_TABLE
 from EfiPy2.MdePkg.IndustryStandard.Acpi20      import EFI_ACPI_DESCRIPTION_HEADER
 from EfiPy2.MdePkg.IndustryStandard.Tpm2Acpi    import EFI_TPM2_ACPI_TABLE
 from EfiPy2.MdePkg.IndustryStandard import Acpi, EFIPY_INDUSTRY_STRUCTURE
@@ -66,7 +67,7 @@ class EFIPY_WINDOWS_PLATFORM_BINARY_TABLE (EFIPY_INDUSTRY_STRUCTURE):
 class EFIPY_UEFI_ACPI_DATA_TABLE (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("Header",              EFI_ACPI_DESCRIPTION_HEADER),
-    ("Identifier",          EfiPy.EFI_GUID),
+    ("Identifier",          EfiPy.GUID),
     ("DataOffset",          EfiPy.UINT16),
     ("SwSmiNumber",         EfiPy.UINT32),
     ("BufferPtrAddress",    EfiPy.UINT64),
@@ -126,7 +127,7 @@ AcpiWdrt = {
 }
 
 AcpiUefi = {
-  1: EFIPY_UEFI_ACPI_DATA_TABLE,
+  1: EFI_ACPI_DATA_TABLE,
 }
 
 AcpiWpbt = {

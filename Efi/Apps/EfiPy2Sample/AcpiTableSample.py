@@ -45,6 +45,10 @@ print (f'''
 DSDT
   Signature: {Dsdt.Signature.to_bytes (4, 'little')}, OemId: {bytes (Dsdt.OemId[:])}
 *****************************************************************************''')
+AcpiBuffUint8 = (EfiPy.UINT8 * Dsdt.Length).from_address (DsdtAddress)
+sFile = open (f'Dsdt.dat', 'wb')
+sFile.write (bytes (AcpiBuffUint8[:]))
+sFile.close()
 
 #
 # Get SSDT table
@@ -53,6 +57,12 @@ print (f'\n*********************************************************************
 for i, SsdtAddr in enumerate (SsdtAddress):
   Ssdt = EFI_ACPI_DESCRIPTION_HEADER.from_address (SsdtAddr)
   print (f"  Signature: {Ssdt.Signature.to_bytes (4, 'little')}, OemId: {bytes (Ssdt.OemId[:])}")
+
+  AcpiBuffUint8 = (EfiPy.UINT8 * Ssdt.Length).from_address (SsdtAddr)
+  sFile = open (f'Ssdt{i}.dat', 'wb')
+  sFile.write (bytes (AcpiBuffUint8[:]))
+  sFile.close()
+
 print (f'*****************************************************************************')
 
 #
@@ -61,7 +71,13 @@ print (f'***********************************************************************
 print (f'\n*****************************************************************************')
 for AcpiId, AcpiAddr in AcpiEntries.items ():
   Acpi = EFI_ACPI_DESCRIPTION_HEADER.from_address (AcpiAddr)
-  print (f"{AcpiId},  Signature: {Acpi.Signature.to_bytes (4, 'little')}, OemId: {bytes (Acpi.OemId[:])}, Revision: 0x{Acpi.Revision:02X}")
+
+  AcpiBuffUint8 = (EfiPy.UINT8 * Acpi.Length).from_address (AcpiAddr)
+  sFile = open (f'{AcpiId.decode()}.dat', 'wb')
+  sFile.write (bytes (AcpiBuffUint8[:]))
+  sFile.close()
+
+  print (f"{AcpiId},  Signature: {Acpi.Signature.to_bytes (4, 'little')}, OemId: {bytes (Acpi.OemId[:])}, Revision: 0x{Acpi.Revision:02X}, Length: {Acpi.Length} (0x{Acpi.Length:X})")
 print (f'*****************************************************************************')
 
 #
