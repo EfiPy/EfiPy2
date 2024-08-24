@@ -22,7 +22,7 @@ class EFI_ACPI_ASF_INFO (EFIPY_INDUSTRY_STRUCTURE):
     ("MinWatchDogResetValue", UINT8),
     ("MinPollingInterval",    UINT8),
     ("SystemID",              UINT16),
-    ("IANAManufactureID",     UINT32),
+    ("IANAManufactureID",     UINT32_BE),
     ("FeatureFlags",          UINT8),
     ("Reserved",              UINT8 * 3)
   ]
@@ -75,7 +75,7 @@ class EFI_ACPI_ASF_RMCP (EFIPY_INDUSTRY_STRUCTURE):
     ("RecordHeader",                EFI_ACPI_ASF_RECORD_HEADER),
     ("RemoteControlCapabilities",   UINT8 * 7),
     ("RMCPCompletionCode",          UINT8),
-    ("RMCPIANA",                    UINT32),
+    ("RMCPIANA",                    UINT32_BE),
     ("RMCPSpecialCommand",          UINT8),
     ("RMCPSpecialCommandParameter", UINT8 * 2),
     ("RMCPBootOptions",             UINT8 * 2),
