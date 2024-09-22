@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Uefi.UefiSpec
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.Uefi.UefiBaseType       import *
@@ -709,13 +709,13 @@ class EFI_KEY_OPTION (Structure):
     # ("Keys",          EFI_INPUT_KEY * N)
     ]
 
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_IA32
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_X64
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_ARM
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_AARCH64
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_RISCV64
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME_LOONGARCH64
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_IA32
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_X64
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_ARM
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_AARCH64
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_RISCV64
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME_LOONGARCH64
 
-from _EfiPy2 import EFI_REMOVABLE_MEDIA_FILE_NAME
+from _EfiPy2Pre import EFI_REMOVABLE_MEDIA_FILE_NAME
 
 EFI_CAPSULE_FILE_DIRECTORY = "\\EFI\\UpdateCapsule\\"

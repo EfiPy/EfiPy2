@@ -3,11 +3,11 @@
 # EfiPy2.MdePkg.Base
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from ctypes  import *
-from _EfiPy2 import MAX_BIT
+from _EfiPy2Pre import MAX_BIT
 
 from EfiPy2.MdePkg.Uefi.ProcessorBind import *
 class GUID (Structure):
