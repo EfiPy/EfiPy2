@@ -7,7 +7,7 @@
 #   GPL-2.0
 #
 from ctypes  import *
-from _EfiPy2Pre import MAX_BIT
+from EfiPy2._EfiPy2Pre import MAX_BIT
 
 from EfiPy2.MdePkg.Uefi.ProcessorBind import *
 class GUID (Structure):

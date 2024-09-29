@@ -149,14 +149,14 @@ EFI_IMAGE_MACHINE_RISCV128  = 0x5128
 EFI_IMAGE_MACHINE_LOONGARCH32  = 0x6232
 EFI_IMAGE_MACHINE_LOONGARCH64  = 0x6264
 
-from _EfiPy2Pre import EFIPY_MDE_CPU_IA32
-from _EfiPy2Pre import EFIPY_MDE_CPU_X64
-from _EfiPy2Pre import EFIPY_MDE_CPU_ARM
-from _EfiPy2Pre import EFIPY_MDE_CPU_AARCH64
-from _EfiPy2Pre import EFIPY_MDE_CPU_EBC
-from _EfiPy2Pre import EFIPY_MDE_CPU_RISCV64
-from _EfiPy2Pre import EFIPY_MDE_CPU_LOONGARCH64
-from _EfiPy2Pre import EFIPY_MDE_CPU_TYPE
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_IA32
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_X64
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_ARM
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_AARCH64
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_EBC
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_RISCV64
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_LOONGARCH64
+from EfiPy2._EfiPy2Pre import EFIPY_MDE_CPU_TYPE
 
 if EFIPY_MDE_CPU_TYPE == EFIPY_MDE_CPU_IA32:
 
