@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Base
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from ctypes  import *
@@ -314,9 +314,17 @@ def SIGNATURE_16(A, B):
 
   return A | (B << 8)
 
+SIGNATURE2_16     = lambda Signature: int.from_bytes (Signature, byteorder='little')
+SIGNATURE2_16_BE  = lambda Signature: int.from_bytes (Signature, byteorder='big')
+
 def SIGNATURE_32(A, B, C, D):
   return SIGNATURE_16 (A, B) | (SIGNATURE_16 (C, D) << 16)
+
+SIGNATURE2_32     = lambda Signature: int.from_bytes (Signature, byteorder='little')
+SIGNATURE2_32_BE  = lambda Signature: int.from_bytes (Signature, byteorder='big')
 
 def SIGNATURE_64(A, B, C, D, E, F, G, H):
   return SIGNATURE_32 (A, B, C, D) | (SIGNATURE_32 (E, F, G, H) << 32)
 
+SIGNATURE2_64     = lambda Signature: int.from_bytes (Signature, byteorder='little')
+SIGNATURE2_64_BE  = lambda Signature: int.from_bytes (Signature, byteorder='big')
