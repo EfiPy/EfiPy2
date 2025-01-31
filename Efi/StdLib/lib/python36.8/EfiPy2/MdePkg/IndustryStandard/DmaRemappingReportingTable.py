@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.DmaRemappingReportingTable
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -39,8 +39,8 @@ EFI_ACPI_DMAR_ATSR_FLAGS_ALL_PORTS  = BIT0
 
 class EFI_ACPI_DMAR_STRUCTURE_HEADER (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("Length",  UINT16),
-    ("Type",    UINT16)
+    ("Type",    UINT16),
+    ("Length",  UINT16)
   ]
 
 class EFI_ACPI_DMAR_PCI_PATH (EFIPY_INDUSTRY_STRUCTURE):
