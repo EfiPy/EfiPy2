@@ -8,7 +8,7 @@
 
 def RetrieveAcpiInUefi ():
     print ('we are in UEFI2 environment')
-    from EfiPy2.Lib.Acpi.AcpiRetrieveeUefi  import ExtractMain
+    from EfiPy2.Lib.Acpi.AcpiRetrieveUefi  import ExtractMain
     ExtractMain ()
 
 def RetrieveAcpiInLinux ():
