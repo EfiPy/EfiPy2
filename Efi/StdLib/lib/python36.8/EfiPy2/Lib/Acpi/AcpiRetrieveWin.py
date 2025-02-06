@@ -69,6 +69,30 @@ def WriteAcpiRawToFile (AcpiFileName, AcpiTableRaw):
   print (f'\n= {AcpiFileName} =================================================')
   print (f'Signature: {Acpi.Signature.to_bytes(4, byteorder = "little")}, Length: {Acpi.Length}, OemId: {bytes (Acpi.OemId[:])}')
 
+def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
+
+  print (f'ExtractType: {AcpiTableName}, {AcpiIndex}')
+
+  if b'FACS' == AcpiTableName:
+    return bytearray (AcpiReadFacsFromRegistry ())
+
+  if b'SSDT' == AcpiTableName:
+    return bytearray (AcpiReadSsdtFromRegistry (AcpiIndex))
+
+  kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+
+  kernel32.GetSystemFirmwareTable.restype  = wintypes.UINT
+  kernel32.GetSystemFirmwareTable.argtypes = [wintypes.DWORD, wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD]
+
+  AcpiSignature  = SIGNATURE2_32_BE (b'ACPI')
+  AcpiTableId    = int.from_bytes (AcpiTableName, 'little')
+
+  AcpiTableSize  = kernel32.GetSystemFirmwareTable (AcpiSignature, AcpiTableId, None, 0)
+  AcpiTableRaw   = (EfiPy.UINT8 * AcpiTableSize)()
+  AcpiTableSize  = kernel32.GetSystemFirmwareTable (AcpiSignature, AcpiTableId, AcpiTableRaw, AcpiTableSize)
+
+  return bytearray (AcpiTableRaw)
+
 def ExtractMain ():
   kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
 

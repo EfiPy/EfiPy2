@@ -105,6 +105,36 @@ def RetrieveAcpiType (SignatureByte = None, SignatureInt = None, AcpiEntries = {
 
   return AcpiType, AcpiAddr
 
+def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
+
+  DsdtAddress, SsdtAddress, AcpiEntries = BuildAcpiHub ()
+
+  #
+  # Get DSDT table
+  #
+  if AcpiTableName == b'DSDT':
+    Dsdt = EFI_ACPI_DESCRIPTION_HEADER.from_address (DsdtAddress)
+    AcpiBuffUint8 = (EfiPy.UINT8 * Dsdt.Length).from_address (DsdtAddress)
+    return bytearray (AcpiBuffUint8)
+
+  #
+  # Get SSDT table
+  #
+  if AcpiTableName == b'SSDT':
+    SsdtAddr = SsdtAddress [AcpiIndex]
+    Ssdt = EFI_ACPI_DESCRIPTION_HEADER.from_address (SsdtAddr)
+    AcpiBuffUint8 = (EfiPy.UINT8 * Ssdt.Length).from_address (SsdtAddr)
+    return bytearray (AcpiBuffUint8)
+
+  #
+  # Dump every ACPI Signature by AcpiEntries
+  #
+  for AcpiId, AcpiAddr in AcpiEntries.items ():
+    if AcpiId == AcpiTableName:
+      Acpi = EFI_ACPI_DESCRIPTION_HEADER.from_address (AcpiAddr)
+      AcpiBuffUint8 = (EfiPy.UINT8 * Acpi.Length).from_address (AcpiAddr)
+      return bytearray (AcpiBuffUint8)
+
 def ExtractMain ():
 
   DsdtAddress, SsdtAddress, AcpiEntries = BuildAcpiHub ()

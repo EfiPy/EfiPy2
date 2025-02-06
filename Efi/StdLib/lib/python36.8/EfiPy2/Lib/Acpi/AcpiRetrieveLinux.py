@@ -63,6 +63,89 @@ def WriteAcpiRawToFile (AcpiFileName, Acpi, Raw, SigSize = 4):
   except AttributeError as e:
     print (f'Signature: {Acpi.Signature.to_bytes(SigSize, byteorder = "little")}, Length: {Acpi.Length}')
 
+def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
+
+  RsdpBase, RsdpSize = FindRsdpBaseLinux ()
+
+  MmapFile   = open ('/dev/mem', 'rb')
+
+  MmapHandle, TableOffset = LoadAcpiTableLinux (MmapFile, RsdpBase, RsdpSize, b"RSD PTR ")
+
+  if AcpiTableName == b'RSDP':
+    return bytearray (MmapHandle[TableOffset: TableOffset + EfiPy.sizeof (RsdpType)])
+
+  Rsdp = RsdpType.from_buffer_copy (MmapHandle[TableOffset: TableOffset + EfiPy.sizeof (RsdpType)])
+  if Rsdp.XsdtAddress != 0:
+
+    MmapHandle, XsdtOffset = LoadAcpiTableLinux (MmapFile, Rsdp.XsdtAddress, 0x1000, b"XSDT")
+
+    Xsdt = AcpiHeader.from_buffer_copy (MmapHandle[XsdtOffset: XsdtOffset + EfiPy.sizeof (AcpiHeader)])
+
+    if AcpiTableName == b'XSDT':
+      return bytearray (MmapHandle[XsdtOffset: XsdtOffset + Xsdt.Length])
+
+    TableOffset = XsdtOffset + EfiPy.sizeof (AcpiHeader)
+    EntryCount = (Xsdt.Length - EfiPy.sizeof (AcpiHeader)) // 8
+    TableAddresses  = (EfiPy.UINT64 * EntryCount).from_buffer_copy (MmapHandle [TableOffset: ])
+
+  elif Rsdp.RsdtAddress != 0 and Rsdp.XsdtAddress == 0:
+
+    MmapHandle, RsdtOffset = LoadAcpiTableLinux (MmapFile, Rsdp.RsdtAddress, 0x1000, b"RSDT")
+
+    Rsdt = AcpiHeader.from_buffer_copy (MmapHandle[RsdtOffset: RsdtOffset + EfiPy.sizeof (AcpiHeader)])
+
+    if AcpiTableName == b'RSDT':
+      return bytearray (MmapHandle[RsdtOffset: RsdtOffset + Rsdt.Length])
+
+    TableOffset = RsdtOffset + EfiPy.sizeof (AcpiHeader)
+    EntryCount = (Rsdt.Length - EfiPy.sizeof (AcpiHeader)) // 4
+    TableAddresses  = (EfiPy.UINT32 * EntryCount).from_buffer_copy (MmapHandle [TableOffset: ])
+
+  #
+  # Looking common ACPI table
+  #
+  FacpAddress = None
+  TargetIndex = 0
+  for TableAddress in TableAddresses:
+
+    MmapHandle, TableOffset = LoadAcpiTableLinux (MmapFile, TableAddress, 0x1000)
+    Table       = AcpiHeader.from_buffer_copy (MmapHandle[TableOffset: TableOffset + EfiPy.sizeof (AcpiHeader)])
+    Signature   = Table.Signature.to_bytes (4, "little")
+
+    if Signature == b'FACP':
+      FacpAddress = TableAddress
+
+    if Signature == AcpiTableName:
+      if TargetIndex != AcpiIndex:
+        TargetIndex += 1
+        continue
+
+      return bytearray (MmapHandle[TableOffset : TableOffset  + Table.Length])
+
+  if AcpiTableName in (b'DSDT', b'FACS'):
+
+    # FadtHandle, FadtOffset = LoadAcpiTableLinux (MmapFile, AcpiEntries[b'FACP'], 0x1000)
+    FadtHandle, FadtOffset = LoadAcpiTableLinux (MmapFile, FacpAddress, 0x1000)
+    Fadt        = FacpType.from_buffer_copy (FadtHandle[FadtOffset: FadtOffset + EfiPy.sizeof (FacpType)])
+
+    if AcpiTableName == b'DSDT':
+
+      if Fadt.XDsdt == 0:
+        DsdtAddress = Fadt.Dsdt
+      else:
+        DsdtAddress = Fadt.XDsdt
+
+      MmapHandle, DsdtOffset = LoadAcpiTableLinux (MmapFile, DsdtAddress, 0x30000)
+      Dsdt       = AcpiHeader.from_buffer_copy (MmapHandle[DsdtOffset: DsdtOffset + EfiPy.sizeof (AcpiHeader)])
+      return bytearray (MmapHandle[DsdtOffset: DsdtOffset + Dsdt.Length])
+
+    if AcpiTableName == b'FACS':
+      FacsAddress = Fadt.FirmwareCtrl
+      FacsHandle, FacsOffset = LoadAcpiTableLinux (MmapFile, FacsAddress, EfiPy.sizeof (FacsType))
+      Facs       = FacsType.from_buffer_copy (FacsHandle[FacsOffset: FacsOffset + EfiPy.sizeof (FacsType)])
+      return bytearray (FacsHandle[FacsOffset: FacsOffset + Facs.Length])
+
+
 def ExtractMain ():
   RsdpBase, RsdpSize = FindRsdpBaseLinux ()
 
@@ -84,7 +167,7 @@ def ExtractMain ():
     EntryCount = (Xsdt.Length - EfiPy.sizeof (AcpiHeader)) // 8
     TableAddresses  = (EfiPy.UINT64 * EntryCount).from_buffer_copy (MmapHandle [TableOffset: ])
 
-    WriteAcpiRawToFile ('Acpi_XSDT.dat', Xsdt, MmapHandle[TableOffset: TableOffset + Xsdt.Length])
+    WriteAcpiRawToFile ('Acpi_XSDT.dat', Xsdt, MmapHandle[XsdtOffset: XsdtOffset + Xsdt.Length])
 
   elif Rsdp.RsdtAddress != 0 and Rsdp.XsdtAddress == 0:
 

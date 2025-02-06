@@ -33,7 +33,6 @@ from EfiPy2.Lib.Acpi.AcpiUefiParser import AcpiUefiParser
 from EfiPy2.Lib.Acpi.AcpiWsmtParser import AcpiWsmtParser
 from EfiPy2.Lib.Acpi.AcpiXsdtParser import AcpiXsdtParser
 
-
 #
 # DSDT and SSDT are ignored
 #
@@ -131,19 +130,15 @@ if __name__ == '__main__':
     ArgCommandFile = ArgCommand.add_parser ('file', help = 'parse ACPI file (Windows, Linux, UEFI Shell)')
     ArgCommandFile.add_argument ('-f', '--file', help = 'ACPI file name.')
 
-    ArgCommandMem  = ArgCommand.add_parser ('mem', help = 'parse ACPI in physical address (UEFI Shell)')
-    ArgCommandMem.add_argument ('-m', '--mem', help = 'ACPI physical address.')
+    ArgCommandMem  = ArgCommand.add_parser ('table', help = 'parse ACPI in host (Windows, Linux, UEFI Shell)')
+    ArgCommandMem.add_argument ('-t', '--table', help = 'ACPI table name.')
+    ArgCommandMem.add_argument ('-i', '--index', type = int, help = 'ACPI nth table by name name.')
 
     parser.add_argument ('-r', '--raw', action = 'store_true', help = 'Dump ACPI raw data.')
     parser.add_argument ('-d', '--dummy', action = 'store_true', help = 'Analyze ACPI table dummy.')
     args = parser.parse_args ()
 
-    print (args)
-    if args.file == None:
-      parser.print_help ()
-      sys.exit (0)
-
-    if args.file != None:
+    if hasattr (args, "file"):
       try:
           from EfiPy2 import sizeof
           from EfiPy2.MdePkg.IndustryStandard import Acpi
@@ -179,5 +174,36 @@ if __name__ == '__main__':
           print (e)
           sys.exit (-1)
 
-    elif args.mem != None:
-      pass
+    elif hasattr (args, "table"):
+      if args.index != None:
+         AcpiIndex = args.index
+      else:
+         AcpiIndex = 0
+
+      AcpiSignature = bytes (args.table.encode('utf-8'))
+      print (f'Analyze signature {AcpiSignature}')
+
+      import os
+      if os.name == 'nt':
+        from EfiPy2.Lib.Acpi.AcpiRetrieveWin  import ExtractTable
+      elif os.name == 'posix':
+        from EfiPy2.Lib.Acpi.AcpiRetrieveLinux  import ExtractTable
+      elif os.name == 'edk2':
+        from EfiPy2.Lib.Acpi.AcpiRetrieveUefi  import ExtractTable
+
+      AcpiRaw = ExtractTable (AcpiSignature, AcpiIndex)
+
+      if AcpiSignature == b'RSDP':
+        from EfiPy2.Lib.Acpi.AcpiRsdpParser import AcpiRsdpParser
+        AcpiObj, AcpiType = AcpiRsdpParser (AcpiRaw)
+      else:
+        AcpiObj, AcpiType = AcpiTableDict [AcpiSignature] (AcpiRaw)
+
+      from EfiPy2.Lib.StructDump import DumpStruct
+      from EfiPy2.Lib.HexDump import HexDump
+      if args.dummy == False:
+        print (f'==== ACPI {AcpiSignature} ======')
+        DumpStruct (2, AcpiObj, AcpiType)
+      if args.raw == True:
+        print (f'\n==== ACPI RAW data ======')
+        HexDump (AcpiRaw)
