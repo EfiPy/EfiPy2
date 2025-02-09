@@ -7,17 +7,14 @@
 #
 
 def RetrieveAcpiInUefi ():
-    print ('we are in UEFI2 environment')
     from EfiPy2.Lib.Acpi.AcpiRetrieveUefi  import ExtractMain
     ExtractMain ()
 
 def RetrieveAcpiInLinux ():
-    print ('we are in Linux environment')
     from EfiPy2.Lib.Acpi.AcpiRetrieveLinux import ExtractMain
     ExtractMain ()
 
 def RetrieveAcpiInWindows ():
-    print ('we are in Windows environment')
     from EfiPy2.Lib.Acpi.AcpiRetrieveWin import ExtractMain
     ExtractMain ()
 

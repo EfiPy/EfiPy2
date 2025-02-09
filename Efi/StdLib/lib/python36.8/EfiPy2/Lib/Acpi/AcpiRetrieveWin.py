@@ -93,6 +93,80 @@ def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
 
   return bytearray (AcpiTableRaw)
 
+def AcpiTableList (AcpiTableName: bytes, Verbose: bool):
+
+  kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+
+  kernel32.EnumSystemFirmwareTables.restype  = wintypes.UINT
+  kernel32.EnumSystemFirmwareTables.argtypes = [wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD]
+
+  kernel32.GetSystemFirmwareTable.restype  = wintypes.UINT
+  kernel32.GetSystemFirmwareTable.argtypes = [wintypes.DWORD, wintypes.DWORD, wintypes.LPVOID, wintypes.DWORD]
+
+  AcpiSignature  = SIGNATURE2_32_BE (b'ACPI')
+  AcpiTableSize  = kernel32.EnumSystemFirmwareTables (AcpiSignature, None, 0);
+  AcpiTableNum   = AcpiTableSize // 4
+  AcpiTableIndex = (EfiPy.UINT32 * AcpiTableNum)()
+
+  AcpiTableSize  = kernel32.EnumSystemFirmwareTables (AcpiSignature, AcpiTableIndex, AcpiTableSize);
+  AcpiTableDict  = dict (zip (AcpiTableIndex, [[] for _ in range (AcpiTableNum)]))
+
+  if AcpiTableName == b'FACS' and AcpiReadFacsFromRegistry () != None:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName == b'FACS':
+    print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+    return False
+
+  if AcpiTableName == b'DSDT' and kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'DSDT'), None, 0) != 0:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName == b'DSDT':
+    print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+    return False
+
+  if AcpiTableName == b'XSDT' and kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'XSDT'), None, 0) != 0:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName == b'XSDT':
+    print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+    return False
+
+  if AcpiTableName == b'RSDT' and kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'RSDT'), None, 0) != 0:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName == b'RSDT':
+    print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+    return False
+
+  if AcpiTableName is None:
+
+    if AcpiReadFacsFromRegistry () != None:
+      print ('FACS  ', end=' ')
+
+    if kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'DSDT'), None, 0) != 0:
+      print ('DSDT  ', end=' ')
+  
+    if kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'XSDT'), None, 0) != 0:
+      print ('XSDT  ', end=' ')
+
+    if kernel32.GetSystemFirmwareTable (AcpiSignature, SIGNATURE2_32 (b'RSDT'), None, 0) != 0:
+      print ('RSDT  ', end=' ')
+
+  if AcpiTableName is not None:
+    print (f'{SIGNATURE2_32 (AcpiTableName)}')
+    if SIGNATURE2_32 (AcpiTableName) in AcpiTableDict:
+      print (f'{AcpiTableName.decode("utf-8")} exist.')
+      return True
+    else:
+      print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+      return False
+  else:
+    for AcpiTableId in AcpiTableDict:
+      print (f"{AcpiTableId.to_bytes (length = 4, byteorder = 'little').decode('utf-8')}", end = '  ')
+
+  return True
+
 def ExtractMain ():
   kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
 

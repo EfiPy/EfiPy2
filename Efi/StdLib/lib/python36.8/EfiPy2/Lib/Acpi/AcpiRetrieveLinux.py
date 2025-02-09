@@ -145,6 +145,105 @@ def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
       Facs       = FacsType.from_buffer_copy (FacsHandle[FacsOffset: FacsOffset + EfiPy.sizeof (FacsType)])
       return bytearray (FacsHandle[FacsOffset: FacsOffset + Facs.Length])
 
+def AcpiTableList (AcpiTableName: bytes, Verbose: bool):
+
+  RsdpBase, RsdpSize = FindRsdpBaseLinux ()
+
+  if AcpiTableName == b'RSDP':
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None:
+    print ('RSDP  ', end=' ')
+
+  MmapFile   = open ('/dev/mem', 'rb')
+
+  MmapHandle, TableOffset = LoadAcpiTableLinux (MmapFile, RsdpBase, RsdpSize, b"RSD PTR ")
+
+  Rsdp = RsdpType.from_buffer_copy (MmapHandle[TableOffset: TableOffset + EfiPy.sizeof (RsdpType)])
+
+  if Rsdp.XsdtAddress != 0:
+
+    if AcpiTableName == b'XSDT':
+      print (f'{AcpiTableName.decode("utf-8")} exist.')
+      return True
+    if AcpiTableName == b'RSDT':
+      print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+      return False
+    elif AcpiTableName is None:
+      print ('XSDT  ', end=' ')
+
+    MmapHandle, XsdtOffset = LoadAcpiTableLinux (MmapFile, Rsdp.XsdtAddress, 0x1000, b"XSDT")
+
+    Xsdt = AcpiHeader.from_buffer_copy (MmapHandle[XsdtOffset: XsdtOffset + EfiPy.sizeof (AcpiHeader)])
+
+    TableOffset = XsdtOffset + EfiPy.sizeof (AcpiHeader)
+    EntryCount = (Xsdt.Length - EfiPy.sizeof (AcpiHeader)) // 8
+    TableAddresses  = (EfiPy.UINT64 * EntryCount).from_buffer_copy (MmapHandle [TableOffset: ])
+
+  elif Rsdp.RsdtAddress != 0 and Rsdp.XsdtAddress == 0:
+
+    if AcpiTableName == b'RSDT':
+      print (f'{AcpiTableName.decode("utf-8")} exist.')
+      return True
+    if AcpiTableName == b'XSDT':
+      print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+      return False
+    elif AcpiTableName is None:
+      print ('RSDT  ', end=' ')
+
+    MmapHandle, RsdtOffset = LoadAcpiTableLinux (MmapFile, Rsdp.RsdtAddress, 0x1000, b"RSDT")
+
+    Rsdt = AcpiHeader.from_buffer_copy (MmapHandle[RsdtOffset: RsdtOffset + EfiPy.sizeof (AcpiHeader)])
+
+    TableOffset = RsdtOffset + EfiPy.sizeof (AcpiHeader)
+    EntryCount = (Rsdt.Length - EfiPy.sizeof (AcpiHeader)) // 4
+    TableAddresses  = (EfiPy.UINT32 * EntryCount).from_buffer_copy (MmapHandle [TableOffset: ])
+
+  for TableAddress in TableAddresses:
+
+    MmapHandle, TableOffset = LoadAcpiTableLinux (MmapFile, TableAddress, 0x1000)
+    Table       = AcpiHeader.from_buffer_copy (MmapHandle[TableOffset: TableOffset + EfiPy.sizeof (AcpiHeader)])
+    Signature   = Table.Signature.to_bytes (4, "little")
+
+    if AcpiTableName == Signature:
+      print (f'{AcpiTableName.decode("utf-8")} exist.')
+      return True
+    elif AcpiTableName is None:
+      print (f'{Signature.decode("utf-8")}  ', end=' ')
+
+    if Signature == b'FACP':
+      FacpEntry = TableAddress
+
+  FadtHandle, FadtOffset = LoadAcpiTableLinux (MmapFile, FacpEntry, 0x1000)
+  Fadt        = FacpType.from_buffer_copy (FadtHandle[FadtOffset: FadtOffset + EfiPy.sizeof (FacpType)])
+
+  if Fadt.XDsdt == 0:
+    DsdtAddress = Fadt.Dsdt
+  else:
+    DsdtAddress = Fadt.XDsdt
+
+  MmapHandle, DsdtOffset = LoadAcpiTableLinux (MmapFile, DsdtAddress, 0x30000)
+  if AcpiTableName == b'DSDT':
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None:
+    print (f'DSDT  ', end=' ')
+
+  FacsAddress = Fadt.FirmwareCtrl
+  FacsHandle, FacsOffset = LoadAcpiTableLinux (MmapFile, FacsAddress, EfiPy.sizeof (FacsType))
+  if AcpiTableName == b'FACS':
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None:
+    print (f'FACS  ', end=' ')
+
+  MmapFile.close ()
+
+  if AcpiTableName is not None:
+    print (f'{AcpiTableName.decode('utf-8')} does not exist.')
+    return False
+
+  return True
 
 def ExtractMain ():
   RsdpBase, RsdpSize = FindRsdpBaseLinux ()

@@ -135,6 +135,42 @@ def ExtractTable (AcpiTableName: bytes, AcpiIndex: int):
       AcpiBuffUint8 = (EfiPy.UINT8 * Acpi.Length).from_address (AcpiAddr)
       return bytearray (AcpiBuffUint8)
 
+def AcpiTableList (AcpiTableName: bytes, Verbose: bool):
+
+  DsdtAddress, SsdtAddress, AcpiEntries = BuildAcpiHub ()
+
+  #
+  # Get DSDT table
+  #
+  if AcpiTableName == b'DSDT' and DsdtAddress is not None:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None:
+    print ('DSDT  ', end=' ')
+
+  #
+  # Get SSDT table
+  #
+  if AcpiTableName == b'SSDT' and len (SsdtAddress) != 0:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None and len (SsdtAddress) != 0:
+    print ('SSDT  ', end=' ')
+
+  #
+  # Dump every ACPI Signature by AcpiEntries
+  #
+  if AcpiTableName is not None and AcpiTableName in AcpiEntries:
+    print (f'{AcpiTableName.decode("utf-8")} exist.')
+    return True
+  elif AcpiTableName is None:
+    for AcpiId, AcpiAddr in AcpiEntries.items ():
+      print (f'{AcpiId.decode("utf-8")}  ', end='')
+    print ()
+  else:
+    print (f'{AcpiTableName.decode("utf-8")} does not exist.')
+    return False
+
 def ExtractMain ():
 
   DsdtAddress, SsdtAddress, AcpiEntries = BuildAcpiHub ()
