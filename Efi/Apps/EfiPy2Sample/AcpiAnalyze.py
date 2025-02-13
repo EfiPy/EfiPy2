@@ -15,17 +15,19 @@ from EfiPy2.Lib.Acpi.AcpiGenericParser import AcpiGenericParser
 from EfiPy2.Lib.Acpi.AcpiApicParser import AcpiApicParser
 from EfiPy2.Lib.Acpi.AcpiAsfParser  import AcpiAsfParser
 from EfiPy2.Lib.Acpi.AcpiBgrtParser import AcpiBgrtParser
+# from EfiPy2.Lib.Acpi.AcpiBootParser import AcpiBootParser #(*)
 from EfiPy2.Lib.Acpi.AcpiDbg2Parser import AcpiDbg2Parser
 # from EfiPy2.Lib.Acpi.AcpiDbgpParser import AcpiDbgpParser # Where is the spec?
 from EfiPy2.Lib.Acpi.AcpiDmarParser import AcpiDmarParser
 from EfiPy2.Lib.Acpi.AcpiFacpParser import AcpiFacpParser
 from EfiPy2.Lib.Acpi.AcpiFacsParser import AcpiFacsParser
-# from EfiPy2.Lib.Acpi.AcpiFpdtParser import AcpiFpdtParser
+from EfiPy2.Lib.Acpi.AcpiFpdtParser import AcpiFpdtParser
 from EfiPy2.Lib.Acpi.AcpiHpetParser import AcpiHpetParser
 from EfiPy2.Lib.Acpi.AcpiLpitParser import AcpiLpitParser
 from EfiPy2.Lib.Acpi.AcpiMcfgParser import AcpiMcfgParser
-# from EfiPy2.Lib.Acpi.AcpiMsdmParser import AcpiMsdmParser # Standard ACPI description
-# from EfiPy2.Lib.Acpi.AcpiNhltParser import AcpiNhltParser # Where is the spec?
+# from EfiPy2.Lib.Acpi.AcpiMsdmParser import AcpiMsdmParser # Standard ACPI description # (*)
+# from EfiPy2.Lib.Acpi.AcpiNhltParser import AcpiNhltParser # Where is the spec?  # (*)
+# from EfiPy2.Lib.Acpi.AcpiPhatParser import AcpiPhatParser # Where is the spec?  # (*)
 # from EfiPy2.Lib.Acpi.AcpiPtdtParser import AcpiPtdtParser # Where is the spec?
 # from EfiPy2.Lib.Acpi.AcpiSlicParser import AcpiSlicParser # Standard ACPI description
 from EfiPy2.Lib.Acpi.AcpiTpm2Parser import AcpiTpm2Parser
@@ -63,7 +65,7 @@ AcpiTableDict = {
     b'ETDT': lambda AcpiRaw: AcpiGenericParser (AcpiRaw), # ACPI spec
     b'FACP': lambda AcpiRaw: AcpiFacpParser (AcpiRaw), 
     b'FACS': lambda AcpiRaw: AcpiFacsParser (AcpiRaw), 
-    b'FPDT': lambda AcpiRaw: AcpiGenericParser (AcpiRaw), # TODO
+    b'FPDT': lambda AcpiRaw: AcpiFpdtParser (AcpiRaw),
     b'GTDT': lambda AcpiRaw: AcpiGenericParser (AcpiRaw), # ACPI spec
     b'HEST': lambda AcpiRaw: AcpiGenericParser (AcpiRaw), # ACPI spec
     b'HPET': lambda AcpiRaw: AcpiHpetParser (AcpiRaw), 
