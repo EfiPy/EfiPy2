@@ -1,4 +1,5 @@
 # Copyright (c) 2006-2008 The Trustees of Indiana University.                   
+# Copyright (c) 2025 MaxWu EfiPy.core@gmail.com
 # All rights reserved.                                                          
 #                                                                               
 # Redistribution and use in source and binary forms, with or without            
@@ -118,6 +119,12 @@ class InstructionStream(spe.InstructionStream):
 
   def make_executable(self):
     self.exec_module.make_executable(self.render_code.buffer_info()[0], len(self.render_code))
+
+  def get_code_bytes (self):
+    import EfiPy2 as EfiPy
+    CodeAddr, length = self.render_code.buffer_info ()
+    CodeBytes = (EfiPy.UINT8 * length).from_address (CodeAddr)
+    return CodeAddr, CodeBytes
 
   def create_register_files(self):
       self._register_files[GPRegister8] = spe.RegisterFile(gp8_array, "gp8")

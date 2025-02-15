@@ -1,7 +1,7 @@
 #
 # asm.py
 #
-# Copyright (C) 2016 efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2016 - 2025 efipy.core@gmail.com All rights reserved.
 #
 # asm.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,6 +29,11 @@ code.add(x86.mov(dx, 0x80))
 code.add(x86.mov(ax, 0xaa))
 code.add(x86.out(dx, ax))
 
-code.print_code()
+code.print_code(pro = True, epi = True, hex = True)
+
+CodeAddr, CodeBytes = code.get_code_bytes ()
+print (f'Dump binary code from address 0x{CodeAddr:08X}...')
+from EfiPy2.Lib.HexDump import HexDump
+HexDump (bytes (CodeBytes[:]), HexOffset = CodeAddr, DumpLead = 2)
 
 proc.execute(code)

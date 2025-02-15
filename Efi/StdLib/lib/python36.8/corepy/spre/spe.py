@@ -1,4 +1,5 @@
 # Copyright (c) 2006-2008 The Trustees of Indiana University.                   
+# Copyright (c) 2025 MaxWu EfiPy.core@gmail.com
 # All rights reserved.                                                          
 #                                                                               
 # Redistribution and use in source and binary forms, with or without            
@@ -770,6 +771,9 @@ class InstructionStream(object):
     return
 
   def make_executable(self):
+    raise Exception("Required method not implemented by %s" % str(self.__class__))
+  
+  def get_code_bytes (self):
     raise Exception("Required method not implemented by %s" % str(self.__class__))
 
   def create_register_files(self):
