@@ -1,32 +1,33 @@
-# /* Copyright (c) 2006-2008 The Trustees of Indiana University.
-#  * All rights reserved.
-#  * 
-#  * Redistribution and use in source and binary forms, with or without
-#  * modification, are permitted provided that the following conditions are met:
-#  * 
-#  * - Redistributions of source code must retain the above copyright notice, this
-#  *   list of conditions and the following disclaimer.
-#  * 
-#  * - Redistributions in binary form must reproduce the above copyright notice,
-#  *   this list of conditions and the following disclaimer in the documentation
-#  *   and/or other materials provided with the distribution.
-#  * 
-#  * - Neither the Indiana University nor the names of its contributors may be
-#  *   used to endorse or promote products derived from this software without
-#  *   specific prior written permission.
-#  * 
-#  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-#  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-#  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-#  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-#  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-#  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-#  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-#  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-#  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-#  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-#  * POSSIBILITY OF SUCH DAMAGE.
-#  */
+# Copyright (c) 2006-2008 The Trustees of Indiana University.
+# Copyright (c) 2025 MaxWu EfiPy.core@gmail.com
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# - Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+# 
+# - Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# 
+# - Neither the Indiana University nor the names of its contributors may be
+#   used to endorse or promote products derived from this software without
+#   specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+# 
 
 import ctypes
 import EfiPy2 as EfiPy
@@ -95,7 +96,7 @@ def realloc_mem (mem, oldsize, newsize):
   if oldsize > newsize:
     newsize = oldsize
 
-  gBS.CopyMem (NewBuffer, OldBuffer, newsize)
+  EfiPy.gBS.CopyMem (NewBuffer, OldBuffer, newsize)
 
   EfiPy.gBS.FreePages (mem, 1)
 
@@ -110,11 +111,11 @@ def zero_mem (addr, size):
   EfiPy.gBS.SetMem (addr, size, 0x00)
 
 def copy_direct (dst, src, size):
-  gBS.CopyMem (dst, src, size)
+  EfiPy.gBS.CopyMem (dst, src, size)
 
 def byteswap_2 (mem, elems):
 
-  Source = (EfiPy.UINT8 * 2).from_address(src)
+  Source = (EfiPy.UINT8 * 2).from_address(mem)
 
   for idx in range (elems):
 
@@ -122,7 +123,7 @@ def byteswap_2 (mem, elems):
 
 def byteswap_4 (mem, elems):
 
-  Source = (EfiPy.UINT8 * 4).from_address(src)
+  Source = (EfiPy.UINT8 * 4).from_address(mem)
 
   for idx in range (elems):
 
@@ -131,7 +132,7 @@ def byteswap_4 (mem, elems):
 
 def byteswap_8 (mem, elems):
 
-  Source = (EfiPy.UINT8 * 8).from_address(src)
+  Source = (EfiPy.UINT8 * 8).from_address(mem)
 
   for idx in range (elems):
 
