@@ -34,6 +34,6 @@ code.print_code(pro = True, epi = True, hex = True)
 CodeAddr, CodeBytes = code.get_code_bytes ()
 print (f'Dump binary code from address 0x{CodeAddr:08X}...')
 from EfiPy2.Lib.HexDump import HexDump
-HexDump (bytes (CodeBytes[:]), HexOffset = CodeAddr, DumpLead = 2)
+HexDump (bytes (CodeBytes[:]), HexOffset = CodeAddr, DumpLead = 1)
 
 proc.execute(code)
