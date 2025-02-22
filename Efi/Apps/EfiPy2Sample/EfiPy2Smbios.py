@@ -3,7 +3,7 @@
 #
 # EfiPy2Smbios.py
 #
-# Copyright (C) 2016 - 2024 MaxWu efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com All rights reserved.
 #
 # EfiPy2Smbios.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ import EfiPy2 as EfiPy
 
 from EfiPy2.MdePkg.Protocol import Smbios as sb
 import EfiPy2.MdePkg.IndustryStandard.SmBios as Isb
+from EfiPy2.Lib.HexDump import HexDump
+from EfiPy2.Lib.StructDump import DumpStruct
 
 SmbiosDumpDict  = {}
 
@@ -156,13 +158,16 @@ Handle 0x{SmbiosHdr.Handle:04X}, DMI type {SmbiosHdr.Type}, {SmbiosHdr.Length} b
 
   if DumpContent == True:
     SmbiosDumpStruct2 (0, SmbiosTypeX)
+    # DumpStruct (2, SmbiosTypeX, type (SmbiosTypeX))
 
   if DumpRaw == True:
     Raw = (EfiPy.CHAR8 * SmbiosHdr.Length).from_address (EfiPy.addressof (SmbiosHdr))
-    print ("\nRAW:\n----\n", ' '.join (f'{v:02X}' for v in bytes (Raw)))
+    print (f'''
+RAW:''')
+    HexDump (bytes(Raw))
 
   if DumpString == True:
-    print ("Strings:\n--------")
+    print ("\nStrings:\n--------")
     for i, s in enumerate (SmbiosTypeX.Strings, 1):
       print (" %d): %s" % (i, s.value))
 
