@@ -1,7 +1,7 @@
 #
 # Variable.py
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com All rights reserved.
 #
 # Variable.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -76,19 +76,15 @@ if Status == EfiPy.EFI_BUFFER_TOO_SMALL:
 
 elif Status == EfiPy.EFI_NOT_FOUND:
 
-  DataSize      = EfiPy.UINTN (0x05)
   DataBuffer    = EfiPy.create_string_buffer (b"AbCdE", 5)
-  Attributes    = EfiPy.UINT32(
-                          EfiPy.EFI_VARIABLE_BOOTSERVICE_ACCESS |
-                          EfiPy.EFI_VARIABLE_NON_VOLATILE       |
-                          EfiPy.EFI_VARIABLE_RUNTIME_ACCESS
-                          )
 
   Status = EfiPy.gRT.SetVariable(
                        VariableName,
                        EfiPy.byref (VariableGuid),
-                       Attributes,
-                       DataSize,
+                       EfiPy.EFI_VARIABLE_BOOTSERVICE_ACCESS |
+                       EfiPy.EFI_VARIABLE_NON_VOLATILE       |
+                       EfiPy.EFI_VARIABLE_RUNTIME_ACCESS,
+                       5,
                        EfiPy.byref (DataBuffer)
                        )
 
