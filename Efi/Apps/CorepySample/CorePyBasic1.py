@@ -1,4 +1,4 @@
-# CopyPyBasic1.py
+# CorePyBasic1.py
 #
 # Copyright (C) 2025 efipy.core@gmail.com All rights reserved.
 #
