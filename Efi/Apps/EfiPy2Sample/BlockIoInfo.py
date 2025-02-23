@@ -3,19 +3,19 @@
 # BlockIoInfo.py
 #   part of EfiPy2
 #
-# Copyright (C) 2024 MaxWu efipy.core@gmail.com
+# Copyright (C) 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 
 import sys
 import EfiPy2 as EfiPy
 
-from EfiPy2.MdePkg.Protocol.BlockIo  import gEfiBlockIoProtocolGuid, EFI_BLOCK_IO_PROTOCOL
+from EfiPy2.Lib.StructDump import DumpStruct
+from EfiPy2.MdePkg.Protocol.BlockIo  import gEfiBlockIoProtocolGuid, EFI_BLOCK_IO_PROTOCOL, EFI_BLOCK_IO_MEDIA
 from EfiPy2.MdePkg.Protocol.DevicePathEfiPy  import EFI_DEVICE_PATH_PROTOCOL, gEfiDevicePathProtocolGuid
-from EfiPy2.MdePkg.Uefi.UefiSpec import EFI_SYSTEM_TABLE
 
 # This function would need to run within a UEFI application using Python bindings (conceptual)
-def EnumerateBlockIo ():
+def BlockIoInfoMain ():
 
     BufferSize = EfiPy.UINTN (0)
     Status = EfiPy.gBS.LocateHandle(
@@ -53,7 +53,7 @@ def EnumerateBlockIo ():
         if Status == EfiPy.EFI_SUCCESS:
           DevicePath = (EfiPy.cast (TmpDevPath, EfiPy.POINTER(EFI_DEVICE_PATH_PROTOCOL)))[0]
 
-          print (f'Found BlockIo device: {DevicePath}')
+          print (f'Found BlockIo device:\n  {DevicePath}')
 
         VoidBlockIo = EfiPy.PVOID ()
         Status = EfiPy.gBS.HandleProtocol(
@@ -73,8 +73,10 @@ def EnumerateBlockIo ():
               total_sectors = BlockIoProtocol.Media[0].LastBlock + 1
               print(f"  Fixed Disk has {total_sectors} sectors.")
 
+          DumpStruct (4, BlockIoProtocol.Media[0], EFI_BLOCK_IO_MEDIA)
+
     print("No more disk detected.")
     return 0
 
 if __name__ == '__main__':
-  EnumerateBlockIo ()
+  BlockIoInfoMain ()
