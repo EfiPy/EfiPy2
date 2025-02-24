@@ -15,7 +15,7 @@
 # along with EfiPy.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def CopyPyAdd (a: int, b: int, DumpCode: bool = False) -> int:
+def CorePyAdd (a: int, b: int, DumpCode: bool = False) -> int:
     import corepy.arch.x86_64.isa as x86
     import corepy.arch.x86_64.types.registers as reg
     import corepy.arch.x86_64.lib.memory as mem
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     input1 = 100
     input2 = 200
 
-    ret1 = CopyPyAdd (input1, input2)   # ret1 = input1 + input2
+    ret1 = CorePyAdd (input1, input2)   # ret1 = input1 + input2
     ret2 = input1 + input2              # ret2 = input1 + input2
 
     print (f'{input1} + {input2} = {ret1}, result: {ret1 == ret2}')
