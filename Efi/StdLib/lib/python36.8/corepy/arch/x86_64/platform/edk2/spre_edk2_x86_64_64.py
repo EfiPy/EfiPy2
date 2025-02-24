@@ -121,6 +121,8 @@ class InstructionStream(spe.InstructionStream):
     self.exec_module.make_executable(self.render_code.buffer_info()[0], len(self.render_code))
 
   def get_code_bytes (self):
+    if self._cached == False:
+        self.cache_code ()
     import EfiPy2 as EfiPy
     CodeAddr, length = self.render_code.buffer_info ()
     CodeBytes = (EfiPy.UINT8 * length).from_address (CodeAddr)
