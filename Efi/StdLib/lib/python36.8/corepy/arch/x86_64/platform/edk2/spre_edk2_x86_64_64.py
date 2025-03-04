@@ -35,6 +35,7 @@ import corepy.spre.spe as spe
 from corepy.arch.x86_64.platform.edk2 import x86_64_exec
 
 import corepy.arch.x86_64.isa as x86
+import corepy.arch.x86_64.lib.memory as mem
 from   corepy.arch.x86_64.types.registers import *
 from   corepy.arch.x86_64.lib.util import load_word
 
@@ -87,13 +88,11 @@ class InstructionStream(spe.InstructionStream):
     # Note the stack is expected to remain 16-byte aligned, which is true here.
     self._prologue.append(x86.push(rbp, ignore_active = True))
     self._prologue.append(x86.mov(rbp, rsp, ignore_active = True))
-    self._prologue.append(x86.push(r15, ignore_active = True))
-    self._prologue.append(x86.push(r14, ignore_active = True))
-    # self._prologue.append(x86.push(r13, ignore_active = True))
-    # self._prologue.append(x86.push(r12, ignore_active = True))
-    self._prologue.append(x86.push(rdi, ignore_active = True))
-    self._prologue.append(x86.push(rsi, ignore_active = True))
-    self._prologue.append(x86.push(rbx, ignore_active = True))
+    self._prologue.append(x86.mov(mem.MemRef(rbp, 0x10) , rcx, ignore_active = True))
+    self._prologue.append(x86.mov(mem.MemRef(rbp, 0x18) , rdx, ignore_active = True))
+    self._prologue.append(x86.mov(mem.MemRef(rbp, 0x20) , r8, ignore_active = True))
+    self._prologue.append(x86.mov(mem.MemRef(rbp, 0x28) , r9, ignore_active = True))
+
     return
 
   def _synthesize_epilogue(self):
@@ -104,15 +103,7 @@ class InstructionStream(spe.InstructionStream):
     # Reset the epilogue
     self._epilogue = [self.lbl_epilogue]
 
-    # Pop callee-save regs and clean up the stack frame
-    self._epilogue.append(x86.pop(rbx, ignore_active = True))
-    self._epilogue.append(x86.pop(rsi, ignore_active = True))
-    self._epilogue.append(x86.pop(rdi, ignore_active = True))
-    # self._epilogue.append(x86.pop(r12, ignore_active = True))
-    # self._epilogue.append(x86.pop(r13, ignore_active = True))
-    self._epilogue.append(x86.pop(r14, ignore_active = True))
-    self._epilogue.append(x86.pop(r15, ignore_active = True))
-    self._epilogue.append(x86.leave(ignore_active = True))
+    self._epilogue.append(x86.pop(rbp, ignore_active = True))
     self._epilogue.append(x86.ret(ignore_active = True))
     return
 
