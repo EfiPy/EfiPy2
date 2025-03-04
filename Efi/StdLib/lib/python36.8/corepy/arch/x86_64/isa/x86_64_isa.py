@@ -1939,6 +1939,10 @@ class std(x86Instruction):
   machine_inst = no_op
   params = {'opcode':[0xFD],             'modrm':None}
   
+class sti(x86Instruction):
+  machine_inst = no_op
+  params = {'opcode':[0xFB],             'modrm':None}
+  
 class stosb(x86Instruction):
   machine_inst = no_op
   params = {'opcode':[0xAA],             'modrm':None}
