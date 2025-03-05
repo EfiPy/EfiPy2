@@ -128,12 +128,12 @@ def LocalApicIdGetCorePy ():
 
     global code, MachineCodeStream
 
-    code.add(x86.mov(reg.eax, 0xFEE00020))                                  #               rdx =  0xFEE00000
-    code.add(x86.mov(reg.edx, mem.MemRef(reg.eax, 0x00, data_size = 32)))   #               eax = *(UINT32)(rdx + 0x20)
+    code.add(x86.mov(reg.eax, 0xFEE00020))
+    code.add(x86.mov(reg.edx, mem.MemRef(reg.eax, 0x00, data_size = 32)))
     code.add(x86.shr(reg.edx, 24))
 
-    code.add(x86.mov(reg.rax, mem.MemRef(reg.rbp, 0x10)))   #               eax = *(UINT32)(rdx + 0x20)
-    code.add(x86.mov(mem.MemRef(reg.rax, 0, data_size = 32), reg.edx))                     #               rdx = *(UINT32 *)(rbp)
+    code.add(x86.mov(reg.rax, mem.MemRef(reg.rbp, 0x10)))
+    code.add(x86.mov(mem.MemRef(reg.rax, 0, data_size = 32), reg.edx))
 
     code.add(x86.nop())
 
