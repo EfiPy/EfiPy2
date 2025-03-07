@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Register.Amd.Ghcb
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -39,6 +39,7 @@ SVM_EXIT_AP_RESET_HOLD          = 0x80000004
 SVM_EXIT_AP_JUMP_TABLE          = 0x80000005
 SVM_EXIT_SNP_PAGE_STATE_CHANGE  = 0x80000010
 SVM_EXIT_SNP_AP_CREATION        = 0x80000013
+SVM_EXIT_GET_APIC_IDS           = 0x80000017
 SVM_EXIT_HYPERVISOR_FEATURES    = 0x8000FFFD
 SVM_EXIT_UNSUPPORTED            = 0x8000FFFF
 
@@ -162,12 +163,18 @@ class SNP_PAGE_STATE_HEADER (Structure):
     ("Reserved",        UINT32)
   ]
 
-SNP_PAGE_STATE_MAX_ENTRY  = 253
-
 class SNP_PAGE_STATE_CHANGE_INFO (Structure):
   _fields_ = [
-    ("Header",  SNP_PAGE_STATE_HEADER),
-    ("Entry",   SNP_PAGE_STATE_ENTRY * SNP_PAGE_STATE_MAX_ENTRY)
+    ("Header",  SNP_PAGE_STATE_HEADER)
+    # ("Entry",   SNP_PAGE_STATE_ENTRY * SNP_PAGE_STATE_MAX_ENTRY)
+  ]
+
+SNP_PAGE_STATE_MAX_ENTRY  = \
+   (((GHCB.SharedBuffer.offset) - sizeof (SNP_PAGE_STATE_HEADER)) / sizeof (SNP_PAGE_STATE_ENTRY))
+class GHCB_APIC_IDS (Structure):
+  _fields_ = [
+    ("NumEntries",  UINT32)
+    # ("ApicIds",   UINT32 * N)
   ]
 
 SEV_ES_RESET_CODE_SEGMENT_TYPE  = 0xA

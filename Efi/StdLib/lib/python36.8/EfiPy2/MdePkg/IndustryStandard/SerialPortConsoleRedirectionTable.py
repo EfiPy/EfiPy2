@@ -3,13 +3,15 @@
 # EfiPy2.MdePkg.IndustryStandard.SerialPortConsoleRedirectionTable
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
 from EfiPy2.MdePkg.IndustryStandard import Acpi
 
 EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_REVISION  = 0x02
+
+EFI_ACPI_4_0_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_REVISION  = 0x04
 
 class EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
@@ -34,6 +36,35 @@ class EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE (EFIPY_INDUSTRY_STRUCTURE):
     ("PciFlags",              UINT32),
     ("PciSegment",            UINT8),
     ("Reserved2",             UINT32)
+  ]
+
+class EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("Header",                  Acpi.EFI_ACPI_DESCRIPTION_HEADER           ),
+    ("InterfaceType",           UINT8                                 ),
+    ("Reserved1",               UINT8 * 3                             ),
+    ("BaseAddress",             Acpi.EFI_ACPI_5_0_GENERIC_ADDRESS_STRUCTURE),
+    ("InterruptType",           UINT8                                 ),
+    ("Irq",                     UINT8                                 ),
+    ("GlobalSystemInterrupt",   UINT32                                ),
+    ("BaudRate",                UINT8                                 ),
+    ("Parity",                  UINT8                                 ),
+    ("StopBits",                UINT8                                 ),
+    ("FlowControl",             UINT8                                 ),
+    ("TerminalType",            UINT8                                 ),
+    ("Reserved2",               UINT8                                 ),
+    ("PciDeviceId",             UINT16                                ),
+    ("PciVendorId",             UINT16                                ),
+    ("PciBusNumber",            UINT8                                 ),
+    ("PciDeviceNumber",         UINT8                                 ),
+    ("PciFunctionNumber",       UINT8                                 ),
+    ("PciFlags",                UINT32                                ),
+    ("PciSegment",              UINT8                                 ),
+    ("UartClockFrequency",      UINT32                                ),
+    ("PreciseBaudRate",         UINT32                                ),
+    ("NameSpaceStrLength",      UINT16                                ),
+    ("NameSpaceStrOffset",      UINT16                                ),
+    ("NameSpaceString",         CHAR8 * 0                             )
   ]
 
 EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERFACE_TYPE_16550  = 0

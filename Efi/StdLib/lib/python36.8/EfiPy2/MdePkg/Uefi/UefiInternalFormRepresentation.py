@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Uefi.UefiInternalFormRepresentation
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2  import *
@@ -1810,6 +1810,16 @@ EfiKeyF12         = 101
 EfiKeyPrint       = 102
 EfiKeySLck        = 103
 EfiKeyPause       = 104
+EfiKeyIntl0       = 105
+EfiKeyIntl1       = 106
+EfiKeyIntl2       = 107
+EfiKeyIntl3       = 108
+EfiKeyIntl4       = 109
+EfiKeyIntl5       = 110
+EfiKeyIntl6       = 111
+EfiKeyIntl7       = 112
+EfiKeyIntl8       = 113
+EfiKeyIntl9       = 114
 EFI_KEY           = ENUM
 
 class EFI_KEY_DESCRIPTOR (Structure):

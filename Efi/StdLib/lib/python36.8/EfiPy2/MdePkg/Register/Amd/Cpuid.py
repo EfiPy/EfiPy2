@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Register.Amd.Cpuid
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -11,6 +11,8 @@ from EfiPy2 import *
 CPUID_SIGNATURE_AUTHENTIC_AMD_EBX  = SIGNATURE_32 ('A', 'u', 't', 'h')
 CPUID_SIGNATURE_AUTHENTIC_AMD_EDX  = SIGNATURE_32 ('e', 'n', 't', 'i')
 CPUID_SIGNATURE_AUTHENTIC_AMD_ECX  = SIGNATURE_32 ('c', 'A', 'M', 'D')
+
+AMD_CPUID_EXTENDED_TOPOLOGY  = 0x80000026
 
 class CPUID_AMD_EXTENDED_CPU_SIG_EAX_Bits (Structure):
   _pack_   = 1

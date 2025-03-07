@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Http11
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 HTTP_VERSION  = b"HTTP/1.1"
@@ -78,3 +78,6 @@ HTTP_HEADER_ETAG  = b"ETag"
 HTTP_HEADER_X_AUTH_TOKEN  = b"X-Auth-Token"
 HTTP_HEADER_EXPECT  = b"Expect"
 HTTP_EXPECT_100_CONTINUE  = b"100-continue"
+HTTP_HEADER_CONTENT_RANGE  = b"Content-Range"
+HTTP_HEADER_LAST_MODIFIED  = b"Last-Modified"
+HTTP_HEADER_IF_UNMODIFIED_SINCE  = b"If-Unmodified-Since"

@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Guid.ImageAuthentication
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -25,6 +25,9 @@ SECURE_BOOT_MODE_DISABLE  = 0
 
 SETUP_MODE  = 1
 USER_MODE   = 0
+
+DEVICE_AUTH_BOOT_MODE_ENABLE   = 1
+DEVICE_AUTH_BOOT_MODE_DISABLE  = 0
 
 class EFI_SIGNATURE_DATA (Structure):
   _pack_   = 1
@@ -64,6 +67,15 @@ class EFI_CERT_X509_SHA512 (Structure):
       ("TimeOfRevocation",  EFI_TIME)
     ]
 
+EFI_SM3_HASH = UINT8 * 32
+
+class EFI_CERT_X509_SM3 (Structure):
+  _pack_   = 1
+  _fields_ = [
+      ("ToBeSignedHash",    EFI_SM3_HASH),
+      ("TimeOfRevocation",  EFI_TIME)
+    ]
+
 gEfiCertSha256Guid            = \
   EFI_GUID(0xc1c41626, 0x504c, 0x4092, (0xac, 0xa9, 0x41, 0xf9, 0x36, 0x93, 0x43, 0x28))
 
@@ -76,11 +88,15 @@ gEfiCertRsa2048Sha256Guid     = \
 gEfiCertSha1Guid              = \
   EFI_GUID(0x826ca512, 0xcf10, 0x4ac9, (0xb1, 0x87, 0xbe, 0x1, 0x49, 0x66, 0x31, 0xbd))
 
+gEfiCertSm3Guid = EFI_GUID (0x57347f87, 0x7a9b, 0x403a, ( 0xb9, 0x3c, 0xdc, 0x4a, 0xfb, 0x7a, 0xe, 0xbc ))
+
 gEfiCertRsa2048Sha1Guid       = \
   EFI_GUID(0x67f8444f, 0x8743, 0x48f1, (0xa3, 0x28, 0x1e, 0xaa, 0xb8, 0x73, 0x60, 0x80))
 
 gEfiCertX509Guid              = \
   EFI_GUID(0xa5c059a1, 0x94e4, 0x4aa7, (0x87, 0xb5, 0xab, 0x15, 0x5c, 0x2b, 0xf0, 0x72))
+
+gEfiCertX509Sm3Guid = EFI_GUID ( 0x60d807e5, 0x10b4, 0x49a9, (0x93, 0x31, 0xe4, 0x4, 0x37, 0x88, 0x8d, 0x37 ))
 
 gEfiCertSha224Guid            = \
   EFI_GUID(0xb6e5233, 0xa65c, 0x44c9, (0x94, 0x7, 0xd9, 0xab, 0x83, 0xbf, 0xc8, 0xbd))

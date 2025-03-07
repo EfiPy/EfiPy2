@@ -902,3 +902,85 @@ class EFI_IOMMU_DMAR_ERROR_DATA (Structure):
     ("PteL1",             UINT64)
   ]
 
+EFI_CXL_CACHMEM_AGENT_TYPE      = BIT0
+EFI_CXL_CACHMEM_AGENT_ADDRESS   = BIT1
+EFI_CXL_CACHMEM_DEVICE_ID       = BIT2
+EFI_CXL_CACHMEM_DEVICE_SER_NUM  = BIT3
+EFI_CXL_CACHMEM_CAP_STRUCT      = BIT4
+EFI_CXL_CACHMEM_DVSEC           = BIT5
+EFI_CXL_CACHMEM_ERROR_LOG       = BIT6
+
+EFI_CXL_AGENT_CXL11_DEV          = 0    # CXL 1.1 Device
+EFI_CXL_AGENT_CXL11_DSP          = 1    # CXL 1.1 Downstream Port
+EFI_CXL_AGENT_CXL20_DEV          = 2    # CXL 2.0 Device
+EFI_CXL_AGENT_CXL20_LOGICAL_DEV  = 3    # CXL 2.0 Logical Device
+EFI_CXL_AGENT_CXL20_FMLD         = 4    # CXL 2.0 Fabric Manager managed Logical device
+EFI_CXL_AGENT_CXL20_RP           = 5    # CXL 2.0 Root Port
+EFI_CXL_AGENT_CXL20_DSP          = 6    # CXL 2.0 Downstream Switch Port
+EFI_CXL_AGENT_CXL20_USP          = 7    # CXL 2.0 Upstream Switch Port
+
+EFI_CXL_MEM_DEVICE_ID       = BIT0  # Device ID field is valid
+EFI_CXL_MEM_DEVICE_SER_NUM  = BIT1  # Device Serial Number field is valid
+EFI_CXL_MEM_COMP_ERROR_LOG  = BIT2  # CXL Component Error Log field is valid
+
+class EFI_CXL_AGENT_ADDRESS_Bits (Structure):
+  _fields_ = [
+  ("Function",  UINT64, 8),
+  ("Device",    UINT64, 8),
+  ("Bus",       UINT64, 8),
+  ("Segment",   UINT64, 16),
+  ("Rsvd",      UINT64, 24)
+  ]
+class EFI_CXL_AGENT_ADDRESS_RcrBase (Structure):
+  _fields_ = [
+  ("Low",     UINT32),
+  ("High",    UINT32)
+  ]
+class EFI_CXL_AGENT_ADDRESS (Union):
+  _fields_ = [
+  ("Bits",    EFI_CXL_AGENT_ADDRESS_Bits),
+  ("RcrBase", EFI_CXL_AGENT_ADDRESS_RcrBase)
+  ]
+
+class EFI_CXL_AGENT_DEVICE_ID_Slot (Structure):
+  _fields_ = [
+  ("Rsvd",    UINT16, 3),
+  ("Num",     UINT16, 13)
+  ]
+class EFI_CXL_AGENT_DEVICE_ID (Structure):
+  _fields_ = [
+  ("VendorId",    UINT16),
+  ("DeviceId",    UINT16),
+  ("Svid",        UINT16),
+  ("Sid",         UINT16),
+  ("ClassCode",   UINT16),
+  ("Slot",        EFI_CXL_AGENT_DEVICE_ID_Slot),
+  ("Rsvd",        UINT32)
+  ]
+
+class EFI_CXL_DEVICE_SERIAL_NUM (Structure):
+  _fields_ = [
+  ("Lower",     UINT32),
+  ("Upper",     UINT32)
+  ]
+
+class EFI_CXL_ERROR_PCIE_DEV_ID (Structure):
+  _fields_ = [
+  ("VendorId",    UINT16),
+  ("DeviceId",    UINT16),
+  ("Function",    UINT8),
+  ("Device",      UINT8),
+  ("Bus",         UINT8),
+  ("Segment",     UINT16),
+  ("Slot",        EFI_GENERIC_ERROR_PCI_SLOT),
+  ("Resvd",       UINT8)
+  ]
+
+class EFI_CXL_COMPONENT_EVENT_LOG (Structure):
+  _fields_ = [
+  ("Length",          UINT32),
+  ("ValidFields",     UINT64),
+  ("CxlDeviceId",     EFI_CXL_ERROR_PCIE_DEV_ID),
+  ("DeviceSerialNo",  UINT64)
+  ]
+

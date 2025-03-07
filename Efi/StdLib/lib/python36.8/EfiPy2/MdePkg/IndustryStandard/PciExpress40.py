@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.PciExpress40
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard.PciExpress31 import *
@@ -81,6 +81,8 @@ class PCI_EXPRESS_EXTENDED_CAPABILITIES_PHYSICAL_LAYER_16_0 (EFIPY_INDUSTRY_STRU
     ("Reserved",                                UINT32                                                           ),
     ("LaneEqualizationControl",                 PCI_EXPRESS_REG_PHYSICAL_LAYER_16_0_LANE_EQUALIZATION_CONTROL * 1)
   ]
+
+PCI_EXPRESS_EXTENDED_CAPABILITY_DESIGNATED_VENDOR_SPECIFIC_ID  = 0x0023
 
 class PCI_EXPRESS_DESIGNATED_VENDOR_SPECIFIC_HEADER_1_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [

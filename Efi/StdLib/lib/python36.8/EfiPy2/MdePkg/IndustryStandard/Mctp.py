@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Mctp
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 -2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -89,7 +89,7 @@ class MCTP_TRANSPORT_HEADER_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("HeaderVersion",           UINT32, 4),
     ("Reserved",                UINT32, 4),
     ("DestinationEndpointId",   UINT32, 8),
-    ("SourceEndpointIdId",      UINT32, 8),
+    ("SourceEndpointId",        UINT32, 8),
     ("MessageTag",              UINT32, 3),
     ("TagOwner",                UINT32, 1),
     ("PacketSequence",          UINT32, 2),

@@ -3,12 +3,14 @@
 # EfiPy2.MdePkg.Register.Intel.StmApi
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
 from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr      import MSEG_HEADER
 from EfiPy2.MdePkg.Register.Intel.StmResourceDescriptor import STM_RSC
+
+STM_SMM_REV_ID  = 0x80010100
 
 class STM_FEAT (Structure):
   _pack_   = 1

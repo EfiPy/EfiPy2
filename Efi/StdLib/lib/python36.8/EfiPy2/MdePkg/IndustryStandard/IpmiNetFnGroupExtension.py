@@ -3,8 +3,47 @@
 # EfiPy2.MdePkg.IndustryStandard.IpmiNetFnGroupExtension
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
+from EfiPy2.MdePkg.IndustryStandard import *
+from EfiPy2.MdePkg.Pi import PiStatusCode
+
 IPMI_NETFN_GROUP_EXT  = 0x2C
+
+IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_SEND  = 0x02
+IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_GET  = 0x03
+IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_COMPLETED_NORMALLY  = 0x00
+IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_COMPLETED_ERROR     = 0x80
+IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_DEFINING_BODY       = 0xAE
+class IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_FORMAT (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("CodeType",    PiStatusCode.EFI_STATUS_CODE_TYPE),
+    ("CodeValue",   PiStatusCode.EFI_STATUS_CODE_VALUE),
+    ("Instance",    UINT8)
+  ]
+
+class IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_SEND_REQUEST (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("DefiningBody",        UINT8),
+    ("BootProgressCode",    IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_FORMAT)
+  ]
+
+class IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_SEND_RESPONSE (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("CompletionCode",  UINT8),
+    ("DefiningBody",    UINT8)
+  ]
+
+class IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_GET_REQUEST (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("DefiningBody",    UINT8)
+  ]
+
+class IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_GET_RESPONSE (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("CompletionCode",  UINT8),
+    ("DefiningBody",    UINT8),
+    ("BootProgressCode",IPMI_GROUP_EXTENSION_BOOT_PROGRESS_CODE_FORMAT)
+  ]
 

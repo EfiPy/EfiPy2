@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.FormBrowser2
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -39,6 +39,7 @@ EFI_BROWSER_ACTION_REQUEST_FORM_DISCARD_EXIT = 5
 EFI_BROWSER_ACTION_REQUEST_FORM_APPLY        = 6
 EFI_BROWSER_ACTION_REQUEST_FORM_DISCARD      = 7
 EFI_BROWSER_ACTION_REQUEST_RECONNECT         = 8
+EFI_BROWSER_ACTION_REQUEST_QUESTION_APPLY    = 9
 
 EFI_SEND_FORM2 = CFUNCTYPE (
   EFI_STATUS,

@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.FirmwareManagement
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -15,20 +15,21 @@ gEfiFirmwareManagementProtocolGuid  = \
 class EFI_FIRMWARE_MANAGEMENT_PROTOCOL (Structure):
   pass
 
-EFI_FMP_DEP_PUSH_GUID     = 0x00
-EFI_FMP_DEP_PUSH_VERSION  = 0x01
-EFI_FMP_DEP_VERSION_STR   = 0x02
-EFI_FMP_DEP_AND           = 0x03
-EFI_FMP_DEP_OR            = 0x04
-EFI_FMP_DEP_NOT           = 0x05
-EFI_FMP_DEP_TRUE          = 0x06
-EFI_FMP_DEP_FALSE         = 0x07
-EFI_FMP_DEP_EQ            = 0x08
-EFI_FMP_DEP_GT            = 0x09
-EFI_FMP_DEP_GTE           = 0x0A
-EFI_FMP_DEP_LT            = 0x0B
-EFI_FMP_DEP_LTE           = 0x0C
-EFI_FMP_DEP_END           = 0x0D
+EFI_FMP_DEP_PUSH_GUID       = 0x00
+EFI_FMP_DEP_PUSH_VERSION    = 0x01
+EFI_FMP_DEP_VERSION_STR     = 0x02
+EFI_FMP_DEP_AND             = 0x03
+EFI_FMP_DEP_OR              = 0x04
+EFI_FMP_DEP_NOT             = 0x05
+EFI_FMP_DEP_TRUE            = 0x06
+EFI_FMP_DEP_FALSE           = 0x07
+EFI_FMP_DEP_EQ              = 0x08
+EFI_FMP_DEP_GT              = 0x09
+EFI_FMP_DEP_GTE             = 0x0A
+EFI_FMP_DEP_LT              = 0x0B
+EFI_FMP_DEP_LTE             = 0x0C
+EFI_FMP_DEP_END             = 0x0D
+EFI_FMP_DEP_DECLARE_LENGTH  = 0x0E
 
 class EFI_FIRMWARE_IMAGE_DEP (Structure):
   _fields_ = [

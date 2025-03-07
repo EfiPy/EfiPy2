@@ -3,12 +3,13 @@
 # EfiPy2.MdePkg.Pi.PiPeiCis
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
 
 from EfiPy2.MdePkg.Pi        import PiMultiPhase, PiBootMode, PiFirmwareFile, PiStatusCode, PiFirmwareVolume
+from EfiPy2.MdePkg.Pi.PiMultiPhase import PI_SPECIFICATION_MAJOR_REVISION, PI_SPECIFICATION_MINOR_REVISION
 
 EFI_PEI_FV_HANDLE   = PVOID
 
@@ -274,8 +275,8 @@ EFI_PEI_REGISTER_FOR_SHADOW = CFUNCTYPE (
   EFI_PEI_FILE_HANDLE             # IN  FileHandle
   )
 
-PEI_SPECIFICATION_MAJOR_REVISION  = 1
-PEI_SPECIFICATION_MINOR_REVISION  = 70
+PEI_SPECIFICATION_MAJOR_REVISION  = PI_SPECIFICATION_MAJOR_REVISION
+PEI_SPECIFICATION_MINOR_REVISION  = PI_SPECIFICATION_MINOR_REVISION
 
 PEI_SERVICES_SIGNATURE  = 0x5652455320494550
 

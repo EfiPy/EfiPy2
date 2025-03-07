@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.BootManagerPolicy
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -21,6 +21,9 @@ gEfiBootManagerPolicyNetworkGuid        = \
 
 gEfiBootManagerPolicyConnectAllGuid     = \
   EFI_GUID (0x113B2126, 0xFC8A, 0x11E3, ( 0xBD, 0x6C, 0xB8, 0xE8, 0x56, 0x2C, 0xBA, 0xFA ))
+
+gEfiBootManagerPolicyStorageGuid        = \
+  EFI_GUID (0xCD68FE79, 0xD3CB, 0x436E, ( 0xA8, 0x50, 0xF4, 0x43, 0xC8, 0x8C, 0xFB, 0x49 ))
 
 class EFI_BOOT_MANAGER_POLICY_PROTOCOL (Structure):
   pass

@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.NvdimmLabel
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -43,6 +43,8 @@ EFI_NVDIMM_LABEL_FLAGS_LOCAL  = 0x00000002
 EFI_NVDIMM_LABEL_FLAGS_RESERVED  = 0x00000004
 EFI_NVDIMM_LABEL_FLAGS_UPDATING  = 0x00000008
 
+EFI_NVDIMM_LABEL_FLAGS_SPACOOKIE_BOUND  = 0x00000010
+
 class EFI_NVDIMM_LABEL (Structure):
   _fields_ = [
     ("Uuid",                    EFI_GUID),
@@ -59,7 +61,8 @@ class EFI_NVDIMM_LABEL (Structure):
     ("Reserved",                UINT8 * 3),
     ("TypeGuid",                EFI_GUID),
     ("AddressAbstractionGuid",  EFI_GUID),
-    ("Reserved1",               UINT8 * 88),
+    ("SPALocationCookie",       UINT64),
+    ("Reserved1",               UINT8 * 80),
     ("Checksum",                UINT64)
   ]
 

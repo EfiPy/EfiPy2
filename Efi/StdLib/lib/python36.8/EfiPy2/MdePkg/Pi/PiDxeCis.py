@@ -3,19 +3,21 @@
 # EfiPy2.MdePkg.Pi.PiDxeCis
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
+from EfiPy2.MdePkg.Pi.PiMultiPhase import PI_SPECIFICATION_MAJOR_REVISION, PI_SPECIFICATION_MINOR_REVISION
 
-EfiGcdMemoryTypeNonExistent = 0
-EfiGcdMemoryTypeReserved = 1
-EfiGcdMemoryTypeSystemMemory = 2
-EfiGcdMemoryTypeMemoryMappedIo = 3
+EfiGcdMemoryTypeNonExistent      = 0
+EfiGcdMemoryTypeReserved         = 1
+EfiGcdMemoryTypeSystemMemory     = 2
+EfiGcdMemoryTypeMemoryMappedIo   = 3
 EfiGcdMemoryTypePersistentMemory = 4
-EfiGcdMemoryTypeMoreReliable = 5
-EfiGcdMemoryTypeMaximum      = 6
-EFI_GCD_MEMORY_TYPE         = ENUM
+EfiGcdMemoryTypeMoreReliable     = 5
+EfiGcdMemoryTypeUnaccepted       = 6
+EfiGcdMemoryTypeMaximum          = 7
+EFI_GCD_MEMORY_TYPE              = ENUM
 
 EfiGcdIoTypeNonExistent = 0
 EfiGcdIoTypeReserved = 1
@@ -174,8 +176,8 @@ EFI_PROCESS_FIRMWARE_VOLUME = CFUNCTYPE (
   )
 
 DXE_SERVICES_SIGNATURE            = 0x565245535f455844
-DXE_SPECIFICATION_MAJOR_REVISION  = 1
-DXE_SPECIFICATION_MINOR_REVISION  = 70
+DXE_SPECIFICATION_MAJOR_REVISION  = PI_SPECIFICATION_MAJOR_REVISION
+DXE_SPECIFICATION_MINOR_REVISION  = PI_SPECIFICATION_MINOR_REVISION
 DXE_SERVICES_REVISION             = (DXE_SPECIFICATION_MAJOR_REVISION<<16) | (DXE_SPECIFICATION_MINOR_REVISION)
 
 class DXE_SERVICES (Structure):

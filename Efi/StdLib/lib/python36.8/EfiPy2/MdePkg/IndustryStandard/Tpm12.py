@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Tpm12
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -411,7 +411,7 @@ class TPM_PERMANENT_FLAGS (EFIPY_INDUSTRY_STRUCTURE):
     ("TPMpost",                       BOOLEAN),
     ("TPMpostLock",                   BOOLEAN),
     ("FIPS",                          BOOLEAN),
-    ("operator",                      BOOLEAN),
+    ("operator_",                     BOOLEAN),
     ("enableRevokeEK",                BOOLEAN),
     ("nvLocked",                      BOOLEAN),
     ("readSRKPub",                    BOOLEAN),

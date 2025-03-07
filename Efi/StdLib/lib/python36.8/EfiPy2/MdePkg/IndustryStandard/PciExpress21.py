@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.PciExpress21
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -20,7 +20,7 @@ class PCI_REG_PCIE_CAPABILITY_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("SlotImplemented",        UINT16, 1),
     ("InterruptMessageNumber", UINT16, 5),
     ("Undefined",              UINT16, 1),
-    ("Reserved",               UINT16, 1)
+    ("FlitModeSupported",      UINT16, 1)
   ]
 
 class PCI_REG_PCIE_CAPABILITY (EFIPY_INDUSTRY_UNION):
@@ -48,11 +48,13 @@ class PCI_REG_PCIE_DEVICE_CAPABILITY_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("EndpointL1AcceptableLatency",     UINT32, 3),
     ("Undefined",                       UINT32, 3),
     ("RoleBasedErrorReporting",         UINT32, 1),
-    ("Reserved",                        UINT32, 2),
+    ("ErrCorSubclassCapable",           UINT32, 1),
+    ("RxMpsFixed",                      UINT32, 1),
     ("CapturedSlotPowerLimitValue",     UINT32, 8),
     ("CapturedSlotPowerLimitScale",     UINT32, 2),
     ("FunctionLevelReset",              UINT32, 1),
-    ("Reserved2",                       UINT32, 3)
+    ("MixedMpsSupported",               UINT32, 1),
+    ("Reserved2",                       UINT32, 2)
   ]
 
 class PCI_REG_PCIE_DEVICE_CAPABILITY (EFIPY_INDUSTRY_UNION):
@@ -103,13 +105,14 @@ PCIE_MAX_READ_REQ_SIZE_RVSD2  = 7
 
 class PCI_REG_PCIE_DEVICE_STATUS_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("CorrectableError",        UINT16, 1),
-    ("NonFatalError",           UINT16, 1),
-    ("FatalError",              UINT16, 1),
-    ("UnsupportedRequest",      UINT16, 1),
-    ("AuxPower",                UINT16, 1),
-    ("TransactionsPending",     UINT16, 1),
-    ("Reserved",                UINT16, 10)
+    ("CorrectableError",                    UINT16, 1),
+    ("NonFatalError",                       UINT16, 1),
+    ("FatalError",                          UINT16, 1),
+    ("UnsupportedRequest",                  UINT16, 1),
+    ("AuxPower",                            UINT16, 1),
+    ("TransactionsPending",                 UINT16, 1),
+    ("EmergencyPowerReductionDetected",     UINT16, 1),
+    ("Reserved",                            UINT16, 9)
   ]
 
 class PCI_REG_PCIE_DEVICE_STATUS (EFIPY_INDUSTRY_UNION):
@@ -146,7 +149,7 @@ PCIE_LINK_ASPM_L1   = BIT1
 class PCI_REG_PCIE_LINK_CONTROL_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("AspmControl",                         UINT16, 2),
-    ("Reserved",                            UINT16, 1),
+    ("PtmPropagationDelayB",                UINT16, 1),
     ("ReadCompletionBoundary",              UINT16, 1),
     ("LinkDisable",                         UINT16, 1),
     ("RetrainLink",                         UINT16, 1),
@@ -155,7 +158,10 @@ class PCI_REG_PCIE_LINK_CONTROL_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("ClockPowerManagement",                UINT16, 1),
     ("HardwareAutonomousWidthDisable",      UINT16, 1),
     ("LinkBandwidthManagementInterrupt",    UINT16, 1),
-    ("LinkAutonomousBandwidthInterrupt",    UINT16, 1)
+    ("LinkAutonomousBandwidthInterrupt",    UINT16, 1),
+    ("SrisClocking",                        UINT16, 1),
+    ("FlitModeDisable",                     UINT16, 1),
+    ("DrsSignalingControl",                 UINT16, 2)
   ]
 
 class PCI_REG_PCIE_LINK_CONTROL (EFIPY_INDUSTRY_UNION):
@@ -217,7 +223,9 @@ class PCI_REG_PCIE_SLOT_CONTROL_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("PowerController",             UINT16, 1),
     ("ElectromechanicalInterlock",  UINT16, 1),
     ("DataLinkLayerStateChanged",   UINT16, 1),
-    ("Reserved",                    UINT16, 3)
+    ("AutoSlotPowerLimitDisable",   UINT16, 1),
+    ("InbandPdDisable",             UINT16, 1),
+    ("Reserved",                    UINT16, 1)
   ]
 
 class PCI_REG_PCIE_SLOT_CONTROL (EFIPY_INDUSTRY_UNION):
@@ -253,7 +261,8 @@ class PCI_REG_PCIE_ROOT_CONTROL_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("SystemErrorOnFatalError",         UINT16, 1),
     ("PmeInterrupt",                    UINT16, 1),
     ("CrsSoftwareVisibility",           UINT16, 1),
-    ("Reserved",                        UINT16, 11)
+    ("NoNfmSubtree",                    UINT16, 1),
+    ("Reserved",                        UINT16, 10)
   ]
 
 class PCI_REG_PCIE_ROOT_CONTROL (EFIPY_INDUSTRY_UNION):
@@ -300,7 +309,7 @@ class PCI_REG_PCIE_DEVICE_CAPABILITY2_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("NoRoEnabledPrPrPassing",                          UINT32, 1),
     ("LtrMechanism",                                    UINT32, 1),
     ("TphCompleter",                                    UINT32, 2),
-    ("LnSystemCLS",                                     UINT32, 2),
+    ("Reserved",                                        UINT32, 2),
     ("TenBitTagCompleterSupported",                     UINT32, 1),
     ("TenBitTagRequesterSupported",                     UINT32, 1),
     ("Obff",                                            UINT32, 2),
@@ -309,7 +318,9 @@ class PCI_REG_PCIE_DEVICE_CAPABILITY2_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("MaxEndEndTlpPrefixes",                            UINT32, 2),
     ("EmergencyPowerReductionSupported",                UINT32, 2),
     ("EmergencyPowerReductionInitializationRequired",   UINT32, 1),
-    ("Reserved3",                                       UINT32, 4),
+    ("Reserved2",                                       UINT32, 1),
+    ("DmwrCompleter",                                   UINT32, 1),
+    ("DmwrLengths",                                     UINT32, 2),
     ("FrsSupported",                                    UINT32, 1)
   ]
 
@@ -370,10 +381,15 @@ PCIE_DEVICE_CONTROL_OBFF_WAKE       = 3
 
 class PCI_REG_PCIE_LINK_CAPABILITY2_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("Reserved",            UINT32, 1),
-    ("LinkSpeedsVector",    UINT32, 7),
-    ("Crosslink",           UINT32, 1),
-    ("Reserved2",           UINT32, 23)
+    ("Reserved",                  UINT32, 1),
+    ("LinkSpeedsVector",          UINT32, 7),
+    ("Crosslink",                 UINT32, 1),
+    ("LowerSkpOsGeneration",      UINT32, 7),
+    ("LowerSkpOsReception",       UINT32, 7),
+    ("RetimerPresenceDetect",     UINT32, 1),
+    ("TwoRetimersPresenceDetect", UINT32, 1),
+    ("Reserved2",                 UINT32, 6),
+    ("DrsSupported",              UINT32, 1),
   ]
 
 class PCI_REG_PCIE_LINK_CAPABILITY2 (EFIPY_INDUSTRY_UNION):
@@ -408,13 +424,31 @@ class PCI_REG_PCIE_LINK_STATUS2_Bits (EFIPY_INDUSTRY_STRUCTURE):
     ("EqualizationPhase2Successful",    UINT16, 1),
     ("EqualizationPhase3Successful",    UINT16, 1),
     ("LinkEqualizationRequest",         UINT16, 1),
-    ("Reserved  ",                      UINT16, 10)
+    ("RetimerPresence",                 UINT16, 1),
+    ("TwoRetimersPresence",             UINT16, 1),
+    ("CrosslinkResolution",             UINT16, 2),
+    ("FlitModeStatus",                  UINT16, 1),
+    ("Reserved",                        UINT16, 1),
+    ("DownstreamComponentPresence",     UINT16, 3),
+    ("DRSMessageReceived",              UINT16, 1)
   ]
 
 class PCI_REG_PCIE_LINK_STATUS2 (EFIPY_INDUSTRY_UNION):
   _fields_ = [
     ("Bits",            PCI_REG_PCIE_LINK_STATUS2_Bits),
     ("Uint16",          UINT16)
+    ]
+
+class PCI_REG_PCIE_SLOT_CAPABILITY2_Bits (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("InbandPdDisable",   UINT32, 1),
+    ("Reserved",          UINT32, 30)
+  ]
+
+class PCI_REG_PCIE_SLOT_CAPABILITY2 (EFIPY_INDUSTRY_UNION):
+  _fields_ = [
+    ("Bits",            PCI_REG_PCIE_SLOT_CAPABILITY2_Bits),
+    ("Uint32",          UINT32)
     ]
 
 class PCI_CAPABILITY_PCIEXP (EFIPY_INDUSTRY_STRUCTURE):
@@ -439,7 +473,7 @@ class PCI_CAPABILITY_PCIEXP (EFIPY_INDUSTRY_STRUCTURE):
     ("LinkCapability2",     PCI_REG_PCIE_LINK_CAPABILITY2      ),
     ("LinkControl2",        PCI_REG_PCIE_LINK_CONTROL2         ),
     ("LinkStatus2",         PCI_REG_PCIE_LINK_STATUS2          ),
-    ("SlotCapability2",     UINT32                             ),
+    ("SlotCapability2",     PCI_REG_PCIE_SLOT_CAPABILITY2      ),
     ("SlotControl2",        UINT16                             ),
     ("SlotStatus2",         UINT16                             )
   ]

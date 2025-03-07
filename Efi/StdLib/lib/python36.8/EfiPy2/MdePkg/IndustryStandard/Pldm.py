@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Pldm
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -24,6 +24,7 @@ class PLDM_MESSAGE_HEADER (EFIPY_INDUSTRY_STRUCTURE):
 PLDM_REQUEST_HEADER = PLDM_MESSAGE_HEADER
 
 PLDM_MESSAGE_HEADER_IS_REQUEST        = 1
+PLDM_MESSAGE_HEADER_IS_RESPONSE       = 0
 PLDM_MESSAGE_HEADER_IS_DATAGRAM       = 1
 PLDM_MESSAGE_HEADER_INSTANCE_ID_MASK  = 0x1f
 

@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.ServiceProcessorManagementInterfaceTable
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 -2025ир MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -38,3 +38,9 @@ class EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_TABLE (EFIPY_INDUSTRY_STRU
     ("Reserved3",               UINT8                                                          )
   ]
 
+EFI_ACPI_SERVICE_PROCESSOR_MANAGEMENT_INTERFACE_5_TABLE_REVISION  = 0x05
+
+EFI_ACPI_SPMI_INTERFACE_TYPE_KCS   = 0x01
+EFI_ACPI_SPMI_INTERFACE_TYPE_SMIC  = 0x02
+EFI_ACPI_SPMI_INTERFACE_TYPE_BT    = 0x03
+EFI_ACPI_SPMI_INTERFACE_TYPE_SSIF  = 0x04

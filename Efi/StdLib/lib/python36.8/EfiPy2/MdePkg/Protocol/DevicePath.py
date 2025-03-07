@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.DevicePath
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -429,6 +429,15 @@ class NVME_NAMESPACE_DEVICE_PATH (EFIPY_DEVICE_PATH_STRUCTURE):
     ("Header",        EFI_DEVICE_PATH_PROTOCOL),
     ("NamespaceId",   UINT32),
     ("NamespaceUuid", UINT64)
+    ]
+
+MSG_NVME_OF_NAMESPACE_DP  = 0x22
+class NVME_OF_NAMESPACE_DEVICE_PATH (EFIPY_DEVICE_PATH_STRUCTURE):
+  _fields_ = [
+    ("Header",          EFI_DEVICE_PATH_PROTOCOL),
+    ("NamespaceIdType", UINT8),
+    ("NamespaceId",     UINT8 * 16),
+    # ("SubsystemNqn",    CHAR8 * N)
     ]
 
 MSG_URI_DP                = 0x18

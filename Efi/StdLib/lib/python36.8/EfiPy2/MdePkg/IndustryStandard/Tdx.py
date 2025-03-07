@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Tdx
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -150,6 +150,8 @@ TDVMCALL_GET_QUOTE           = 0x10002
 TDVMCALL_REPORT_FATAL_ERR    = 0x10003
 TDVMCALL_SETUP_EVENT_NOTIFY  = 0x10004
 
+TDVMCALL_STATUS_RETRY  = 0x1
+
 class TDCALL_GENERIC_RETURN_DATA (Structure):
   _fields_ = [
     ("Data",    UINT64 * 6)
@@ -159,8 +161,8 @@ class TDCALL_INFO_RETURN_DATA (Structure):
   _fields_ = [
     ("Gpaw",        UINT64),
     ("Attributes",  UINT64),
-    ("MaxVcpus",    UINT32),
     ("NumVcpus",    UINT32),
+    ("MaxVcpus",    UINT32),
     ("Resv",        UINT64 * 3)
     ]
 

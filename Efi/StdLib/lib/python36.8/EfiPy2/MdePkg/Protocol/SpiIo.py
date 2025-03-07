@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.SpiIo
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -53,6 +53,12 @@ class EFI_SPI_BUS_TRANSACTION (Structure):
     ("ReadBytes",           UINT32),
     ("ReadBuffer",          POINTER(UINT8))
   ]
+
+SPI_IO_SUPPORTS_2_BIT_DATA_BUS_WIDTH   = BIT0
+SPI_IO_SUPPORTS_4_BIT_DATA_BUS_WIDTH   = BIT1
+SPI_IO_SUPPORTS_8_BIT_DATA_BUS_WIDTH   = BIT2
+SPI_IO_TRANSFER_SIZE_INCLUDES_OPCODE   = BIT3
+SPI_IO_TRANSFER_SIZE_INCLUDES_ADDRESS  = BIT4
 
 EFI_SPI_IO_PROTOCOL._fields_ = [
     ("SpiPeripheral",           POINTER(EFI_SPI_PERIPHERAL)),

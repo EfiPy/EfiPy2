@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.PxeBaseCode
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -16,7 +16,7 @@ class EFI_PXE_BASE_CODE_PROTOCOL (Structure):
 
 EFI_PXE_BASE_CODE = EFI_PXE_BASE_CODE_PROTOCOL
 
-DEFAULT_TTL = 16
+DEFAULT_TTL = 64
 DEFAULT_ToS = 0
 
 class EFI_PXE_BASE_CODE_ICMP_ERROR_Echo (Structure):

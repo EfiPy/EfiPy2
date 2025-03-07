@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Usb
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -99,6 +99,18 @@ class USB_CONFIG_DESCRIPTOR (EFIPY_INDUSTRY_STRUCTURE):
     ("MaxPower",            UINT8)
   ]
 
+class USB_INTERFACE_ASSOCIATION_DESCRIPTOR (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("Length",                          UINT8),
+    ("DescriptorType",                  UINT8),
+    ("FirstInterface",                  UINT8),
+    ("InterfaceCount",                  UINT8),
+    ("FunctionClass",                   UINT8),
+    ("FunctionSubclass",                UINT8),
+    ("FunctionProtocol",                UINT8),
+    ("FunctionDescriptionStringIndex",  UINT8)
+  ]
+
 class USB_INTERFACE_DESCRIPTOR (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("Length",            UINT8),
@@ -150,13 +162,16 @@ USB_TARGET_INTERFACE    = 0x01
 USB_TARGET_ENDPOINT     = 0x02
 USB_TARGET_OTHER        = 0x03
 
-USB_DESC_TYPE_DEVICE    = 0x01
-USB_DESC_TYPE_CONFIG    = 0x02
-USB_DESC_TYPE_STRING    = 0x03
-USB_DESC_TYPE_INTERFACE = 0x04
-USB_DESC_TYPE_ENDPOINT  = 0x05
-USB_DESC_TYPE_HID       = 0x21
-USB_DESC_TYPE_REPORT    = 0x22
+USB_DESC_TYPE_DEVICE                = 0x01
+USB_DESC_TYPE_CONFIG                = 0x02
+USB_DESC_TYPE_STRING                = 0x03
+USB_DESC_TYPE_INTERFACE             = 0x04
+USB_DESC_TYPE_ENDPOINT              = 0x05
+USB_DESC_TYPE_INTERFACE_ASSOCIATION = 0x0b
+USB_DESC_TYPE_HID                   = 0x21
+USB_DESC_TYPE_REPORT                = 0x22
+USB_DESC_TYPE_CS_INTERFACE          = 0x24
+USB_DESC_TYPE_CS_ENDPOINT           = 0x25
 
 USB_FEATURE_ENDPOINT_HALT = 0
 

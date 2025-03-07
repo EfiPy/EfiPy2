@@ -3,10 +3,14 @@
 # EfiPy2.MdePkg.IndustryStandard.Acpi51
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard.Acpi50 import *
+
+EFI_ACPI_5_1_AML_PSD_REVISION  = 0
+
+EFI_ACPI_5_1_AML_CPC_REVISION  = 2
 
 EFI_ACPI_5_1_GENERIC_ADDRESS_STRUCTURE = EFI_ACPI_5_0_GENERIC_ADDRESS_STRUCTURE
 
@@ -627,6 +631,7 @@ EFI_ACPI_5_1_EINJ_END_OPERATION                            = EFI_ACPI_5_0_EINJ_E
 EFI_ACPI_5_1_EINJ_EXECUTE_OPERATION                        = EFI_ACPI_5_0_EINJ_EXECUTE_OPERATION
 EFI_ACPI_5_1_EINJ_CHECK_BUSY_STATUS                        = EFI_ACPI_5_0_EINJ_CHECK_BUSY_STATUS
 EFI_ACPI_5_1_EINJ_GET_COMMAND_STATUS                       = EFI_ACPI_5_0_EINJ_GET_COMMAND_STATUS
+EFI_ACPI_5_1_EINJ_SET_ERROR_TYPE_WITH_ADDRESS              = 0x08
 EFI_ACPI_5_1_EINJ_TRIGGER_ERROR                            = EFI_ACPI_5_0_EINJ_TRIGGER_ERROR
 
 EFI_ACPI_5_1_EINJ_STATUS_SUCCESS                           = EFI_ACPI_5_0_EINJ_STATUS_SUCCESS

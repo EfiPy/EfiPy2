@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.CcMeasurement
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -24,9 +24,10 @@ class EFI_CC_VERSION (Structure):
     ("Minor",   UINT8)
   ]
 
-EFI_CC_TYPE_NONE  = 0
-EFI_CC_TYPE_SEV   = 1
-EFI_CC_TYPE_TDX   = 2
+EFI_CC_TYPE_NONE   = 0
+EFI_CC_TYPE_SEV    = 1
+EFI_CC_TYPE_TDX    = 2
+EFI_CC_TYPE_APTEE  = 3
 
 class EFI_CC_TYPE (Structure):
   _fields_ = [

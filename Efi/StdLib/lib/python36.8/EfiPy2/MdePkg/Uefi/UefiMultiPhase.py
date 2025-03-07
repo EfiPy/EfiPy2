@@ -3,11 +3,21 @@
 # EfiPy2.MdePkg.Uefi.UefiMultiPhase
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.Uefi.UefiBaseType   import *
 from EfiPy2.MdePkg.Guid.WinCertificate import WIN_CERTIFICATE_UEFI_GUID
+
+EFI_VARIABLE_NON_VOLATILE                            = 0x00000001
+EFI_VARIABLE_BOOTSERVICE_ACCESS                      = 0x00000002
+EFI_VARIABLE_RUNTIME_ACCESS                          = 0x00000004
+
+EFI_VARIABLE_HARDWARE_ERROR_RECORD                   = 0x00000008
+
+EFI_VARIABLE_AUTHENTICATED_WRITE_ACCESS              = 0x00000010
+EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS   = 0x00000020
+EFI_VARIABLE_APPEND_WRITE                            = 0x00000040
 
 EfiReservedMemoryType       =  0
 EfiLoaderCode               =  1
@@ -25,6 +35,10 @@ EfiMemoryMappedIOPortSpace  = 12
 EfiPalCode                  = 13
 EfiPersistentMemory         = 14
 EfiMaxMemoryType            = 15
+MEMORY_TYPE_OEM_RESERVED_MIN = 0x70000000
+MEMORY_TYPE_OEM_RESERVED_MAX = 0x7FFFFFFF
+MEMORY_TYPE_OS_RESERVED_MIN  = 0x80000000
+MEMORY_TYPE_OS_RESERVED_MAX  = 0xFFFFFFFF
 EFI_MEMORY_TYPE = ENUM
 
 EfiResetCold                =  0
@@ -41,16 +55,6 @@ class EFI_TABLE_HEADER (Structure):
     ("CRC32",       UINT32),
     ("Reserved",    UINT32)
     ]
-
-EFI_VARIABLE_NON_VOLATILE                            = 0x00000001
-EFI_VARIABLE_BOOTSERVICE_ACCESS                      = 0x00000002
-EFI_VARIABLE_RUNTIME_ACCESS                          = 0x00000004
-
-EFI_VARIABLE_HARDWARE_ERROR_RECORD                   = 0x00000008
-
-EFI_VARIABLE_AUTHENTICATED_WRITE_ACCESS              = 0x00000010
-EFI_VARIABLE_TIME_BASED_AUTHENTICATED_WRITE_ACCESS   = 0x00000020
-EFI_VARIABLE_APPEND_WRITE                            = 0x00000040
 
 class EFI_VARIABLE_AUTHENTICATION (Structure):
   _fields_ = [

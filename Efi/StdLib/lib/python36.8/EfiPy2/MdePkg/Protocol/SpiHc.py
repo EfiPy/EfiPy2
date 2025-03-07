@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.SpiHc
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -38,6 +38,16 @@ EFI_SPI_HC_PROTOCOL_TRANSACTION = CFUNCTYPE (
   POINTER(EFI_SPI_BUS_TRANSACTION),     #   IN       *BusTransaction
   )
 
+HC_SUPPORTS_WRITE_ONLY_OPERATIONS       = BIT0
+HC_SUPPORTS_READ_ONLY_OPERATIONS        = BIT1
+HC_SUPPORTS_WRITE_THEN_READ_OPERATIONS  = BIT2
+HC_TX_FRAME_IN_MOST_SIGNIFICANT_BITS    = BIT3
+HC_RX_FRAME_IN_MOST_SIGNIFICANT_BITS    = BIT4
+HC_SUPPORTS_2_BIT_DATA_BUS_WIDTH        = BIT5
+HC_SUPPORTS_4_BIT_DATA_BUS_WIDTH        = BIT6
+HC_SUPPORTS_8_BIT_DATA_BUS_WIDTH        = BIT7
+HC_TRANSFER_SIZE_INCLUDES_OPCODE        = BIT8
+HC_TRANSFER_SIZE_INCLUDES_ADDRESS       = BIT9
 EFI_SPI_HC_PROTOCOL._fields_ = [
     ("Attributes",              UINT32),
     ("FrameSizeSupportMask",    UINT32),

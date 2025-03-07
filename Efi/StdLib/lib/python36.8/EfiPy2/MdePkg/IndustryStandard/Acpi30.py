@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Acpi30
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard.Acpi20 import *
@@ -11,6 +11,12 @@ from EfiPy2.MdePkg.IndustryStandard.Acpi20 import *
 ACPI_LARGE_EXTENDED_ADDRESS_SPACE_DESCRIPTOR_NAME    = 0x0B
 
 ACPI_EXTENDED_ADDRESS_SPACE_DESCRIPTOR    = 0x8B
+
+ACPI_AML_COORD_TYPE_SW_ALL  = 0xFC
+ACPI_AML_COORD_TYPE_SW_ANY  = 0xFD
+ACPI_AML_COORD_TYPE_HW_ALL  = 0xFE
+
+EFI_ACPI_3_0_AML_PSD_REVISION  = 0
 
 class EFI_ACPI_EXTENDED_ADDRESS_SPACE_DESCRIPTOR (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [

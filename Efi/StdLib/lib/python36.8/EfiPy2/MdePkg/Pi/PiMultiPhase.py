@@ -3,10 +3,14 @@
 # EfiPy2.MdePkg.Pi.PiMultiPhase
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
+
+PI_SPECIFICATION_MAJOR_REVISION  = 1
+PI_SPECIFICATION_MINOR_REVISION  = 80
+PI_SPECIFICATION_VERSION         = ((PI_SPECIFICATION_MAJOR_REVISION << 16) | (PI_SPECIFICATION_MINOR_REVISION))
 
 def DXE_ERROR(StatusCode):
   return MAX_BIT | (MAX_BIT >> 2) | StatusCode

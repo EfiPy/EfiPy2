@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.IpmiNetFnApp
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -779,6 +779,12 @@ class IPMI_GET_SYSTEM_INTERFACE_KCS_SMIC_CAPABILITIES_RESPONSE (EFIPY_INDUSTRY_S
     ("Reserved",        UINT8                                      ),
     ("InterfaceCap",    IPMI_SYSTEM_INTERFACE_KCS_SMIC_CAPABILITIES),
     ("InputMaxMsgSize", UINT8                                      )
+    ]
+
+class IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_RESPONSE (EFIPY_INDUSTRY_UNION):
+  _fields_ = [
+    ("InterfaceSsifCapability",     POINTER(IPMI_GET_SYSTEM_INTERFACE_SSIF_CAPABILITIES_RESPONSE)),
+    ("InterfaceKcsSmicCapability",  POINTER(IPMI_GET_SYSTEM_INTERFACE_KCS_SMIC_CAPABILITIES_RESPONSE))
     ]
 
 IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_SSIF_TRANSACTION_SUPPORT_SINGLE_PARTITION_RW             = 0x0

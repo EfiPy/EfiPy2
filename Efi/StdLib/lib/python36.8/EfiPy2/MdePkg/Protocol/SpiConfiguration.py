@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.SpiConfiguration
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -43,6 +43,10 @@ class EFI_SPI_BUS (Structure):
     ("Clock",           EFI_SPI_CLOCK),
     ("ClockParameter",  PVOID)
   ]
+
+SPI_PART_SUPPORTS_2_BIT_DATA_BUS_WIDTH  = BIT0
+SPI_PART_SUPPORTS_4_BIT_DATA_BUS_WIDTH  = BIT1
+SPI_PART_SUPPORTS_8_BIT_DATA_BUS_WIDTH  = BIT2
 
 EFI_SPI_PERIPHERAL._fields_ = [
     ("NextSpiPeripheral",       POINTER(EFI_SPI_PERIPHERAL)),

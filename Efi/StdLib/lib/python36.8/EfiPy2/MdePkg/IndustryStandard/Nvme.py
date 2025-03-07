@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Nvme
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -18,6 +18,8 @@ NVME_NSSR_OFFSET    = 0x0020        # NVM Subsystem Reset
 NVME_AQA_OFFSET     = 0x0024        # Admin Queue Attributes
 NVME_ASQ_OFFSET     = 0x0028        # Admin Submission Queue Base Address
 NVME_ACQ_OFFSET     = 0x0030        # Admin Completion Queue Base Address
+NVME_CMBLOC_OFFSET  = 0x0038        # Control Memory Buffer Location (Optional)
+NVME_CMBSZ_OFFSET   = 0x003C        # Control Memory Buffer Size (Optional)
 NVME_BPINFO_OFFSET  = 0x0040        # Boot Partition Information
 NVME_BPRSEL_OFFSET  = 0x0044        # Boot Partition Read Select
 NVME_BPMBL_OFFSET   = 0x0048        # Boot Partition Memory Buffer Location
@@ -236,6 +238,16 @@ class NVME_PSDESCRIPTOR (EFIPY_INDUSTRY_STRUCTURE):
     ("Rsvd7",   UINT8 * 16)
     ]
 
+class NVME_SANICAP (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("Ces",     UINT32, 1),
+    ("Bes",     UINT32, 1),
+    ("Ows",     UINT32, 1),
+    ("Rsvd1",   UINT32, 26),
+    ("Ndi",     UINT32, 1),
+    ("Nodmmas", UINT32, 2)
+    ]
+
 NAMESPACE_MANAGEMENT_SUPPORTED   = BIT3
 FW_DOWNLOAD_ACTIVATE_SUPPORTED   = BIT2
 FORMAT_NVM_SUPPORTED             = BIT1
@@ -253,7 +265,22 @@ class NVME_ADMIN_CONTROLLER_DATA (EFIPY_INDUSTRY_STRUCTURE):
     ("Cmic",                UINT8            ),
     ("Mdts",                UINT8            ),
     ("Cntlid",              UINT8  * 2       ),
-    ("Rsvd1",               UINT8  * 176     ),
+
+    ("Ver",                 UINT32),
+    ("Rtd3r",               UINT32),
+    ("Rtd3e",               UINT32),
+    ("Oaes",                UINT32),
+    ("Ctratt",              UINT32),
+    ("Rrls",                UINT16),
+    ("Rsvd1",               UINT8 * 9),
+    ("Cntrltype",           UINT8 ),
+    ("Fguid",               UINT8 * 16),
+    ("Crdt1",               UINT16),
+    ("Crdt2",               UINT16),
+    ("Crdt3",               UINT16),
+    ("Rsvd2",               UINT8 *106),
+    ("Rsvd3",               UINT8 *16),
+
     ("Oacs",                UINT16           ),
     ("Acl",                 UINT8            ),
     ("Aerl",                UINT8            ),
@@ -274,10 +301,26 @@ class NVME_ADMIN_CONTROLLER_DATA (EFIPY_INDUSTRY_STRUCTURE):
     ("Edstt",               UINT16           ),
     ("Dsto",                UINT8            ),
     ("Fwug",                UINT8            ),
-    ("Rsvd2",               UINT8   * 192    ),
+
+    ("Kas",       UINT16      ),
+    ("Hctma",     UINT16      ),
+    ("Mntmt",     UINT16      ),
+    ("Mxtmt",     UINT16      ),
+    ("Sanicap",   NVME_SANICAP),
+    ("Hmminds",   UINT32      ),
+    ("Hmmaxd",    UINT16      ),
+    ("Nsetidmax", UINT16      ),
+    ("Endgidmax", UINT16      ),
+    ("Anatt",     UINT8       ),
+    ("Anacap",    UINT8       ),
+    ("Anagrpmax", UINT32      ),
+    ("Nanagrpid", UINT32      ),
+    ("Pels",      UINT32      ),
+    ("Rsvd4",     UINT8 *156),
+
     ("Sqes",                UINT8            ),
     ("Cqes",                UINT8            ),
-    ("Rsvd3",               UINT16           ),
+    ("Maxcmd",              UINT16           ),
     ("Nn",                  UINT32           ),
     ("Oncs ",               UINT16           ),
     ("Fuses",               UINT16           ),
@@ -286,12 +329,17 @@ class NVME_ADMIN_CONTROLLER_DATA (EFIPY_INDUSTRY_STRUCTURE):
     ("Awun",                UINT16           ),
     ("Awupf",               UINT16           ),
     ("Nvscc",               UINT8            ),
-    ("Rsvd4",               UINT8            ),
+    ("Nwpc",                UINT8            ),
     ("Acwu",                UINT16           ),
     ("Rsvd5",               UINT16           ),
     ("Sgls",                UINT32           ),
-    ("Rsvd6",               UINT8   * 164    ),
-    ("Rsvd7",               UINT8   * 1344   ),
+
+    ("Mnan",                UINT32),
+    ("Rsvd6",               UINT8 * 224),
+    ("Subnqn",              UINT8 * 256),
+    ("Rsvd7",               UINT8 * 768),
+    ("Rsvd8",               UINT8 * 256),
+
     ("PsDescriptor",        NVME_PSDESCRIPTOR * 32),
     ("VendorData",          UINT8   * 1024   )
   ]
@@ -455,10 +503,11 @@ class NVME_ADMIN_GET_FEATURES (EFIPY_INDUSTRY_STRUCTURE):
     ("Rsvd1",   UINT32, 21),
     ]
 
-LID_ERROR_INFO    = 0x1
-LID_SMART_INFO    = 0x2
-LID_FW_SLOT_INFO  = 0x3
-LID_BP_INFO       = 0x15
+LID_ERROR_INFO            = 0x1
+LID_SMART_INFO            = 0x2
+LID_FW_SLOT_INFO          = 0x3
+LID_BP_INFO               = 0x15
+LID_SANITIZE_STATUS_INFO  = 0x81
 
 class NVME_ADMIN_GET_LOG_PAGE (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
@@ -475,6 +524,24 @@ class NVME_ADMIN_SET_FEATURES (EFIPY_INDUSTRY_STRUCTURE):
     ("Sv",      UINT32, 1),
     ]
 
+class NVME_ADMIN_SANITIZE (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+
+    ("Sanact",  UINT32,  3),
+    ("Ause",    UINT32,  1),
+    ("Owpass",  UINT32,  4),
+    ("Oipbp",   UINT32,  1),
+    ("Nodas",   UINT32,  1),
+    ("Rsvd1",   UINT32,  22),
+    ("Ovrpat",  UINT32)
+    ]
+
+SANITIZE_ACTION_NO_ACTION          = 0x0
+SANITIZE_ACTION_EXIT_FAILURE_MODE  = 0x1
+SANITIZE_ACTION_BLOCK_ERASE        = 0x2
+SANITIZE_ACTION_OVERWRITE          = 0x3
+SANITIZE_ACTION_CRYPTO_ERASE       = 0x4
+
 class NVME_ADMIN_FORMAT_NVM (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("Lbaf",    UINT32, 4),
@@ -484,6 +551,10 @@ class NVME_ADMIN_FORMAT_NVM (EFIPY_INDUSTRY_STRUCTURE):
     ("Ses",     UINT32, 3),
     ("Rsvd1",   UINT32, 20)
     ]
+
+SES_NO_SECURE_ERASE  = 0x0
+SES_USER_DATA_ERASE  = 0x1
+SES_CRYPTO_ERASE     = 0x2
 
 class NVME_ADMIN_SECURITY_RECEIVE (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
@@ -515,7 +586,8 @@ class NVME_ADMIN_CMD (EFIPY_INDUSTRY_UNION):
     ("SetFeatures",           NVME_ADMIN_SET_FEATURES           ),
     ("FormatNvm",             NVME_ADMIN_FORMAT_NVM             ),
     ("SecurityReceive",       NVME_ADMIN_SECURITY_RECEIVE       ),
-    ("SecuritySend",          NVME_ADMIN_SECURITY_SEND          )
+    ("SecuritySend",          NVME_ADMIN_SECURITY_SEND          ),
+    ("Sanitize",              NVME_ADMIN_SANITIZE               )
     ]
 
 class NVME_RAW (EFIPY_INDUSTRY_STRUCTURE):
@@ -581,6 +653,7 @@ NVME_ADMIN_NAMESACE_ATTACHMENT_CMD  = 0x15
 NVME_ADMIN_FORMAT_NVM_CMD           = 0x80
 NVME_ADMIN_SECURITY_SEND_CMD        = 0x81
 NVME_ADMIN_SECURITY_RECEIVE_CMD     = 0x82
+NVME_ADMIN_SANITIZE_CMD             = 0x84
 
 NVME_IO_FLUSH_OPC  = 0
 NVME_IO_WRITE_OPC  = 1
@@ -603,6 +676,7 @@ NamespaceAttachmentOpcode     = NVME_ADMIN_NAMESACE_ATTACHMENT_CMD,
 FormatNvmOpcode               = NVME_ADMIN_FORMAT_NVM_CMD,
 SecuritySendOpcode            = NVME_ADMIN_SECURITY_SEND_CMD,
 SecurityReceiveOpcode         = NVME_ADMIN_SECURITY_RECEIVE_CMD
+SanitizeOpcode                = NVME_ADMIN_SANITIZE_CMD
 NVME_ADMIN_COMMAND_OPCODE     = ENUM
 
 IdentifyNamespaceCns    = 0x0,
@@ -625,10 +699,12 @@ FirmwareSlot6           = 0x6
 FirmwareSlot7           = 0x7
 NVME_FW_ACTIVATE_SLOT   = ENUM
 
-ErrorInfoLogID        = LID_ERROR_INFO
-SmartHealthInfoLogID  = LID_SMART_INFO
-FirmwareSlotInfoLogID = LID_FW_SLOT_INFO
-NVME_LOG_ID           = ENUM
+ErrorInfoLogID          = LID_ERROR_INFO
+SmartHealthInfoLogID    = LID_SMART_INFO
+FirmwareSlotInfoLogID   = LID_FW_SLOT_INFO
+BootPartitionInfoLogID  = LID_BP_INFO,
+SanitizeStatusInfoLogID = LID_SANITIZE_STATUS_INFO
+NVME_LOG_ID             = ENUM
 
 class NVME_ACTIVE_FW_INFO (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
@@ -673,5 +749,22 @@ class NVME_SMART_HEALTH_INFO_LOG (EFIPY_INDUSTRY_STRUCTURE):
     ("CriticalCompositeTemperatureTime", UINT32),
     ("TemperatureSensor",                UINT16 * 8),
     ("Reserved2",                        UINT8 * 296)
+    ]
+
+class NVME_SMART_HEALTH_INFO_LOG (EFIPY_INDUSTRY_STRUCTURE):
+  _fields_ = [
+    ("SanitizeProgress",                  UINT16),
+    ("SanitizeStatus",                    UINT16, 3),
+    ("OverwriteSanitizeCompletedNumber",  UINT16, 5),
+    ("GlobalDataErased",                  UINT16, 1),
+    ("SanitizeStatusRsvd",                UINT16, 7),
+    ("SanitizeCmdDw10Info",               UINT32),
+    ("OverwriteEstimatedTime",            UINT32),
+    ("BlockEraseEstimatedTime",           UINT32),
+    ("CryptoEraseEstimatedTime",          UINT32),
+    ("OverwriteEstimatedTimeWithNodmm",   UINT32),
+    ("BlockEraseEstimatedTimeWithNodmm",  UINT32),
+    ("CryptoEraseEstimatedTimeWithNodmm", UINT32),
+    ("Reserved",                          UINT8 * 480)
     ]
 

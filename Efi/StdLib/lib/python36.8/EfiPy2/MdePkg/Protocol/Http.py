@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.Protocol.Http
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2 import *
@@ -76,6 +76,7 @@ HTTP_STATUS_503_SERVICE_UNAVAILABLE             = 38
 HTTP_STATUS_504_GATEWAY_TIME_OUT                = 39
 HTTP_STATUS_505_HTTP_VERSION_NOT_SUPPORTED      = 40
 HTTP_STATUS_308_PERMANENT_REDIRECT              = 41
+HTTP_STATUS_429_TOO_MANY_REQUESTS               = 42
 EFI_HTTP_STATUS_CODE                            = ENUM
 
 class EFI_HTTPv4_ACCESS_POINT (Structure):

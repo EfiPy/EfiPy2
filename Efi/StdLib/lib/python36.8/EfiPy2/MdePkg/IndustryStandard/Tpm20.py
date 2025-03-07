@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Tpm20
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2024 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard    import *
@@ -164,6 +164,7 @@ TPM_ECC_NIST_P521  = 0x0005
 TPM_ECC_BN_P256    = 0x0010
 TPM_ECC_BN_P638    = 0x0011
 TPM_ECC_SM2_P256   = 0x0020
+TPM_ECC_BP_P512_R1 = 0x0032
 
 TPM_CC                            = UINT32
 
@@ -1126,10 +1127,10 @@ TPMI_SM4_KEY_BITS = TPM_KEY_BITS
 
 class TPMU_SYM_KEY_BITS (EFIPY_INDUSTRY_UNION):
   _fields_ = [
-    ("aes", TPMI_AES_KEY_BITS),
-    ("SM4", TPMI_SM4_KEY_BITS),
-    ("sym", TPM_KEY_BITS),
-    ("xor", TPMI_ALG_HASH)
+    ("aes",     TPMI_AES_KEY_BITS),
+    ("SM4",     TPMI_SM4_KEY_BITS),
+    ("sym",     TPM_KEY_BITS),
+    ("xor_",    TPMI_ALG_HASH)
   ]
 
 class TPMU_SYM_MODE (EFIPY_INDUSTRY_UNION):
@@ -1199,7 +1200,7 @@ class TPMS_SCHEME_XOR (EFIPY_INDUSTRY_STRUCTURE):
 class TPMU_SCHEME_KEYEDHASH (EFIPY_INDUSTRY_UNION):
   _fields_ = [
     ("hmac",  TPMS_SCHEME_HMAC),
-    ("xor",   TPMS_SCHEME_XOR)
+    ("xor_",   TPMS_SCHEME_XOR)
   ]
 
 class TPMT_KEYEDHASH_SCHEME (EFIPY_INDUSTRY_STRUCTURE):
