@@ -3,19 +3,18 @@
 # EfiPy2.Lib.CpuId
 #   part of EfiPy2
 #
-# Copyright (C) 2023 -2024 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 -2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 
 import EfiPy2 as EfiPy
-from EfiPy2.Lib.Msr import MSR_GENERIC_REGISTER, MsrClass
-
+from EfiPy2.Lib.Msr import MSR_GENERIC_REGISTER
+from EfiPy2.Lib.X86Processor import Me
 
 if __name__ == '__main__':
 
   Reg = MSR_GENERIC_REGISTER ()
-  Msr = MsrClass()
-  Msr.Read (0x17, Reg)
+  Me.RdMsr (0x17, Reg)
 
   print ('MsrReg.Uint64:   0x%016X' % Reg.Uint64)
   print ('MsrReg.Bits.EAX: 0x%08X'  % Reg.Bits.EAX)
@@ -25,7 +24,7 @@ if __name__ == '__main__':
   from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr import MSR_IA32_PLATFORM_ID_REGISTER, MSR_IA32_PLATFORM_ID
 
   Reg = MSR_IA32_PLATFORM_ID_REGISTER ()
-  Msr.Read (MSR_IA32_PLATFORM_ID, Reg)
+  Me.RdMsr (MSR_IA32_PLATFORM_ID, Reg)
 
   print ('Reg.Uint64:           0x%016X' % Reg.Uint64)
   print ('Reg.Bits.Reserved1:   0x%X' % Reg.Bits.Reserved1)
@@ -33,12 +32,11 @@ if __name__ == '__main__':
   print ('Reg.Bits.PlatformId:  0x%X' % Reg.Bits.PlatformId)
   print ('Reg.Bits.Reserved3:   0x%X' % Reg.Bits.Reserved3)
 
-
   print ()
   from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr import MSR_IA32_APIC_BASE_REGISTER, MSR_IA32_APIC_BASE
 
   Reg = MSR_IA32_APIC_BASE_REGISTER ()
-  Msr.Read (MSR_IA32_APIC_BASE, Reg)
+  Me.RdMsr (MSR_IA32_APIC_BASE, Reg)
 
   print ('Reg.Uint64:           0x%016X' % Reg.Uint64)
   print ('Reg.Bits.BSP:         0x%X' % Reg.Bits.BSP)
