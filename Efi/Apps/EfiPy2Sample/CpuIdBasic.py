@@ -3,19 +3,18 @@
 # EfiPy2.Lib.CpuId
 #   part of EfiPy2
 #
-# Copyright (C) 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 
 import EfiPy2 as EfiPy
 import EfiPy2.MdePkg.Register.Intel.Cpuid as CpuidRegs
 from EfiPy2.Lib import CpuId
-
-CpuIdObj  = CpuId.CpuIdClass()
+from EfiPy2.Lib.X86Processor import Me
 
 CpuIdReg  = CpuId.CPUID_GENERIC_REGISTERs()
 
-rax = CpuIdObj.GetId2 (0, 0, CpuIdReg)
+Me.CpuId (0x00, 0x00, CpuIdReg)
 
 print (f'''
 CPU signature From cpuid instruction
@@ -34,17 +33,9 @@ CPU signature from pre-defined constant
   EDX = 0x{CpuidRegs.CPUID_SIGNATURE_GENUINE_INTEL_EDX:08X}
 ''')
 
-class CpuIdRegisters (EfiPy.Structure):
-  _pack_   = 1
-  _fields_ = [
-    ('EAX',  CpuidRegs.CPUID_VERSION_INFO_EAX),
-    ('EBX',  CpuidRegs.CPUID_VERSION_INFO_EBX),
-    ('ECX',  CpuidRegs.CPUID_VERSION_INFO_ECX),
-    ('EDX',  CpuidRegs.CPUID_VERSION_INFO_EDX)
-  ]
-CpuIdReg  = CpuIdRegisters()
+CpuIdReg  = CpuId.CPUID_VERSION_INFO_REGISTERs()
 
-rax = CpuIdObj.GetId2 (CpuidRegs.CPUID_VERSION_INFO, 0, CpuIdReg)
+Me.CpuId (CpuidRegs.CPUID_VERSION_INFO, 0x00, CpuIdReg)
 
 print (f'''
 CPU version information in UINT32 format
