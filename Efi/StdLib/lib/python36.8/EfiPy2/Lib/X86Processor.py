@@ -234,7 +234,7 @@ class X86ProcessorClass (type):
     raise OSError ("Processor IDs is fiexd in current stage!!!")
 
   @property
-  def Me (cls):
+  def WhoAmI (cls):
     ProcessorNumber = EfiPy.UINTN ()
     Status = cls._MpServiceProtocol.WhoAmI (
             cls._pMpServiceProtocol,
@@ -257,10 +257,10 @@ class X86Processors (metaclass = X86ProcessorClass):
 
   def MemGet32 (self, Address: int) -> int:
 
-    me = type(self).Me
+    MeIndex   = type(self).WhoAmI
     Parameter = (EfiPy.UINT32 * 2)(Address, - 1)
 
-    if self.Index == me:
+    if self.Index == MeIndex:
       self._MemGet32CoreFunc  (EfiPy.byref (Parameter))
     else:
       Status = self._MpServiceProtocol.StartupThisAP (
@@ -277,11 +277,11 @@ class X86Processors (metaclass = X86ProcessorClass):
 
   def CpuId (self, Eax: int, Ecx: int, CpuIdReg):
 
-    me = type(self).Me
-    CpuIdRegAddr    = EfiPy.addressof (CpuIdReg)
-    Parameter = (EfiPy.UINT32 * 3)(Eax, Ecx, CpuIdRegAddr)
+    MeIndex       = type(self).WhoAmI
+    CpuIdRegAddr  = EfiPy.addressof (CpuIdReg)
+    Parameter     = (EfiPy.UINT32 * 3)(Eax, Ecx, CpuIdRegAddr)
 
-    if self.Index == me:
+    if self.Index == MeIndex:
       self._CpuIdCoreFunc  (EfiPy.byref (Parameter))
     else:
       Status = self._MpServiceProtocol.StartupThisAP (
@@ -296,11 +296,11 @@ class X86Processors (metaclass = X86ProcessorClass):
 
   def WrMsr (self, Ecx: int, MsrReg):
 
-    me          = type(self).Me
+    MeIndex     = type(self).WhoAmI
     MsrRegAddr  = EfiPy.addressof (MsrReg)
     Parameter   = (EfiPy.UINT32 * 2)(Ecx, MsrRegAddr)
 
-    if self.Index == me:
+    if self.Index == MeIndex:
       self._WrMsrCoreFunc (EfiPy.byref (Parameter))
     else:
       Status = self._MpServiceProtocol.StartupThisAP (
@@ -316,11 +316,11 @@ class X86Processors (metaclass = X86ProcessorClass):
 
   def RdMsr (self, Ecx: int, MsrReg):
 
-    me          = type(self).Me
+    MeIndex     = type(self).WhoAmI
     MsrRegAddr  = EfiPy.addressof (MsrReg)
     Parameter   = (EfiPy.UINT32 * 2)(Ecx, MsrRegAddr)
 
-    if self.Index == me:
+    if self.Index == MeIndex:
       self._RdMsrCoreFunc (EfiPy.byref (Parameter))
     else:
       Status = self._MpServiceProtocol.StartupThisAP (
@@ -337,44 +337,4 @@ X86ProcessorArray = []
 for Index in range (len (X86Processors)):
   X86ProcessorArray.append (X86Processors (Index))
 
-if __name__ == '__main__':
-
-  from EfiPy2.Lib.CpuId import CPUID_GENERIC_REGISTERs
-  from EfiPy2.Lib.Msr import MSR_GENERIC_REGISTER
-  from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr import MSR_IA32_APIC_BASE_REGISTER
-
-  print (f'APIC base address: 0x{X86Processors.LocalApicAddress:08X}')
-  print (f'Processor IDs from EFI_MP_SERVICES_PROTOCOL: {X86Processors.ProcessorIds}')
-  print (f'Me: {X86Processors.Me}, Processor numbers: {len (X86Processors)}')
-
-  X86ProcessorArray = []
-  for Index in range (len (X86Processors)):
-
-    print (f'\nCPU {Index} infromation....')
-
-    MmioAddress = 0xFEE00020
-    Processor = X86Processors (Index)
-    X86ProcessorArray.append (Processor)
-    print (f'  From MMIO 0x{MmioAddress:08X}: 0x{Processor.MemGet32(MmioAddress):08X}')
-
-    CpuIdReg = CPUID_GENERIC_REGISTERs()
-
-    CpuIndex = 0x0B
-    Processor.CpuId (CpuIndex, 0x00, CpuIdReg)
-    print (f'  From CPUID 0x{CpuIndex:02X}: 0x{CpuIdReg.EDX:08X}')
-
-    MsrIndex = 0x1B
-    MsrReg = MSR_IA32_APIC_BASE_REGISTER ()
-    Processor.RdMsr (MsrIndex, MsrReg)
-
-    if MsrReg.Bits.EXTD != 0x01:
-      MsrReg.Bits.EXTD = 1
-      Processor.WrMsr (MsrIndex, MsrReg)
-
-      MsrReg = MSR_IA32_APIC_BASE_REGISTER ()
-      Processor.RdMsr (MsrIndex, MsrReg)
-
-    MsrIndex = 0x802
-    MsrReg = MSR_GENERIC_REGISTER ()
-    Processor.RdMsr (MsrIndex, MsrReg)
-    print (f'  From MSR 0x{MsrIndex:X}: 0x{MsrReg.Uint64:016X}')
+Me = X86ProcessorArray [X86Processors.WhoAmI]
