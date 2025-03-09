@@ -3,18 +3,14 @@ from EfiPy2.Lib.CpuId import CPUID_GENERIC_REGISTERs
 from EfiPy2.Lib.Msr import MSR_GENERIC_REGISTER
 from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr import MSR_IA32_APIC_BASE_REGISTER
 
-print (f'APIC base address: 0x{X86Processors .LocalApicAddress:08X}')
-print (f'Processor IDs from EFI_MP_SERVICES_PROTOCOL: {X86Processors .ProcessorIds}')
-print (f'Me (WhAmI): {X86Processors .Me}, Processor numbers: {len (X86Processors )}, {len (X86ProcessorArray)}')
+print (f'APIC base address: 0x{X86Processors.LocalApicAddress:08X}')
+print (f'Processor IDs from EFI_MP_SERVICES_PROTOCOL: {X86Processors.ProcessorIds}')
+print (f'Me (WhAmI): {X86Processors.Me}, Processor numbers: {len (X86Processors)}, {len (X86ProcessorArray)}')
 
-# X86ProcessorArray = []
-# for Index in range (len (X86Processors )):
 for Index, Processor in enumerate (X86ProcessorArray):
 
   print (f'\nCPU {Index} infromation....')
 
-  # Processor = X86Processors  (Index)
-  # X86ProcessorArray.append (Processor)
   MmioAddress = 0xFEE00020
   print (f'  From MMIO 0x{MmioAddress:08X}: 0x{Processor.MemGet32(MmioAddress):08X}')
 
