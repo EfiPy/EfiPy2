@@ -450,6 +450,108 @@ class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_EDX (Union):
     ("Uint32",          UINT32)
   ]
 
+CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO = 1
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EAX_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("SHA512",                          UINT32, 1),
+    ("SM3",                             UINT32, 1),
+    ("SM4",                             UINT32, 1),
+    ("Reserved1",                       UINT32, 1),
+    ("AVX_VNNI_AVX",                    UINT32, 1),
+    ("AVX512_BF16",                     UINT32, 1),
+    ("LASS",                            UINT32, 1),
+    ("CMPCCXADD",                       UINT32, 1),
+    ("ArchPerfmonExt",                  UINT32, 1),
+    ("Reserved2",                       UINT32, 1),
+    ("fast_zero_length_REP_MOVSB",      UINT32, 1),
+    ("fast_short_REP_STOSB",            UINT32, 1),
+    ("fast_short_REP_CMPSB_REP_SCASB",  UINT32, 1),
+    ("Reserved3",                       UINT32, 6),
+    ("WRMSRNS",                         UINT32, 1),
+    ("Reserved4",                       UINT32, 1),
+    ("AMX_FP16",                        UINT32, 1),
+    ("HRESET",                          UINT32, 1),
+    ("AVX_IFMA",                        UINT32, 1),
+    ("Reserved5",                       UINT32, 2),
+    ("LAM",                             UINT32, 1),
+    ("MSRLIST",                         UINT32, 1),
+    ("Reserved6",                       UINT32, 2),
+    ("INVD_DISABLE_POST_BIOS_DONE",     UINT32, 1),
+    ("Reserved7",                       UINT32, 1)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EAX (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",            CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EAX_Bits),
+    ("Uint32",          UINT32)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EBX_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("IA32_PPIN_IA32_PPIN_CTL_MSRs",    UINT32, 1),
+    ("Reserved1",                       UINT32, 2),
+    ("CPUIDMAXVAL_LIM_RMV",             UINT32, 1),
+    ("Reserved6",                       UINT32, 28)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EBX (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",            CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EBX_Bits),
+    ("Uint32",          UINT32)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EDX_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("Reserved1",           UINT32, 4),
+    ("AVX_VNNI_INT8",       UINT32, 1),
+    ("AVX_NE_CONVERT",      UINT32, 1),
+    ("Reserved2",           UINT32, 4),
+    ("AVX_VNNI_INT16",      UINT32, 1),
+    ("Reserved3",           UINT32, 2),
+    ("PREFETCHI",           UINT32, 1),
+    ("Reserved4",           UINT32, 2),
+    ("UIRET_UIF",           UINT32, 1),
+    ("CET_SSS",             UINT32, 1),
+    ("AVX10",               UINT32, 1),
+    ("Reserved5",           UINT32, 12)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EDX (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",            CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_1_INFO_EDX_Bits),
+    ("Uint32",          UINT32)
+  ]
+
+CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_2_INFO = 2
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_2_INFO_EDX_Bits (Structure):
+  _pack_   = 1
+  _fields_ = [
+    ("PSFD",                        UINT32, 1),
+    ("IPRED_CTRL",                  UINT32, 1),
+    ("RRSBA_CTRL",                  UINT32, 1),
+    ("DDPD_U",                      UINT32, 1),
+    ("BHI_CTRL",                    UINT32, 1),
+    ("MCDT_NO",                     UINT32, 1),
+    ("UC_lock_disable",             UINT32, 1),
+    ("UIRMONITOR_MITG_NOET_UIF",    UINT32, 1),
+    ("Reserved",                    UINT32, 24)
+  ]
+
+class CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_2_INFO_EDX (Union):
+  _pack_   = 1
+  _fields_ = [
+    ("Bits",            CPUID_STRUCTURED_EXTENDED_FEATURE_FLAGS_SUB_LEAF_2_INFO_EDX_Bits),
+    ("Uint32",          UINT32)
+  ]
+
 CPUID_DIRECT_CACHE_ACCESS_INFO              = 0x09
 
 CPUID_ARCHITECTURAL_PERFORMANCE_MONITORING  = 0x0A
@@ -570,9 +672,11 @@ class CPUID_EXTENDED_STATE_MAIN_LEAF_EAX_Bits (Structure):
     ("AVX_512",     UINT32, 3),
     ("IA32_XSS",    UINT32, 1),
     ("PKRU",        UINT32, 1),
-    ("Reserved1",   UINT32, 3),
-    ("IA32_XSS_2",  UINT32, 1),
-    ("Reserved2",   UINT32, 18)
+    # ("Reserved1",   UINT32, 3),       # According SDM Vol Table 3-8
+    ("IA32_XSS_2",  UINT32, 7),         # According SDM Vol Table 3-8
+    ("TILECFG",     UINT32, 1),         # According SDM Vol Table 3-8
+    ("TILEDATA",    UINT32, 1),         # According SDM Vol Table 3-8
+    ("Reserved2",   UINT32, 13)         # According SDM Vol Table 3-8
   ]
 
 class CPUID_EXTENDED_STATE_MAIN_LEAF_EAX (Union):
@@ -591,7 +695,8 @@ class CPUID_EXTENDED_STATE_SUB_LEAF_EAX_Bits (Structure):
     ("XSAVEC",      UINT32, 1),
     ("XGETBV",      UINT32, 1),
     ("XSAVES",      UINT32, 1),
-    ("Reserved",    UINT32, 28)
+    ("XFD",         UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("Reserved",    UINT32, 27)     # According SDM Vol 2, Table 3-8
   ]
 
 class CPUID_EXTENDED_STATE_SUB_LEAF_EAX (Union):
@@ -604,12 +709,19 @@ class CPUID_EXTENDED_STATE_SUB_LEAF_EAX (Union):
 class CPUID_EXTENDED_STATE_SUB_LEAF_ECX_Bits (Structure):
   _pack_   = 1
   _fields_ = [
-    ("XCR0",        UINT32, 1),
-    ("PT",          UINT32, 1),
-    ("XCR0_1",      UINT32, 1),
-    ("Reserved1",   UINT32, 3),
-    ("HWPState",    UINT32, 1),
-    ("Reserved8",   UINT32, 18)
+    ("XCR0",                    UINT32, 8),     # According SDM Vol 2, Table 3-8
+    ("PT",                      UINT32, 1),
+    ("XCR0_1",                  UINT32, 1),
+    # ("Reserved1",                 UINT32, 3),
+    ("PASID",                   UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("CET_user_state",          UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("CET_supervisor_state",    UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("HDC",                     UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("UINTR",                   UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("LBR",                     UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("HWPState",                UINT32, 1),     # According SDM Vol 2, Table 3-8
+    ("XCR0_2",                  UINT32, 2),     # According SDM Vol 2, Table 3-8
+    ("Reserved8",               UINT32, 13)
   ]
 
 class CPUID_EXTENDED_STATE_SUB_LEAF_ECX (Union):
@@ -913,6 +1025,8 @@ class CPUID_INTEL_SGX_CAPABILITIES_RESOURCES_SUB_LEAF_EDX (Union):
     ("Uint32",          UINT32)
   ]
 
+CPUID_INTEL_PROCESSOR_TRACE            = 0x14
+
 CPUID_INTEL_PROCESSOR_TRACE_MAIN_LEAF  = 0x00
 
 class CPUID_INTEL_PROCESSOR_TRACE_MAIN_LEAF_EBX_Bits (Structure):
@@ -1195,6 +1309,7 @@ class CPUID_BRAND_STRING_DATA (Union):
   ]
 
 CPUID_BRAND_STRING2  = 0x80000003
+CPUID_BRAND_STRING3  = 0x80000004
 
 CPUID_EXTENDED_CACHE_INFO  = 0x80000006
 
