@@ -1,6 +1,5 @@
-# CpuId.py
+# CpuIdBasic.py
 #
-# EfiPy2.Lib.CpuId
 #   part of EfiPy2
 #
 # Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
@@ -9,7 +8,7 @@
 
 import EfiPy2 as EfiPy
 import EfiPy2.MdePkg.Register.Intel.Cpuid as CpuidRegs
-from EfiPy2.Lib import CpuId
+from EfiPy2.Lib import CpuIdIntel as CpuId
 from EfiPy2.Lib.X86Processor import Me
 
 CpuIdReg  = CpuId.CPUID_GENERIC_REGISTERs()

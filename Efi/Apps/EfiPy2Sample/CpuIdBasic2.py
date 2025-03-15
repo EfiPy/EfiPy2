@@ -1,6 +1,5 @@
-# CpuId2.py
+# CpuIdBasic2.py
 #
-# EfiPy2.Lib.CpuId
 #   part of EfiPy2
 #
 # Copyright (C) 2025 MaxWu efipy.core@gmail.com
@@ -9,7 +8,7 @@
 
 import EfiPy2 as EfiPy
 
-from EfiPy2.Lib import CpuId
+from EfiPy2.Lib import CpuIdIntel as CpuId
 from EfiPy2.Lib.X86Processor import Me
 from EfiPy2.Lib.StructDump import DumpStruct
 
