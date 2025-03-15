@@ -1,5 +1,13 @@
+# X86ProcessorSample.py
+#
+#   part of EfiPy2
+#
+# Copyright (C) 2025 MaxWu efipy.core@gmail.com
+#   GPL-2.0
+#
+
 from EfiPy2.Lib.X86Processor import X86Processors, X86ProcessorArray
-from EfiPy2.Lib.CpuId import CPUID_GENERIC_REGISTERs
+from EfiPy2.Lib.CpuIdIntel import CPUID_GENERIC_REGISTERs
 from EfiPy2.Lib.Msr import MSR_GENERIC_REGISTER
 from EfiPy2.MdePkg.Register.Intel.ArchitecturalMsr import MSR_IA32_APIC_BASE_REGISTER
 
