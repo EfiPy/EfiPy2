@@ -10,6 +10,11 @@ import EfiPy2 as EfiPy
 from EfiPy2.Lib import CpuIdIntel as CpuId
 from EfiPy2.Lib.X86Processor import Me
 
+import argparse
+parser = argparse.ArgumentParser (prog = 'X86CouInfo.py')
+parser.add_argument ('-v', '--verbose', action = 'store_true', help = 'Dump more CPU flags from CPUID.')
+args = parser.parse_args ()
+
 CpuIdSignature  = CpuId.CPUID_SIGNATURE_REGISTERs ()
 Me.CpuId (CpuId.CPUID_SIGNATURE, 0x00, CpuIdSignature)
 
@@ -54,6 +59,9 @@ Base Frequence: {ProcessorFreq.EAX.Bits.ProcessorBaseFrequency} MHz
 Maximun Frequence: {ProcessorFreq.EBX.Bits.MaximumFrequency} MHz
 Bus Frequences: {ProcessorFreq.ECX.Bits.BusFrequency} MHz
 ''')
+
+if args.verbose == False:
+  exit (0)
 
 from EfiPy2.Lib.StructDump import DumpStruct
 
