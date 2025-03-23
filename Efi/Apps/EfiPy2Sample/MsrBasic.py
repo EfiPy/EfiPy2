@@ -3,7 +3,7 @@
 # EfiPy2.Lib.CpuId
 #   part of EfiPy2
 #
-# Copyright (C) 2023 -2025 MaxWu efipy.core@gmail.com
+# Copyright (C) 2023 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 
