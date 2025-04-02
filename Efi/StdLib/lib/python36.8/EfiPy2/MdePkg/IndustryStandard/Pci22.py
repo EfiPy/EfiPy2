@@ -3,7 +3,7 @@
 # EfiPy2.MdePkg.IndustryStandard.Pci22
 #   part of EfiPy, EfiPy2
 #
-# Copyright (C) 2015 - 2023 MaxWu efipy.core@gmail.com
+# Copyright (C) 2015 - 2025 MaxWu efipy.core@gmail.com
 #   GPL-2.0
 #
 from EfiPy2.MdePkg.IndustryStandard import *
@@ -426,6 +426,7 @@ EFI_PCI_CAPABILITY_ID_VPD     = 0x03
 EFI_PCI_CAPABILITY_ID_SLOTID  = 0x04
 EFI_PCI_CAPABILITY_ID_MSI     = 0x05
 EFI_PCI_CAPABILITY_ID_HOTPLUG = 0x06
+EFI_PCI_CAPABILITY_ID_SHPC    = 0x0C
 
 class EFI_PCI_CAPABILITY_HDR (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
