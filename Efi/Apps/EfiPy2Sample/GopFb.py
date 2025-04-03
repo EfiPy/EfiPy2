@@ -1,7 +1,7 @@
 #
-# mTest.py
+# GopFb.py
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com All rights reserved.
 #
 # GopFb.py is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
