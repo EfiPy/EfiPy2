@@ -1,3 +1,10 @@
+# X86Processor.py
+#
+# Copyright (C) 2025 MaxWu efipy.core@gmail.com All rights reserved.
+#
+#   GPL-2.0
+#
+
 import EfiPy2 as EfiPy
 import corepy.arch.x86_64.isa as x86
 import corepy.arch.x86_64.types.registers as reg
@@ -17,6 +24,124 @@ class X86ProcessorClass (type):
     ApicRaw = ExtractTable (ApicSignature, 0)
     ApicObj, ApicType = AcpiApicParser (ApicRaw)
     cls._LocalApicAddress = ApicObj.LocalApicAddress
+
+  def _BuildIndexDataProcedure (cls):
+
+    ############################################################################
+    #
+    # Function: IndexDataw32
+    #
+    # Input:  UINT32 (IndexOffset), UINT32 (DataOffset), UINT32 (IndexValue), UINT32 (DataValue)
+    # Output: None
+    #
+    cls._IndexDataw32CoreCode = env.InstructionStream()
+
+    cls._IndexDataw32CoreCode.add(x86.push(reg.rdi))
+    cls._IndexDataw32CoreCode.add(x86.mov(reg.rdi, mem.MemRef(reg.rbp, 0x10)))
+
+    #
+    # Start to fill Index Offset and Index Value
+    #
+    cls._IndexDataw32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 0, data_size = 32)))     # IndexOffset
+    cls._IndexDataw32CoreCode.add(x86.mov(reg.eax, mem.MemRef(reg.rdi, 8, data_size = 32)))     # IndexValue
+
+    cls._IndexDataw32CoreCode.add(x86.out(reg.dx, reg.eax))
+
+    #
+    # Start to fill Data Offset and Data Value
+    #
+    cls._IndexDataw32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 4, data_size = 32)))     # DataOffset
+    cls._IndexDataw32CoreCode.add(x86.mov(reg.eax, mem.MemRef(reg.rdi, 12, data_size = 32)))     # DataValue
+
+    cls._IndexDataw32CoreCode.add(x86.out(reg.dx, reg.eax))
+
+    cls._IndexDataw32CoreCode.add(x86.pop(reg.rdi))
+
+    cls._IndexDataw32CoreAddr, cls._IndexDataw32CoreBytes = cls._IndexDataw32CoreCode.get_code_bytes ()
+
+    cls._IndexDataw32CoreFunc = EFI_AP_PROCEDURE (cls._IndexDataw32CoreAddr)
+
+    ############################################################################
+    #
+    # Function: IndexDatar32 (Read)
+    #
+    # Input:  UINT32 (IndexOffset), UINT32 (DataOffset), UINT32 (IndexValue), UINT32 (DataValue)
+    #
+    cls._IndexDatar32CoreCode  = env.InstructionStream()
+
+    cls._IndexDatar32CoreCode.add(x86.push(reg.rdi))
+    cls._IndexDatar32CoreCode.add(x86.mov(reg.rdi, mem.MemRef(reg.rbp, 0x10)))
+
+    #
+    # Start to fill Index Offset and Index Value
+    #
+    cls._IndexDatar32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 0, data_size = 32)))     # IndexOffset
+    cls._IndexDatar32CoreCode.add(x86.mov(reg.eax, mem.MemRef(reg.rdi, 8, data_size = 32)))     # IndexValue
+
+    cls._IndexDatar32CoreCode.add(x86.out(reg.dx, reg.eax))
+
+    #
+    # Start to fill Data Offset and Data Value
+    #
+    cls._IndexDatar32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 4, data_size = 32)))     # DataOffset
+
+    cls._IndexDatar32CoreCode.add(x86.in_(reg.eax, reg.dx))
+
+    cls._IndexDatar32CoreCode.add(x86.mov(mem.MemRef(reg.rdi, 12, data_size = 32), reg.eax))
+
+    #
+    # Build Function
+    #
+    cls._IndexDatar32CoreCode.add(x86.pop(reg.rdi))
+
+    cls._IndexDatar32CoreAddr, cls._IndexDatar32CoreBytes = cls._IndexDatar32CoreCode.get_code_bytes ()
+
+    cls._IndexDatar32CoreFunc = EFI_AP_PROCEDURE (cls._IndexDatar32CoreAddr)
+
+  def _BuildIoProcedure (cls):
+
+    #
+    # Function: Iow32
+    #
+    # Input:  UINT32 (Index), UINT32 (Value)
+    # Output: None
+    #
+    cls._Iow32CoreCode  = env.InstructionStream()
+
+    cls._Iow32CoreCode.add(x86.push(reg.rdi))
+    cls._Iow32CoreCode.add(x86.mov(reg.rdi, mem.MemRef(reg.rbp, 0x10)))
+
+    cls._Iow32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 0, data_size = 32)))     # rdi[0]: Index, rdi[4]: Value
+    cls._Iow32CoreCode.add(x86.mov(reg.eax, mem.MemRef(reg.rdi, 4, data_size = 32)))
+
+    cls._Iow32CoreCode.add(x86.out(reg.dx, reg.eax))
+
+    cls._Iow32CoreCode.add(x86.pop(reg.rdi))
+
+    cls._Iow32CoreAddr, cls._Iow32CoreBytes = cls._Iow32CoreCode.get_code_bytes ()
+
+    cls._Iow32CoreFunc = EFI_AP_PROCEDURE (cls._Iow32CoreAddr)
+
+    #
+    # Function: Ior32
+    #
+    # Input:  UINT32 * 2
+    #
+    cls._Ior32CoreCode  = env.InstructionStream()
+
+    cls._Ior32CoreCode.add(x86.push(reg.rdi))
+    cls._Ior32CoreCode.add(x86.mov(reg.rdi, mem.MemRef(reg.rbp, 0x10)))
+    cls._Ior32CoreCode.add(x86.mov(reg.edx, mem.MemRef(reg.rdi, 0, data_size = 32)))     # rdi[0]: Index, rdi[4]: Return Value
+
+    cls._Ior32CoreCode.add(x86.in_(reg.eax, reg.dx))
+
+    cls._Ior32CoreCode.add(x86.mov(mem.MemRef(reg.rdi, 4, data_size = 32), reg.eax))     # rdi[0]: Index, rdi[4]: Return Value
+
+    cls._Ior32CoreCode.add(x86.pop(reg.rdi))
+
+    cls._Ior32CoreAddr, cls._Ior32CoreBytes = cls._Ior32CoreCode.get_code_bytes ()
+
+    cls._Ior32CoreFunc = EFI_AP_PROCEDURE (cls._Ior32CoreAddr)
 
   def _BuildMsrProcedure (cls):
 
@@ -216,6 +341,8 @@ class X86ProcessorClass (type):
     cls._BuildMemProcedure ()
     cls._BuildCpuIdProcedure ()
     cls._BuildMsrProcedure ()
+    cls._BuildIoProcedure ()
+    cls._BuildIndexDataProcedure ()
 
   @property
   def LocalApicAddress (cls):
@@ -332,6 +459,82 @@ class X86Processors (metaclass = X86ProcessorClass):
                       EfiPy.byref (Parameter),     # PVOID,                              # IN  *ProcedureArgument      OPTIONAL,
                       None,                        # POINTER(BOOLEAN)                    # OUT *Finished               OPTIONAL
                       )
+
+  def Iow32 (self, Index: int, Value: int) -> None:
+
+    MeIndex     = type(self).WhoAmI
+    Parameter   = (EfiPy.UINT32 * 2) (Index, Value)
+
+    if self.Index == MeIndex:
+      self._Iow32CoreFunc (EfiPy.byref (Parameter))
+    else:
+      Status = self._MpServiceProtocol.StartupThisAP (
+                      self._pMpServiceProtocol,    # POINTER(EFI_MP_SERVICES_PROTOCOL),  # IN  *This
+                      self._Iow32CoreFunc,         # EFI_AP_PROCEDURE,                   # IN  Procedure,
+                      self.Index,                  # UINTN,                              # IN  ProcessorNumber,
+                      None,                        # EFI_EVENT,                          # IN  WaitEvent               OPTIONAL,
+                      1000* 1000,                  # UINTN,                              # IN  TimeoutInMicroseconds,
+                      EfiPy.byref (Parameter),     # PVOID,                              # IN  *ProcedureArgument      OPTIONAL,
+                      None,                        # POINTER(BOOLEAN)                    # OUT *Finished               OPTIONAL
+                      )
+
+  def Ior32 (self, Index: int) -> int:
+
+    MeIndex     = type(self).WhoAmI
+    Parameter   = (EfiPy.UINT32 * 2)(Index, -1)
+
+    if self.Index == MeIndex:
+      self._Ior32CoreFunc (EfiPy.byref (Parameter))
+    else:
+      Status = self._MpServiceProtocol.StartupThisAP (
+                      self._pMpServiceProtocol,    # POINTER(EFI_MP_SERVICES_PROTOCOL),  # IN  *This
+                      self._Ior32CoreFunc,         # EFI_AP_PROCEDURE,                   # IN  Procedure,
+                      self.Index,                  # UINTN,                              # IN  ProcessorNumber,
+                      None,                        # EFI_EVENT,                          # IN  WaitEvent               OPTIONAL,
+                      1000* 1000,                  # UINTN,                              # IN  TimeoutInMicroseconds,
+                      EfiPy.byref (Parameter),     # PVOID,                              # IN  *ProcedureArgument      OPTIONAL,
+                      None,                        # POINTER(BOOLEAN)                    # OUT *Finished               OPTIONAL
+                      )
+
+    return Parameter[1]
+
+  def IndexDataw32 (self, IndexOffset: int, DataOffset: int, IndexValue: int, DataValue: int) -> None:
+
+    MeIndex     = type(self).WhoAmI
+    Parameter   = (EfiPy.UINT32 * 4) (IndexOffset, DataOffset, IndexValue, DataValue)
+
+    if self.Index == MeIndex:
+      self._IndexDataw32CoreFunc (EfiPy.byref (Parameter))
+    else:
+      Status = self._MpServiceProtocol.StartupThisAP (
+                      self._pMpServiceProtocol,    # POINTER(EFI_MP_SERVICES_PROTOCOL),  # IN  *This
+                      self._IndexDataw32CoreFunc , # EFI_AP_PROCEDURE,                   # IN  Procedure,
+                      self.Index,                  # UINTN,                              # IN  ProcessorNumber,
+                      None,                        # EFI_EVENT,                          # IN  WaitEvent               OPTIONAL,
+                      1000* 1000,                  # UINTN,                              # IN  TimeoutInMicroseconds,
+                      EfiPy.byref (Parameter),     # PVOID,                              # IN  *ProcedureArgument      OPTIONAL,
+                      None,                        # POINTER(BOOLEAN)                    # OUT *Finished               OPTIONAL
+                      )
+
+  def IndexDatar32 (self, IndexOffset: int, DataOffset: int, IndexValue: int) -> int:
+
+    MeIndex     = type(self).WhoAmI
+    Parameter   = (EfiPy.UINT32 * 4)(IndexOffset, DataOffset, IndexValue, -1)
+
+    if self.Index == MeIndex:
+      self._IndexDatar32CoreFunc (EfiPy.byref (Parameter))
+    else:
+      Status = self._MpServiceProtocol.StartupThisAP (
+                      self._pMpServiceProtocol,    # POINTER(EFI_MP_SERVICES_PROTOCOL),  # IN  *This
+                      self._IndexDatar32CoreFunc , # EFI_AP_PROCEDURE,                   # IN  Procedure,
+                      self.Index,                  # UINTN,                              # IN  ProcessorNumber,
+                      None,                        # EFI_EVENT,                          # IN  WaitEvent               OPTIONAL,
+                      1000* 1000,                  # UINTN,                              # IN  TimeoutInMicroseconds,
+                      EfiPy.byref (Parameter),     # PVOID,                              # IN  *ProcedureArgument      OPTIONAL,
+                      None,                        # POINTER(BOOLEAN)                    # OUT *Finished               OPTIONAL
+                      )
+
+    return Parameter[3]
 
 X86ProcessorArray = []
 for Index in range (len (X86Processors)):
