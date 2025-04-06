@@ -25,6 +25,9 @@ def HexDumpDemo ():
   print ("\n4. ============================================================================")
   HexDump (InputData, HexOffset = 0x100A, DumpLead = 1)
 
+  print ("\n5. ============================================================================")
+  HexDump (InputData, HexOffset = 0x12, DumpLead = 1, OffsetDigit = 2)
+
 if __name__ == '__main__':
 
   import sys

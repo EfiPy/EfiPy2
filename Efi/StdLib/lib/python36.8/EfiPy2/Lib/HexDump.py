@@ -8,15 +8,15 @@
 #
 import sys
 
-def HexDump (InputData, HexOffset = 0, DumpLead = 0, OutFile = sys.stdout):
+def HexDump (InputData, HexOffset = 0, DumpLead = 0, OutFile = sys.stdout, OffsetDigit = 8):
 
   DumpEmpty  = HexOffset % 0x10
   DumpData   = b' ' * DumpEmpty + InputData
   DumpOffset = (HexOffset // 0x10) * 0x10
   InputArray = [DumpData[i: i + 16] for i in range(0, len(DumpData), 16)]
 
-  print (' ' * DumpLead + f'            0  1  2  3  4  5  6  7   8  9  A  B  C  D  E  F  01234567 89ABCDEF', file = OutFile)
-  print (' ' * DumpLead + f'------------------------------------------------------------------------------', file = OutFile)
+  print (' ' * DumpLead + ' ' * OffsetDigit + f'    0  1  2  3  4  5  6  7   8  9  A  B  C  D  E  F  01234567 89ABCDEF', file = OutFile)
+  print (' ' * DumpLead + '-' * OffsetDigit + f'----------------------------------------------------------------------', file = OutFile)
   
   for BinaryData in InputArray:
 
@@ -32,7 +32,7 @@ def HexDump (InputData, HexOffset = 0, DumpLead = 0, OutFile = sys.stdout):
     s = s + ' ' * (16 - len(BinaryData))
     s = s[:8] + ' ' + s[8:]
 
-    print(' ' * DumpLead + f'{DumpOffset:08X}   {b} {s}', file = OutFile)
+    print(' ' * DumpLead + f'{DumpOffset:{0}{OffsetDigit}X}   {b} {s}', file = OutFile)
     DumpOffset += 16
 
 def HexDumpDemo ():
