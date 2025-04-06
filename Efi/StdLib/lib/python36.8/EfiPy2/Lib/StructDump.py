@@ -8,59 +8,55 @@
 #
 
 import EfiPy2 as EfiPy
+from EfiPy2.Lib.HexDump import HexDump
+
+FieldNameDict = {
+  EfiPy.UINT8:      ('UINT8',     2,  63),
+  EfiPy.UINT8_BE:   ('UINT8',     2,  63),
+  EfiPy.UINT16:     ('UINT16',    4,  63),
+  EfiPy.UINT16_BE:  ('UINT16',    4,  63),
+  EfiPy.UINT32:     ('UINT32',    8,  63),
+  EfiPy.UINT32_BE:  ('UINT32',    8,  63),
+  EfiPy.UINT64:     ('UINT64',    16, 59),
+  EfiPy.UINT64_BE:  ('UINT64',    16, 59),
+  EfiPy.Structure:  ('Structure', 16, 59),
+  EfiPy.Union:      ('Union',     16, 59),
+}
 
 def DumpArray (Lead, FieldType, FieldArray, ArrayValue):
-  for i, j in enumerate (ArrayValue):
-    FieldName = f'{FieldArray}[{i}]'
-    if   ArrayValue._type_ is EfiPy.UINT8_BE:
-      if j >= 0x20 and j <= 0x7E:
-        FieldString = f"0x{j:02X} '{chr (j)}'"
-      else:
-        FieldString = f"0x{j:02X} '.'"
-      # print (f'{" " * Lead}{FieldString:>20s} {FieldName}')
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
-    elif   ArrayValue._type_ is EfiPy.UINT8:
-      if j >= 0x20 and j <= 0x7E:
-        FieldString = f"0x{j:02X} '{chr (j)}'"
-      else:
-        FieldString = f"0x{j:02X} '.'"
-      # print (f'{" " * Lead}{FieldString:>20s} {FieldName}')
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
 
-    elif   ArrayValue._type_ is EfiPy.UINT16_BE:
-      FieldString = f"0x{j:04X}"
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
-    elif   ArrayValue._type_ is EfiPy.UINT16:
-      FieldString = f"0x{j:04X}"
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
+  ValueType, ValueDigit, FieldWitdth = FieldNameDict.get (ArrayValue._type_, ("Array", 16, 59))
 
-    elif   ArrayValue._type_ is EfiPy.UINT32_BE:
-      FieldString = f"0x{j:08X}"
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
-    elif   ArrayValue._type_ is EfiPy.UINT32:
-      FieldString = f"0x{j:08X}"
-      print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
+  FieldName = f'{FieldArray} << {ValueType} * {len (ArrayValue)} (0x{len (ArrayValue):04X}) >>'
 
-    elif   ArrayValue._type_ is EfiPy.UINT64_BE:
-      FieldString = f"0x{j:016X}"
-      print (f'{" " * Lead}{FieldName:59s}{FieldString:<}')
-    elif   ArrayValue._type_ is EfiPy.UINT64:
-      FieldString = f"0x{j:016X}"
-      print (f'{" " * Lead}{FieldName:59s}{FieldString:<}')
+  if ArrayValue._type_ in (EfiPy.UINT8_BE, EfiPy.UINT8):
+    print (' ' * Lead + FieldName)
+    HexDump (ArrayValue, DumpLead = 3, OffsetDigit=2)
+    print ()
 
-    elif isinstance (ArrayValue[0], EfiPy.Structure):
+  elif ArrayValue._type_ in (EfiPy.UINT16_BE, EfiPy.UINT16, EfiPy.UINT32, EfiPy.UINT32_BE, EfiPy.UINT64, EfiPy.UINT64_BE):
+    for i, j in enumerate (ArrayValue):
+      FieldName = f'{FieldArray}[{i}]'
+      FieldString = f"0x{j:{0}{ValueDigit}X}"
+      print (f'{" " * Lead}{FieldName:{FieldWitdth}s}{FieldString:<}')
+
+  elif isinstance (ArrayValue[0], EfiPy.Structure):
+    for i, j in enumerate (ArrayValue):
+      FieldName = f'{FieldArray}[{i}]'
       FieldString = f'{type(j).__name__}'
-      print (f'{" " * Lead}{FieldName} Struct {FieldString:<}')
+      print (f'{" " * Lead}{FieldName:63s}Struct {FieldString:<}')
       DumpStruct (Lead + 2, j, type(j))
 
-    elif isinstance (ArrayValue[0], EfiPy.Union):
+  elif isinstance (ArrayValue[0], EfiPy.Union):
+    for i, j in enumerate (ArrayValue):
+      FieldName = f'{FieldArray}[{i}]'
       FieldString = f'{type(j).__name__}'
-      print (f'{" " * Lead}{FieldName} Union {FieldString:<}')
+      print (f'{" " * Lead}{FieldName:63s}Union {FieldString:<}')
       DumpStruct (Lead + 2, j, type(j))
 
-    else:
-      FieldString = f'Array'
-      print (f'{" " * Lead}{FieldName} {FieldString:<}')
+  else:
+    FieldString = f'Array'
+    print (f'{" " * Lead}{FieldName} {FieldString:<}')
 
 def DumpStruct (Lead, DumpData, DumpType):
   if isinstance (DumpData, (EfiPy.Structure, EfiPy.Union)):
@@ -69,10 +65,10 @@ def DumpStruct (Lead, DumpData, DumpType):
     DumpObject = DumpType.from_buffer_copy  (DumpData.Value)
 
   # for FieldName, FieldType in DumpType._fields_:
-  for FielTuple in DumpType._fields_:
+  for FieldTuple in DumpType._fields_:
 
-    if len (FielTuple) == 2:
-      FieldName, FieldType = FielTuple
+    if len (FieldTuple) == 2:
+      FieldName, FieldType = FieldTuple
       FieldValue = getattr (DumpObject, FieldName)
 
       if isinstance (FieldValue, EfiPy.GUID):
@@ -124,12 +120,17 @@ def DumpStruct (Lead, DumpData, DumpType):
         print (f'{" " * Lead}{FieldName:63s}Union {type (FieldValue).__name__:<}')
         DumpStruct (Lead + 2, FieldValue, type(FieldValue))
 
+      elif type(type(FieldValue)).__name__ == 'PyCPointerType':
+        FieldString = f'{getattr (DumpObject, FieldName)}'
+        # TODO - Dump Poiter address and pointer type
+        print (f'{"-" * Lead}{FieldName:63s}{FieldString:<}')
+
       else:
         FieldString = f'{getattr (DumpObject, FieldName)}'
         print (f'{" " * Lead}{FieldName:63s}{FieldString:<}')
 
-    elif len (FielTuple) == 3:
-      FieldName, FieldType, FieldWidth = FielTuple
+    elif len (FieldTuple) == 3:
+      FieldName, FieldType, FieldWidth = FieldTuple
       FieldValue = getattr (DumpObject, FieldName)
       if FieldType is EfiPy.UINT8:
         FieldString = f'0x{getattr (DumpObject, FieldName):02X} ({FieldWidth})'
