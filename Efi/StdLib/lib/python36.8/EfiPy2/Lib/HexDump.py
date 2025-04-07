@@ -11,7 +11,7 @@ import sys
 def HexDump (InputData, HexOffset = 0, DumpLead = 0, OutFile = sys.stdout, OffsetDigit = 8):
 
   DumpEmpty  = HexOffset % 0x10
-  DumpData   = b' ' * DumpEmpty + InputData
+  DumpData   = b' ' * DumpEmpty + bytes (InputData [:])
   DumpOffset = (HexOffset // 0x10) * 0x10
   InputArray = [DumpData[i: i + 16] for i in range(0, len(DumpData), 16)]
 
