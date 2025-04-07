@@ -38,9 +38,9 @@ if __name__ == '__main__':
 
   PciCfg = PCI_DEVICE_INDEPENDENT_REGION_UNION ()
 
-  for Bus in range (pci.PCI_MAX_BUS):
-    for Dev in range (pci.PCI_MAX_DEVICE):
-      for Func in range (pci.PCI_MAX_FUNC):
+  for Bus in range (pci.PCI_MAX_BUS + 1):
+    for Dev in range (pci.PCI_MAX_DEVICE + 1):
+      for Func in range (pci.PCI_MAX_FUNC + 1):
 
         PciCfg.Raw[0] = PciRegRead32(Bus, Dev, Func, 0)
 

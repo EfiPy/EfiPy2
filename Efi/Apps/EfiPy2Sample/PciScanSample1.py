@@ -1,19 +1,9 @@
 #
 # PciScan.py
 #
-# Copyright (C) 2016 - 2023 MaxWu efipy.core@gmail.com All rights reserved.
+# Copyright (C) 2016 - 2025 MaxWu efipy.core@gmail.com All rights reserved.
 #
-# PciScan.py is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, version 2 of the License.
-#
-# PaTest.py is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with EfiPy2.  If not, see <http://www.gnu.org/licenses/>.
+#   GPL-2.0
 #
 
 import EfiPy2 as EfiPy
@@ -62,9 +52,9 @@ if __name__ == '__main__':
   PciData = PciDevUnion()
   _p = PciData.PciReg.Device
 
-  for Bus in range (pci.PCI_MAX_BUS):
-    for Dev in range (pci.PCI_MAX_DEVICE):
-      for Func in range (pci.PCI_MAX_FUNC):
+  for Bus in range (pci.PCI_MAX_BUS + 1):
+    for Dev in range (pci.PCI_MAX_DEVICE + 1):
+      for Func in range (pci.PCI_MAX_FUNC + 1):
 
         PciData.PciRaw[0] = PciDev.scan(Bus, Dev, Func, 0)
 
