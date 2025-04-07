@@ -363,6 +363,7 @@ PCI_MAXLAT_OFFSET                           = 0x3F
 PCI_BRIDGE_PRIMARY_BUS_REGISTER_OFFSET      = 0x18
 PCI_BRIDGE_SECONDARY_BUS_REGISTER_OFFSET    = 0x19
 PCI_BRIDGE_SUBORDINATE_BUS_REGISTER_OFFSET  = 0x1a
+PCI_BRIDGE_SECONDARY_LATENCY_TIMER_OFFSET   = 0x1b
 PCI_BRIDGE_STATUS_REGISTER_OFFSET           = 0x1E
 PCI_BRIDGE_CONTROL_REGISTER_OFFSET          = 0x3E
 
@@ -438,7 +439,7 @@ class EFI_PCI_PMC_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
     ("Version",                       UINT16, 3),
     ("PmeClock",                      UINT16, 1),
-    ("None",                          UINT16, 1),
+    ("Reserved",                      UINT16, 1),
     ("DeviceSpecificInitialization",  UINT16, 1),
     ("AuxCurrent",                    UINT16, 3),
     ("D1Support",                     UINT16, 1),
@@ -449,25 +450,27 @@ class EFI_PCI_PMC_Bits (EFIPY_INDUSTRY_STRUCTURE):
 class EFI_PCI_PMC (EFIPY_INDUSTRY_UNION):
   _fields_ = [
     ("Bits",    EFI_PCI_PMC_Bits),
-    ("Uint32",  UINT16)
+    ("Data",    UINT16)
     ]
 
 EFI_PCI_PMC_D3_COLD_MASK    = BIT15
 
 class EFI_PCI_PMCSR_Bits (EFIPY_INDUSTRY_STRUCTURE):
   _fields_ = [
-    ("PowerState",  UINT16, 2),
-    ("None",        UINT16, 6),
-    ("PmeEnable",   UINT16, 1),
-    ("DataSelect",  UINT16, 4),
-    ("DataScale",   UINT16, 2),
-    ("PmeStatus",   UINT16, 1)
+    ("PowerState",            UINT16, 2),
+    ("ReservedForPciExpress", UINT16, 1),
+    ("NoSoftReset",           UINT16, 1),
+    ("Reserved",              UINT16, 4),
+    ("PmeEnable",             UINT16, 1),
+    ("DataSelect",            UINT16, 4),
+    ("DataScale",             UINT16, 2),
+    ("PmeStatus",             UINT16, 1),
     ]
 
 class EFI_PCI_PMCSR (EFIPY_INDUSTRY_UNION):
   _fields_ = [
     ("Bits",    EFI_PCI_PMCSR_Bits),
-    ("Uint32",  UINT16)
+    ("Data",    UINT16)
     ]
 
 PCI_POWER_STATE_D0      = 0
@@ -549,7 +552,7 @@ PCI_BAR_IDX3        = 0x03
 PCI_BAR_IDX4        = 0x04
 PCI_BAR_IDX5        = 0x05
 
-EFI_ROOT_BRIDGE_LIST                            = 'eprb'
+EFI_ROOT_BRIDGE_LIST                            = b'eprb'
 EFI_PCI_EXPANSION_ROM_HEADER_EFISIGNATURE       = 0x0EF1
 
 PCI_EXPANSION_ROM_HEADER_SIGNATURE              = 0xaa55
