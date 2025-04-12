@@ -31,7 +31,7 @@ def DumpArray (Lead, FieldType, FieldArray, ArrayValue):
 
   if ArrayValue._type_ in (EfiPy.UINT8_BE, EfiPy.UINT8):
     print (' ' * Lead + FieldName)
-    HexDump (ArrayValue, DumpLead = 3, OffsetDigit=2)
+    HexDump (ArrayValue, DumpLead = Lead, OffsetDigit=2)
     print ()
 
   elif ArrayValue._type_ in (EfiPy.UINT16_BE, EfiPy.UINT16, EfiPy.UINT32, EfiPy.UINT32_BE, EfiPy.UINT64, EfiPy.UINT64_BE):
