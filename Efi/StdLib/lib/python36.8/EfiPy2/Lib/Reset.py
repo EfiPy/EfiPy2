@@ -59,8 +59,23 @@ class Reset:
         Me.Iow32 (0x64, 0xFE)
 
     @staticmethod
+    def PortReset (offset, value):
+        print (f'Process Port reset')
+
+        from EfiPy2.Lib.X86Processor import Me
+        Me.Iow32 (offset, value)
+
+    @staticmethod
     def CmosReset ():
         print (f'Process CMOS reset, This needs to be confirm.')
 
         from EfiPy2.Lib.X86Processor import Me
         Me.IndexDataw32 (0x70, 0x71, 0x0F, 0x00)
+
+    @staticmethod
+    def UefiOp (ResetType):
+        print (f'Process UEFI Runtime Service SystemReset({ResetType}).')
+
+        from EfiPy2 import gRT, EFI_SUCCESS
+        gRT.ResetSystem (ResetType, EFI_SUCCESS, 0, None)
+        
